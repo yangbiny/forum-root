@@ -1,0 +1,99 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加成功</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css">
+
+    <style>
+
+        body {
+            background-color: rgba(152, 165, 191, 0.25);
+        }
+
+        .center {
+            background-color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            -webkit-transform: translateX(-50%) translateY(-50%);
+        }
+
+        .modal-content {
+            margin-left: 35%;
+            width: 30%;
+            height: 80%;
+        }
+
+    </style>
+
+    <script th:src="@{/js/clipboard.js}" src="../static/js/clipboard.js"></script>
+
+</head>
+<body>
+<div style="text-align: center;" class="center">
+    <div class="center">
+        <h4 th:text="${title}"></h4><br>
+        <div class="alert alert-success" role="alert">
+            <a th:href="@{'http://localhost:8002/article/show/'+${user}+'/'+${articlePrincipal}}" id="url"
+               class="alert-link">发布成功并查看文章</a>
+        </div>
+        <br>
+
+        <div>
+            <button id="copyBtn" class="btn btn-danger">复制链接</button>
+            <button class="btn btn-danger" data-toggle="modal" onclick="showShare()">生成分享卡片</button>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageContent" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border: 10px solid #5450c3;box-shadow:0 0 10px #c1bfd5 ">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <img style="width: 20%;border-radius: 80%;" th:src="${avatar}">
+                    <span th:text="${userName}"></span>
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <h3 th:text="${title}"></h3>
+                <img id="image" src="/user/article/share/image?url=test">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div th:replace="footer :: foot"></div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}" src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/js/popper.js}" src="../static/js/popper.js"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+<script>
+    var clipboard = new Clipboard('#copyBtn', {
+        // 点击copy按钮，直接通过text直接返回复印的内容
+        text: function () {
+            return $("#url").attr('href');
+        }
+    });
+
+    clipboard.on('success', function (e) {
+        alert("复制成功!");
+    });
+
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+
+
+    function showShare() {
+
+        $("#image").attr("src", "/user/article/share/image?url=" + $("#url").attr('href'));
+
+        $("#imageContent").modal('show');
+    }
+</script>
+</html>

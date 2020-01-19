@@ -1,0 +1,10 @@
+/.idea/
+/forum-admin/forum-admin.iml
+/forum-api/forum-api.iml
+/forum-content/forum-content.iml
+/forum-root.iml
+/forum-login/forum-login.iml
+/forum-login/target/
+/forum-api/target/
+/forum-content/target/
+/forum-admin/target/

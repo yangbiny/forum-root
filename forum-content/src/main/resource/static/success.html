@@ -1,0 +1,96 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加成功</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+
+        body {
+            background-color: rgba(152, 165, 191, 0.25);
+        }
+
+        .center {
+            background-color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            -webkit-transform: translateX(-50%) translateY(-50%);
+        }
+
+        .modal-content {
+            margin-left: 35%;
+            width: 30%;
+            height: 80%;
+        }
+
+    </style>
+
+    <script src="./js/clipboard.js"></script>
+
+</head>
+<body>
+<div style="text-align: center;" class="center">
+    <div class="center">
+        <h4></h4><br>
+        <div class="alert alert-success" role="alert">
+            <a id="url" href="#"
+               class="alert-link">发布成功并查看文章</a>
+        </div>
+        <br>
+
+        <div>
+            <button id="copyBtn" class="btn btn-danger">复制链接</button>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#imageContent">生成分享卡片</button>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageContent" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+</body>
+
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="js/popper.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script>
+    var clipboard = new Clipboard('#copyBtn', {
+        // 点击copy按钮，直接通过text直接返回复印的内容
+        text: function () {
+            return $("#url").attr('href');
+        }
+    });
+
+    clipboard.on('success', function (e) {
+        alert("复制成功!");
+    });
+
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+
+
+    function fun() {
+        $("#imageContent").modal('show')
+    }
+</script>
+</html>

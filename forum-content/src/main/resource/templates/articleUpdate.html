@@ -1,0 +1,96 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>修改博客</title>
+    <link rel="stylesheet" th:href="@{/editormd/examples/css/style.css}"
+          href="../static/editormd/examples/css/style.css"/>
+    <link rel="stylesheet" th:href="@{/editormd/css/editormd.css}" href="../static/editormd/css/editormd.css"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+    <style>
+        #articleBtn {
+            margin: 0;
+            height: 40px;
+            width: 9%;
+            background-color: #e31225;
+            font-size: 20px;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div id="layout">
+    <form action="/user/article/editor/update" method="post" onsubmit="updateArticle()">
+        <header>
+            <h1>
+                <label for="articleTitle" style="margin-left: 76px;">文章标题</label><br><br>
+                <input id="articleTitle" name="title" style="margin-left:76px;height:40px;width: 80%;font-size: 20px;"
+                       th:value="${article.title}"
+                       type="text"
+                       placeholder="请输入文章标题">
+                <input class="btn" type="submit" id="articleBtn" value="修改文章"/>
+                <br><br>
+                <label for="sortId" style="margin-left: 76px;">分类信息</label><br><br>
+                <select id="sortId" name="sort" style="margin-left:76px;width: 90%;height: 40px;font-size: 20px">
+                    <option th:each="sort:${session.sortList}" th:if="${article.sort.id == sort.id}"
+                            th:value="${sort.id}" th:text="${sort.name}" selected></option>
+
+                    <option th:each="sort:${session.sortList}" th:if="${article.sort.id != sort.id}"
+                            th:value="${sort.id}" th:text="${sort.name}"></option>
+                </select>
+            </h1>
+        </header>
+        <br>
+        <input type="hidden" name="context" id="context">
+        <div id="test-editormd">
+            <label for="articleContent"></label>
+            <textarea id="articleContent" name="body" style="display:none;" placeholder="在此处写博客内容"
+                      th:text="${article.contextMd}">
+
+        </textarea>
+        </div>
+        <input type="hidden" name="id" th:value="${article.id}">
+        <input type="hidden" name="principal" th:value="${article.principal}">
+
+    </form>
+</div>
+<div th:replace="footer :: foot"></div>
+<script th:src="@{/editormd/examples/js/jquery.min.js}" src="../static/editormd/examples/js/jquery.min.js"></script>
+<script th:src="@{/editormd/editormd.min.js}" src="../static/editormd/editormd.min.js"></script>
+<script type="text/javascript">
+    var testEditor;
+
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "90%",
+            height: 640,
+            syncScrolling: "single",
+            path: "http://localhost:8002/editormd/lib/",
+
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/user/article/upload",
+            saveHTMLToTextarea: true
+        });
+
+
+        /*
+        // or
+        testEditor = editormd({
+            id      : "test-editormd",
+            width   : "90%",
+            height  : 640,
+            path    : "../lib/"
+        });
+        */
+    });
+</script>
+</body>
+<script th:src="@{/userFunction.js}" src="../static/userFunction.js"></script>
+<script>
+    $(window).bind('beforeunload', function () {
+        return '您可能有数据没有保存';
+    });
+</script>
+</html>

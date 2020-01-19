@@ -1,0 +1,73 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- META TAGS -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrutalHuman</title>
+
+</head>
+<body>
+<div class="header-wrapper" th:fragment="header">
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <!-- Website Logo -->
+                <a href="index-2.html" title="Knowledge Base Theme">
+                    <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="Knowledge Base Theme">
+                </a>
+            </div>
+            <!-- Start of Main Navigation -->
+            <nav class="main-nav">
+                <div class="menu-top-menu-container">
+                    <ul id="menu-top-menu" class="clearfix">
+                        <li><a href="/index">首页</a></li>
+                        <li><a href="/article/list/back">后台</a></li>
+                        <li><a href="/article/list/front">前端</a></li>
+                        <li><a href="/article/list/basic">基础</a></li>
+                        <li><a href="/user/article/editor">发起讨论</a></li>
+                        <li th:if="${session.user != null}">
+
+                            <a th:utext="${session.userInfo.nickName}">
+
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="/user/updateInfo">修改个人信息</a></li>
+                                <li><a href="/user/article/list">查看已发表博客</a></li>
+                            </ul>
+                        </li>
+                        <li th:if="${session.user == null}"><a
+                                href="http://localhost:8001">登录</a></li>
+                        <li><a href="http://localhost:8001/logout">退出</a></li>
+                    </ul>
+
+                </div>
+
+
+            </nav>
+
+
+            <!-- End of Main Navigation -->
+        </div>
+    </header>
+</div>
+
+<!-- Start of Search Wrapper -->
+<div class="search-area-wrapper" th:fragment="inputFrame">
+    <div class="search-area container">
+        <h3 class="search-header">Have a Question?</h3>
+        <p class="search-tag-line">If you have any question you can ask below or enter what you are
+            looking for!</p>
+
+        <form class="search-form clearfix" method="get" action="/article/list/key" autocomplete="off">
+            <input class="search-term required" type="text" name="key"
+                   placeholder="请输入你要查找的内容"
+                   title="* Please enter a search term!"/>
+            <input class="search-btn" type="submit" value="Search"/>
+        </form>
+    </div>
+</div>
+<!-- End of Search Wrapper -->
+
+</body>
+</html>
