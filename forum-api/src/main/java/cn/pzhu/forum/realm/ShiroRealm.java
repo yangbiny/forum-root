@@ -4,17 +4,21 @@ import cn.pzhu.forum.content.Identify;
 import cn.pzhu.forum.dao.UserDao;
 import cn.pzhu.forum.entity.User;
 import cn.pzhu.forum.util.ByteSourceUtils;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Shiro Realm,用于用户登录以及权限控制
@@ -80,9 +84,10 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
 
-        ByteSource bytes = new ByteSourceUtils(user.getId());
+        ByteSource bytes = new ByteSourceUtils(user.getUserId());
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), bytes, getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUserId(),
+            user.getPassword(), bytes, getName());
 
         log.info("认证通过");
 

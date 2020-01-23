@@ -8,6 +8,9 @@ import cn.pzhu.forum.entity.User;
 import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Utils;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -50,31 +49,24 @@ public class UserServiceImpl implements UserService {
 
         boolean flag;
 
-        User user1 = userDao.get(user.getId());
+        User oldUser = userDao.get(user.getUserId());
 
-        if (user1 == null) {   // 该邮箱没有注册，就可以直接使用注册
-
-            String string = new Md5Hash(user.getPassword(), user.getId(), 1024).toString();
+        // 该邮箱没有注册，就可以直接使用注册
+        if (oldUser == null) {
+            String string = new Md5Hash(user.getPassword(), user.getUserId(), 1024).toString();
             user.setPassword(string);
             flag = userDao.add(user);
-
         } else {  // 通过QQ登录后注册或者绑定
-
             // 被管理员删除的账号不能再次使用
-            if (user1.getStatus().equals(Identify.DEAD.getIdentify())) {
+            if (oldUser.getStatus().equals(Identify.DEAD.getIdentify())) {
                 return false;
             }
-
             flag = userDao.updateQQ(user);
-
         }
         if (flag) {
-
             flag = userInfoDao.add(username, user.getId());
         }
-
         log.info("cn.pzhu.forum.service.impl.UserServiceImpl.addUser-注册结果-{}", flag);
-
         return flag;
     }
 

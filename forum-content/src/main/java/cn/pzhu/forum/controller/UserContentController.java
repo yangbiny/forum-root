@@ -12,6 +12,14 @@ import cn.pzhu.forum.service.UserInfoService;
 import cn.pzhu.forum.util.ResultData;
 import cn.pzhu.forum.util.Utils;
 import com.google.zxing.WriterException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @program: forum-root
@@ -89,10 +88,13 @@ public class UserContentController {
     public String add(String context, String title, String body, int sort, Model model) {
 
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
-                "title = {},sort = {}", title, sort);
+            "title = {},sort = {}", title, sort);
 
         // 获得用户信息
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
+        if (userId == null) {
+            throw new RuntimeException("未登录");
+        }
         UserInfo userInfo = userInfoService.get(userId);
 
         // 封装博客信息
@@ -102,6 +104,7 @@ public class UserContentController {
         article.setTitle(title);
         article.setSortId(sort);
         article.setUserName(userInfo.getNickName());
+        article.setUserId(userId);
         article.setReadNumber(0);
         article.setTop(0);
 
@@ -246,6 +249,7 @@ public class UserContentController {
         reply.setContent(contentSplit(reply.getContent()));
         reply.setUserName(userInfo.getNickName());
         reply.setAvatar(userInfo.getAvatar());
+        reply.setUserId(userInfo.getId());
 
         boolean add = replyService.add(reply);
 
@@ -380,7 +384,7 @@ public class UserContentController {
         String principal1 = (String) SecurityUtils.getSubject().getPrincipal();
         UserInfo userInfo = userInfoService.get(principal1);
 
-        boolean flag = articleService.hashLiked(userInfo.getNickName(), principal);
+        boolean flag = articleService.hasLiked(userInfo.getNickName(), principal);
 
         if (flag) {
             map.put("msg", "已经点赞");

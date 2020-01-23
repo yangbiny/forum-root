@@ -15,7 +15,7 @@ public interface UserDao {
      * @param user User Infomation
      * @return The Result of the action
      */
-    @Insert("insert into user (id, password,qq) values (#{id}, #{password},#{qq})")
+    @Insert("insert into user (userId, password,qq) values (#{id}, #{password},#{qq})")
     boolean add(User user);
 
     /**
@@ -24,7 +24,7 @@ public interface UserDao {
      * @param id User Id
      * @return User Info
      */
-    @Select("select id,qq,password,status,identify from user where id = #{id} or qq = #{id}")
+    @Select("select userId,qq,password,status,identify from user where userId = #{id} or qq = #{id}")
     User get(@Param("id") String id);
 
     /**
@@ -33,7 +33,7 @@ public interface UserDao {
      * @param user User
      * @return Status
      */
-    @Update("update user set password = #{password} where id = #{id}")
+    @Update("update user set password = #{password} where userId = #{id}")
     boolean resetPassword(User user);
 
     /**
@@ -63,7 +63,7 @@ public interface UserDao {
      * @param id 用户ID
      * @return 操作结果
      */
-    @Update("update user set status = -1 where id = #{id}")
+    @Update("update user set status = -1 where userId = #{id}")
     boolean delete(@Param("id") String id);
 
     /**
@@ -72,7 +72,7 @@ public interface UserDao {
      * @param openid QQ的OpenID
      * @return 查询结果
      */
-    @Select("select id,qq,password,status,identify from user where qq = #{qq}")
+    @Select("select userId,qq,password,status,identify from user where qq = #{qq}")
     User getByOpenId(@Param("qq") String openid);
 
     /**
@@ -81,6 +81,6 @@ public interface UserDao {
      * @param user 用户信息
      * @return 操作结果
      */
-    @Update("update user set qq = #{qq} where id = #{id}")
+    @Update("update user set qq = #{qq} where userId = #{id}")
     Boolean updateQQ(User user);
 }

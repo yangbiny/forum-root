@@ -12,6 +12,16 @@ import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Utils;
 import com.qq.connect.QQConnectException;
 import com.qq.connect.oauth.Oauth;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -23,17 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 @Slf4j
@@ -203,22 +202,20 @@ public class UserLogin {
     public Map<String, String> userLogin(User user, String code) {
 
         log.info("cn.pzhu.forum.controller.UserLogin.userLogin-用户登录-入参：" +
-                "user = {},code = {}", user.toString(), code);
+            "user = {},code = {}", user.toString(), code);
 
         Map<String, String> map = new HashMap<>();
         /*Object rCode = session.getAttribute("RCode");*/
 
-        /*if (code.toLowerCase().equals(rCode.toString().toLowerCase())) {
+        /*
+        if (code.toLowerCase().equals(rCode.toString().toLowerCase())) {
             map.put("msg", "验证码错误!");
             return map;
-        }*/
+        }
+        */
 
         Subject subject = SecurityUtils.getSubject();
         EasyTypeToken token = new EasyTypeToken(user.getId(), user.getPassword());
-
-        token.setUsername(user.getId());
-        token.setPassword(user.getPassword().toCharArray());
-
         // 用户已经成功登录
         if (!subject.isAuthenticated()) {
             try {
@@ -237,6 +234,7 @@ public class UserLogin {
 
                 return map;
             } catch (AuthenticationException e) {
+                e.printStackTrace();
                 map.put("msg", "账号或密码错误");
             }
         } else {
@@ -273,7 +271,8 @@ public class UserLogin {
         // 检查用户名是否被使用
         Map<String, Boolean> map = checkUserName(username);
 
-        if (map.get("flag")) {  // flag 为检查信息的标志
+        // flag 为检查信息的标志
+        if (map.get("flag")) {
             return "error";
         }
 
@@ -334,8 +333,8 @@ public class UserLogin {
         Object rCode = session.getAttribute("RCode");              // 验证图片验证码
 
         try {
-            if (!(userCode.toLowerCase().equals(rUserCode.toLowerCase()) &&
-                    rCode.toString().toLowerCase().equals(code.toLowerCase()))) {
+            if (!(userCode.toLowerCase().equals(rUserCode.toLowerCase()) /*&&
+                    rCode.toString().toLowerCase().equals(code.toLowerCase())*/)) {
                 map.put("msg", "验证码错误");
                 return map;
             }

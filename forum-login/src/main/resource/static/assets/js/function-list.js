@@ -135,7 +135,7 @@ function changeForm(key) {
 
 }
 
-function register() {
+function registerUser() {
 
     let codeError = $("#codeError");
 

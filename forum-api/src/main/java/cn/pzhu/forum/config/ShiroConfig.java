@@ -4,6 +4,8 @@ import cn.pzhu.forum.content.URLContent;
 import cn.pzhu.forum.realm.RetryLimitHashedCredentialsMatcher;
 import cn.pzhu.forum.realm.ShiroLoginFilter;
 import cn.pzhu.forum.realm.ShiroRealm;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -18,9 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Shiro 配置类
@@ -192,7 +191,6 @@ public class ShiroConfig {
     @Bean
     public AuthorizationAttributeSourceAdvisor advisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-
         advisor.setSecurityManager(securityManager);
         return advisor;
     }

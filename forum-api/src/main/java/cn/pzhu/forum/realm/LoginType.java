@@ -1,12 +1,21 @@
 package cn.pzhu.forum.realm;
 
 public enum LoginType {
-    PASSWORD("password"), // 密码登录
-    NOPASSWD("nopassword"); // 免密登录
+    /**
+     * 密码登录
+     */
+    PASSWORD("password"),
+    /**
+     * 免密登录
+     */
+    NOPASSWD("nopassword");
 
-    private String code;// 状态值
+    /**
+     * 状态值
+     */
+    private String code;
 
-    private LoginType(String code) {
+    LoginType(String code) {
         this.code = code;
     }
 

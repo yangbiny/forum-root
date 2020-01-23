@@ -66,7 +66,7 @@ public class AfterQQLoginController {
 
         } else {
 
-            PrincipalCollection principals = new SimplePrincipalCollection(user.getId(), "ShiroRealm");
+            PrincipalCollection principals = new SimplePrincipalCollection(user.getUserId(), "ShiroRealm");
 
             Subject.Builder builder = new WebSubject.Builder(request, response);
             builder.principals(principals);

@@ -84,7 +84,7 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
 
             int count = 0;
             for (Article article : articles) {
-                if (sort.getId().equals(article.getSort().getId())) {
+                if (sort.getId().equals(article.getSortId())) {
                     count++;
                 }
             }
@@ -102,7 +102,8 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
         List<Article> articles = articleDao.recordList();
 
         for (Article article : articles) {
-            map.put(article.getSort().getName(), article.getSort().getId());   // 借助分类ID存储分类出现的次数
+            Sort sort = sortService.get(article.getSortId());
+            map.put(sort.getName(), sort.getId());   // 借助分类ID存储分类出现的次数
         }
 
         return map;

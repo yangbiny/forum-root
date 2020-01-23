@@ -3,14 +3,16 @@ package cn.pzhu.forum.realm;
 import cn.pzhu.forum.content.URLContent;
 import cn.pzhu.forum.util.ResultData;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-
+import java.io.IOException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 
+/**
+ * @author impassivey
+ */
 public class ShiroLoginFilter extends FormAuthenticationFilter {
 
     /**

@@ -25,7 +25,7 @@ public interface UserInfoDao {
      * @return 用户信息列表
      */
     @Select("select userInfo.id,nickName,school,major,avatar,phone,description from userInfo,user where " +
-            "user.id = userInfo.id and user.status != -1")
+            "user.userId = userInfo.id and user.status != -1")
     List<UserInfo> list();
 
     /**

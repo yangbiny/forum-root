@@ -5,8 +5,8 @@ import cn.pzhu.forum.content.RedisKeyConstant;
 import cn.pzhu.forum.dao.SortDao;
 import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.service.SortService;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -14,15 +14,17 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author impassivey
+ */
 @Service
 @Slf4j
-@SuppressWarnings("unchecked")
 public class SortServiceImpl implements SortService {
 
-    @Autowired
+    @Resource
     private SortDao sortDao;
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
     @Override

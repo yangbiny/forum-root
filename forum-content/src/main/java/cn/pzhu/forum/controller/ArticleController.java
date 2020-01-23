@@ -7,6 +7,9 @@ import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.ArticleService;
 import cn.pzhu.forum.service.ReplyService;
 import cn.pzhu.forum.service.UserInfoService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -70,7 +69,7 @@ public class ArticleController {
             String userId = (String) SecurityUtils.getSubject().getPrincipal();
 
             UserInfo userInfo = userInfoService.get(userId);
-            boolean flag = articleService.hashLiked(userInfo.getNickName(), principal);
+            boolean flag = articleService.hasLiked(userInfo.getNickName(), principal);
 
             if (flag) {
                 session.setAttribute("recordFlag", new Record());

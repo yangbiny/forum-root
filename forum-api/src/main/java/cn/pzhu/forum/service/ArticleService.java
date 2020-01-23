@@ -2,7 +2,6 @@ package cn.pzhu.forum.service;
 
 import cn.pzhu.forum.content.ArticleType;
 import cn.pzhu.forum.entity.Article;
-
 import java.util.List;
 
 public interface ArticleService {
@@ -127,11 +126,11 @@ public interface ArticleService {
     /**
      * 用于判断指定用户是否已经点赞当前为文章
      *
-     * @param userName  用户名
+     * @param userName 用户名
      * @param principal 博客主要关键字
      * @return false表示没有点赞，true表示已经点赞
      */
-    boolean hashLiked(String userName, String principal);
+    boolean hasLiked(String userName, String principal);
 
     /**
      * 根据博客的标题查询类似的博客信息

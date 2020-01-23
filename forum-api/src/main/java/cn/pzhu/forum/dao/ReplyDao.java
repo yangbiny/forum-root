@@ -1,10 +1,15 @@
 package cn.pzhu.forum.dao;
 
 import cn.pzhu.forum.entity.Reply;
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 /**
  * @program: forum-root
@@ -42,7 +47,7 @@ public interface ReplyDao {
      * @return 操作结果
      */
     @Insert("insert into reply set articleId = #{articleId},userName = #{userName}," +
-            "time = #{time},content = #{content},replyTo = #{replyTo}")
+        "time = #{time},content = #{content},replyTo = #{replyTo}, userId = #{userId}")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     Integer add(Reply reply);
 

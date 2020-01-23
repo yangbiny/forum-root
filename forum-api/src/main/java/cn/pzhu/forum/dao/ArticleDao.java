@@ -16,7 +16,7 @@ public interface ArticleDao {
      * @param article 需要添加的博客信息
      * @return 添加结果
      */
-    @Insert("insert into article set title = #{title},userName = #{userName}," +
+    @Insert("insert into article set userId = #{userId}, title = #{title},userName = #{userName}," +
             "time = #{time},sortId = #{sortId},context = #{context},readNumber = 0,top = 0,contextMd = #{contextMd}," +
             "principal = #{principal}")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")

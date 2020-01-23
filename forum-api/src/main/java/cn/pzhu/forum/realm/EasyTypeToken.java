@@ -1,10 +1,18 @@
 package cn.pzhu.forum.realm;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+/**
+ * @author impassivey
+ */
 public class EasyTypeToken extends UsernamePasswordToken {
+
     private static final long serialVersionUID = -2564928913725078138L;
 
+    @Getter
+    @Setter
     private LoginType type;
 
 
@@ -13,7 +21,8 @@ public class EasyTypeToken extends UsernamePasswordToken {
     }
 
 
-    public EasyTypeToken(String username, String password, LoginType type, boolean rememberMe, String host) {
+    public EasyTypeToken(String username, String password, LoginType type, boolean rememberMe,
+        String host) {
         super(username, password, rememberMe, host);
         this.type = type;
     }
@@ -37,16 +46,6 @@ public class EasyTypeToken extends UsernamePasswordToken {
     public EasyTypeToken(String username, String password) {
         super(username, password, false, null);
         this.type = LoginType.PASSWORD;
-    }
-
-
-    public LoginType getType() {
-        return type;
-    }
-
-
-    public void setType(LoginType type) {
-        this.type = type;
     }
 }
 

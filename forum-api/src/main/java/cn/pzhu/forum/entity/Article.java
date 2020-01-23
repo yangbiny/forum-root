@@ -20,6 +20,7 @@ public class Article implements Serializable {
     private static final long serialVersionUID = -7324263430976483432L;
 
     private Integer id;
+    private String userId;
     private String title;
     private String userName;
     private String time;
@@ -31,31 +32,4 @@ public class Article implements Serializable {
     private String principal;
 
     private Sort sort;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Article)) return false;
-        Article article = (Article) o;
-        return Objects.equals(getId(), article.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", time='" + time + '\'' +
-                ", sortId=" + sortId +
-                ", readNumber=" + readNumber +
-                ", top=" + top +
-                ", principal='" + principal + '\'' +
-                ", sort=" + sort +
-                '}';
-    }
 }

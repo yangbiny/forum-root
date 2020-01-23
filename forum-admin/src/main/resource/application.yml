@@ -7,9 +7,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/forum?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://47.99.108.26:3306/forum?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: 123456
+    password: 214y9706*A
     dbcp2:
       min-idle: 5                                           #数据库连接池的最小连接数量
       initial-size: 5                                       #初始化连接数量
@@ -22,3 +22,4 @@ spring:
     content-type: text/html
   redis:
     database: 1
+    host: 47.99.108.26

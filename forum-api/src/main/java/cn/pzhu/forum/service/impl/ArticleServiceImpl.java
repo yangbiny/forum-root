@@ -12,17 +12,22 @@ import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.service.ArticleService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.util.Utils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 /**
  * 博客信息管理类
@@ -32,19 +37,19 @@ import java.util.stream.Stream;
 @SuppressWarnings("unchecked")
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired
+    @Resource
     private ArticleDao articleDao;
 
-    @Autowired
+    @Resource
     private SortDao sortDao;
 
-    @Autowired
+    @Resource
     private SortService sortService;
 
-    @Autowired
+    @Resource
     private RecordDao recordDao;
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
     @Override
@@ -407,7 +412,6 @@ public class ArticleServiceImpl implements ArticleService {
 
         if (article == null) {
             article = articleDao.getByPrincipal(userName, principal);
-
             if (article != null) {
                 operations.add(userKey, article);
             }
@@ -473,7 +477,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public boolean hashLiked(String userName, String principal) {
+    public boolean hasLiked(String userName, String principal) {
 
         String flag = RedisKeyConstant.USER_ARTICLE_RECORD_FLAG + userName + principal;
         Boolean hasKey = redisTemplate.hasKey(flag);

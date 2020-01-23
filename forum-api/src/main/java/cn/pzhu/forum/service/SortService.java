@@ -5,6 +5,9 @@ import cn.pzhu.forum.entity.Sort;
 
 import java.util.List;
 
+/**
+ * @author impassivey
+ */
 public interface SortService {
 
     /**

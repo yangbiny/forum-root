@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 分类信息数据库访问层
+ * @author impassivey
  */
 @Mapper
 @Repository
