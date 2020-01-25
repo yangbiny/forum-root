@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Shiro Realm,用于用户登录以及权限控制
+ *
+ * @author impassivey
  */
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {

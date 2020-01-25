@@ -1,9 +1,11 @@
 package cn.pzhu.forum.service;
 
 import cn.pzhu.forum.entity.School;
-
 import java.util.List;
 
+/**
+ * @author impassivey
+ */
 public interface SchoolService {
 
     List<School> list();

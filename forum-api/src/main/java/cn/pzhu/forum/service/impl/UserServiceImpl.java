@@ -23,9 +23,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
+/**
+ * @author impassivey
+ */
 @Slf4j
-@SuppressWarnings("unchecked")
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -124,7 +126,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUserInfo(UserInfo userInfo) {
 
         log.info("cn.pzhu.forum.service.impl.UserServiceImpl.updateUserInfo-更新用户信息-入参-" +
-                "userInfo = {}", userInfo.toString());
+            "userInfo = {}", userInfo.toString());
 
         boolean b = userDao.updateUserInfo(userInfo);
 

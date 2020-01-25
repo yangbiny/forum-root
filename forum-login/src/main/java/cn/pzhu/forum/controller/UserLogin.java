@@ -1,5 +1,6 @@
 package cn.pzhu.forum.controller;
 
+import cn.pzhu.forum.application.LoginApplicationService;
 import cn.pzhu.forum.entity.Major;
 import cn.pzhu.forum.entity.School;
 import cn.pzhu.forum.entity.User;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,17 +39,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class UserLogin {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private UserInfoService userInfoService;
 
-    @Autowired
+    @Resource
     private SchoolService schoolService;
 
-    @Autowired
+    @Resource
     private MajorService majorService;
+
+    @Resource
+    private LoginApplicationService loginApplicationService;
 
     @RequestMapping("/")
     public String index() {
@@ -221,6 +225,7 @@ public class UserLogin {
             try {
                 subject.login(token);
 
+                loginApplicationService.whenUserLoginSuccess(user.getId());
                 // 登录成功后判断是否有管理员权限
                 boolean admin = subject.hasRole("admin");
 

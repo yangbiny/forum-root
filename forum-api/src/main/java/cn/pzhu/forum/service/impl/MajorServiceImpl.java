@@ -4,18 +4,20 @@ import cn.pzhu.forum.content.RedisKeyConstant;
 import cn.pzhu.forum.dao.MajorDao;
 import cn.pzhu.forum.entity.Major;
 import cn.pzhu.forum.service.MajorService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-@Service
+/**
+ * @author impassivey
+ */
 @Slf4j
+@Service("majorService")
 public class MajorServiceImpl implements MajorService {
 
     @Autowired
