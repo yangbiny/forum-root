@@ -4,6 +4,11 @@ import cn.pzhu.forum.content.RedisKeyConstant;
 import cn.pzhu.forum.dao.UserInfoDao;
 import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.UserInfoService;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,20 +16,13 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 /**
  * 用户模块功能服务
  *
  * @author yangb
  */
-@Service
 @Slf4j
-@SuppressWarnings("unchecked")
+@Service("userInfoService")
 public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired

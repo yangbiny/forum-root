@@ -23,6 +23,8 @@ import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Shiro 配置类
+ *
+ * @author impassivey
  */
 @Configuration
 public class ShiroConfig {
@@ -42,15 +44,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> map = new HashMap<>();
-        /*map.put("/index.html","anon");
-        map.put("/guest", "anon");
-        map.put("/login", "anon");
-        map.put("/assets", "anon");
-        map.put("/register", "anon");
-        map.put("/resetPassword", "anon");
-        map.put("/generateRegisterCode", "anon");
-        map.put("/GenerateVerificationCode", "anon");*/
+        Map<String, String> map = new HashMap<>(4);
         map.put("/user/**", "user");
         map.put("/admin/**", "roles[admin]");
         map.put("/**", "anon");
@@ -140,13 +134,6 @@ public class ShiroConfig {
         return redisSessionDao;
     }
 
-    /*@Bean
-    public RedisSessionDao redisSessionDao(RedisManager redisManager) {
-        RedisSessionDao redisSessionDao = new RedisSessionDao();
-
-        return redisSessionDao;
-    }*/
-
     @Bean
     public DefaultWebSessionManager sessionManager(RedisSessionDAO redisSessionDAO, SimpleCookie simpleCookie) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
@@ -200,12 +187,5 @@ public class ShiroConfig {
 
         return new LifecycleBeanPostProcessor();
     }
-
-    /*@Bean
-    public DefaultAdvisorAutoProxyCreator creator() {
-        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
-        creator.setProxyTargetClass(false);
-        return creator;
-    }*/
 
 }

@@ -1,14 +1,13 @@
 package cn.pzhu.forum.config;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Redis与Shiro整合认证系信息
@@ -63,11 +62,15 @@ public class RedisSessionDao extends AbstractSessionDAO {
         Serializable sessionId = this.generateSessionId(session);
         this.assignSessionId(session, sessionId);
 
-        redisTemplate.opsForValue().set(session.getId(), session, expireTime, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue()
+            .set(session.getId(), session, expireTime, TimeUnit.MILLISECONDS);
         return sessionId;
     }
 
-    @Override// 读取session
+    /**
+     * 读取session
+     */
+    @Override
     protected Session doReadSession(Serializable sessionId) {
 
         if (sessionId == null) {
@@ -76,19 +79,4 @@ public class RedisSessionDao extends AbstractSessionDAO {
         return (Session) redisTemplate.opsForValue().get(sessionId);
     }
 
-    public long getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
-    }
-
-    public RedisTemplate getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 }

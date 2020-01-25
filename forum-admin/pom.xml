@@ -61,11 +61,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-        </dependency>
         <!--  导入自定义模块 -->
         <dependency>
             <groupId>cn.pzhu.forum</groupId>

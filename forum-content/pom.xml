@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>forum-root</artifactId>
-        <groupId>cn.pzhu.forum</groupId>
-        <version>1.0</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-
     <artifactId>forum-content</artifactId>
-
-    <name>forum-content</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <includeSystemScope>true</includeSystemScope>
@@ -30,6 +18,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <groupId>org.springframework.boot</groupId>
             </plugin>
         </plugins>
 
@@ -38,153 +27,133 @@
             <resource>
                 <!--路径 -->
                 <directory>src/main/java</directory>
+                <filtering>false</filtering>
                 <includes>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                 </includes>
-                <filtering>false</filtering>
             </resource>
             <resource>
                 <!--路径（如果只解决上边的问题，此处配置不需要） -->
                 <directory>src/main/resource</directory>
+                <filtering>false</filtering>
                 <includes>
                     <include>**/*.*</include>
                 </includes>
-                <filtering>false</filtering>
             </resource>
         </resources>
     </build>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
-
     <dependencies>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+            <groupId>org.springframework.boot</groupId>
             <optional>true</optional>
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <groupId>junit</groupId>
             <version>4.12</version>
         </dependency>
         <!--  导入自定义模块 -->
         <dependency>
-            <groupId>cn.pzhu.forum</groupId>
             <artifactId>forum-api</artifactId>
+            <groupId>cn.pzhu.forum</groupId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- 修改后立即生效，热部署 -->
         <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>springloaded</artifactId>
+            <groupId>org.springframework</groupId>
             <version>1.2.8.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
         <!-- 数据库连接池 Mybatis等相关支持 -->
         <dependency>
-            <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <groupId>mysql</groupId>
             <version>8.0.15</version>
         </dependency>
         <!-- 阿里巴巴数据库连接池 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
+            <groupId>com.alibaba</groupId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
+            <groupId>ch.qos.logback</groupId>
         </dependency>
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
+            <groupId>org.mybatis.spring.boot</groupId>
         </dependency>
         <!-- 导入jetty容器 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
         <!-- 引入web支持-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
 
         <!-- 引入freemarker模板引擎依赖 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
         <!-- 使用非严格的HTML5 -->
         <dependency>
-            <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
+            <groupId>net.sourceforge.nekohtml</groupId>
             <version>1.9.22</version>
         </dependency>
 
         <!--  导入redis -->
         <dependency>
-            <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+            <groupId>redis.clients</groupId>
         </dependency>
         <!-- 支持将shiro的Session写入到redis -->
         <dependency>
-            <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
+            <groupId>org.crazycake</groupId>
             <version>3.2.3</version>
         </dependency>
 
-        <!-- 导入shiro -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-ehcache</artifactId>
-            <version>1.4.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-        </dependency>-->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>org.springframework.boot</groupId>
         </dependency>
 
     </dependencies>
+
+    <modelVersion>4.0.0</modelVersion>
+    <!-- FIXME change it to the project's website -->
+    <name>forum-content</name>
+    <parent>
+        <artifactId>forum-root</artifactId>
+        <groupId>cn.pzhu.forum</groupId>
+        <version>1.0</version>
+    </parent>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <url>http://www.example.com</url>
 
 </project>

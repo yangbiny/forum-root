@@ -3,15 +3,17 @@ package cn.pzhu.forum.service.impl;
 import cn.pzhu.forum.dao.SchoolDao;
 import cn.pzhu.forum.entity.School;
 import cn.pzhu.forum.service.SchoolService;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-@Service
+/**
+ * @author impassivey
+ */
+@Service("schoolService")
 public class SchoolServiceImpl implements SchoolService {
 
 
