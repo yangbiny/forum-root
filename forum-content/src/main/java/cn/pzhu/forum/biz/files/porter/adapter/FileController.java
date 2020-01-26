@@ -4,7 +4,11 @@ import cn.pzhu.forum.application.exception.IntegralException;
 import cn.pzhu.forum.biz.files.application.FilesApplicationService;
 import cn.pzhu.forum.biz.files.application.cmd.FileCmd;
 import cn.pzhu.forum.biz.files.porter.adapter.form.FileForm;
+import cn.pzhu.forum.biz.files.porter.adapter.vo.FileInfoVo;
 import cn.pzhu.forum.content.QiNiuContent;
+import cn.pzhu.forum.entity.FileInfo;
+import cn.pzhu.forum.utils.ForumUtils;
+import cn.pzhu.forum.utils.Resp;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qiniu.common.Region;
@@ -15,12 +19,14 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,6 +66,27 @@ public class FileController {
     }
 
     return map;
+  }
+
+  @GetMapping("user/list/")
+  public Resp<List<FileInfoVo>> queryFileInfos() {
+    String userId = SecurityUtils.getSubject().getPrincipal().toString();
+    List<FileInfo> fileInfos = filesApplicationService.queryFileInfosByUserId(userId);
+    return new Resp<>(ForumUtils.toList(fileInfos, this::toFileInfoVo));
+  }
+
+  private FileInfoVo toFileInfoVo(FileInfo fileInfo) {
+    FileInfoVo fileInfoVo = new FileInfoVo();
+    fileInfoVo.setId(fileInfo.getId());
+    fileInfoVo.setUserId(fileInfo.getUserId());
+    fileInfoVo.setPath(QiNiuContent.path + "/" + fileInfo.getPath());
+    fileInfoVo.setTime(fileInfo.getTime());
+    fileInfoVo.setSize(fileInfo.getSize());
+    fileInfoVo.setTitle(fileInfo.getTitle());
+    fileInfoVo.setIntroduction(fileInfo.getIntroduction());
+    fileInfoVo.setIntegral(fileInfo.getIntegral());
+    fileInfoVo.setDownNum(fileInfo.getDownNum());
+    return fileInfoVo;
   }
 
   private FileCmd convertToFileCmd(String userId, String responseJson, FileForm fileForm) {

@@ -40,32 +40,24 @@
                 <table width="100%">
                     <tr>
                         <th>昵称</th>
-                        <th>Impassive</th>
-                        <th rowspan="6" style="text-align: right">
+                        <th th:text="${userInfo.nickName}"></th>
+                        <th rowspan="4" style="text-align: right">
                             <img
-                                src="http://impassive.cdn.cone4.top/impassive@aliyun.com-Avatar.png"
+                                th:src="${userInfo.avatar}"
                                 width="300px">
                         </th>
                     </tr>
                     <tr>
                         <th>ID</th>
-                        <th>1963559122@qq.com</th>
-                    </tr>
-                    <tr>
-                        <th>学院</th>
-                        <th>数学与计算机学院</th>
-                    </tr>
-                    <tr>
-                        <th>专业</th>
-                        <th>软件工程</th>
+                        <th th:text="${userInfo.id}"></th>
                     </tr>
                     <tr>
                         <th>个人描述</th>
-                        <th>英雄所见略同</th>
+                        <th th:text="${userInfo.description}"></th>
                     </tr>
                     <tr>
                         <th>已获得积分</th>
-                        <th>50</th>
+                        <th th:text="${userInfo.integral}"></th>
                     </tr>
                 </table>
             </div>
@@ -124,29 +116,25 @@
 
                     <h1 class="post-title">个人上传的文件</h1>
                     <hr>
-                    <header class="clearfix" th:each="article:${articles}">
+                    <header class="clearfix" th:each="fileInfo:${fileInfos}">
 
                         <div>
                             <div style="display: inline-block;width: 50%">
                                 <h3 class="post-title">
-                                    <a th:href="@{'/article/show/'+${article.userName}+'/'+${article.principal}}"
-                                       th:text="${article.title}"></a>
+                                    <a th:href="@{${fileInfo.path}}"
+                                       th:text="${fileInfo.title}"></a>
                                 </h3>
                             </div>
                             <div style="display: inline-block;width: 48%;text-align: right">
-                                <button class="btn-success" style="width: 80px;"
-                                        th:onclick="|updateArticle(${article.id})|">修改
-                                </button>
                                 <button class="btn-danger" style="width: 80px;"
-                                        th:onclick="|deleteArticle(${article.id})|">删除
+                                        th:onclick="|deleteArticle(${fileInfo.id})|">删除
                                 </button>
                             </div>
 
                         </div>
 
                         <div class="post-meta clearfix">
-                            <span class="date" th:text="${article.time}"></span>
-                            <span class="comments" th:text="${article.readNumber}"></span>
+                            <span class="date" th:text="${fileInfo.time}"></span>
                         </div><!-- end of post meta -->
 
                     </header>

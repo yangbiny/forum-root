@@ -1,16 +1,22 @@
 package cn.pzhu.forum.controller;
 
+import cn.pzhu.forum.biz.files.application.FilesApplicationService;
+import cn.pzhu.forum.biz.files.porter.adapter.vo.FileInfoVo;
+import cn.pzhu.forum.content.QiNiuContent;
 import cn.pzhu.forum.content.URLContent;
 import cn.pzhu.forum.entity.Article;
+import cn.pzhu.forum.entity.FileInfo;
 import cn.pzhu.forum.entity.Reply;
 import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.ArticleService;
+import cn.pzhu.forum.service.IntegralService;
 import cn.pzhu.forum.service.ReplyService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.service.UserInfoService;
 import cn.pzhu.forum.util.ResultData;
 import cn.pzhu.forum.util.Utils;
+import cn.pzhu.forum.utils.ForumUtils;
 import com.google.zxing.WriterException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +62,12 @@ public class UserContentController {
 
     @Autowired
     private ReplyService replyService;
+
+    @Resource
+    private FilesApplicationService filesApplicationService;
+
+    @Resource
+    private IntegralService integralService;
 
     /**
      * 编写博客前查询基本信息
@@ -151,11 +164,31 @@ public class UserContentController {
 
         UserInfo userInfo = userInfoService.get(principal);
 
-        List<Article> articles = articleService.userList(userInfo.getNickName());
+        Integer integral = integralService.findIntegralByUserId(principal);
+        userInfo.setIntegral(integral);
+        model.addAttribute("userInfo", userInfo);
 
+        List<Article> articles = articleService.userList(userInfo.getNickName());
         model.addAttribute("articles", articles);
 
+        List<FileInfo> fileInfos = filesApplicationService.queryFileInfosByUserId(principal);
+        model.addAttribute("fileInfos", ForumUtils.toList(fileInfos, this::toFileInfoVo));
+
         return "blog";
+    }
+
+    private FileInfoVo toFileInfoVo(FileInfo fileInfo) {
+        FileInfoVo fileInfoVo = new FileInfoVo();
+        fileInfoVo.setId(fileInfo.getId());
+        fileInfoVo.setUserId(fileInfo.getUserId());
+        fileInfoVo.setPath(QiNiuContent.path + "/" + fileInfo.getPath());
+        fileInfoVo.setTime(fileInfo.getTime());
+        fileInfoVo.setSize(fileInfo.getSize());
+        fileInfoVo.setTitle(fileInfo.getTitle());
+        fileInfoVo.setIntroduction(fileInfo.getIntroduction());
+        fileInfoVo.setIntegral(fileInfo.getIntegral());
+        fileInfoVo.setDownNum(fileInfo.getDownNum());
+        return fileInfoVo;
     }
 
     /**
@@ -166,7 +199,8 @@ public class UserContentController {
      */
     @RequestMapping("/user/article/upload")
     @ResponseBody
-    public Map<String, Object> upload(@RequestParam(value = "editormd-image-file", required = false) MultipartFile file) {
+    public Map<String, Object> upload(
+        @RequestParam(value = "editormd-image-file", required = false) MultipartFile file) {
 
         log.info("cn.pzhu.forum.controller.ArticleController.upload-editormd上传图片");
 
