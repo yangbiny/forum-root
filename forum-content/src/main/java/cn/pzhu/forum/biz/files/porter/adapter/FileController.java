@@ -14,10 +14,13 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +39,11 @@ public class FileController {
   private FilesApplicationService filesApplicationService;
 
   @PostMapping("upload/files/")
-  public String uploadToQiniu(
+  public Map<String, String> uploadToQiniu(
       FileForm fileForm,
       MultipartFile target) throws IOException {
 
-    //String userId = SecurityUtils.getSubject().getPrincipal().toString();
-    String userId = "1963559122@qq.com";
+    String userId = SecurityUtils.getSubject().getPrincipal().toString();
 
     String response = uploadFile(target);
 
@@ -49,7 +51,15 @@ public class FileController {
 
     boolean result = filesApplicationService.addFile(cmd);
 
-    return null;
+    Map<String, String> map = new HashMap<>(2);
+
+    if (result) {
+      map.put("msg", "成功");
+    } else {
+      map.put("msg", "发生错误");
+    }
+
+    return map;
   }
 
   private FileCmd convertToFileCmd(String userId, String responseJson, FileForm fileForm) {
@@ -69,7 +79,6 @@ public class FileController {
   }
 
   private void parseJson(String responseJson, FileCmd cmd) {
-    System.out.println(responseJson);
     String[] responses = responseJson.split("\n");
 
     try {

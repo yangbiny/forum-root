@@ -19,9 +19,7 @@ public class FilesApplicationService {
 
     FileInfo fileInfo = convertToFileInfo(cmd);
 
-    boolean result = fileService.addFile(fileInfo);
-
-    return result;
+    return fileService.addFile(fileInfo);
   }
 
   private FileInfo convertToFileInfo(FileCmd cmd) {

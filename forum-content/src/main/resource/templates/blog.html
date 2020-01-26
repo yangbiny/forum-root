@@ -167,19 +167,61 @@
                                     <button aria-label="Close" class="close" data-dismiss="modal"
                                             type="button"><span
                                         aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                    <h4 class="modal-title" id="myModalLabel">文件上传</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="http://up-z2.qiniup.com" enctype="multipart/form-data"
+                                    <form action="/files/upload/files/"
+                                          enctype="multipart/form-data"
+                                          id="uploadFilesForm"
                                           method="post">
-
+                                        <div class="input-group">
+                                            <span class="input-group-addon"
+                                                  id="basic-addon1">文件标题</span>
+                                            <input aria-describedby="basic-addon1"
+                                                   class="form-control"
+                                                   name="title"
+                                                   placeholder="文件标题"
+                                                   type="text">
+                                        </div>
+                                        <hr>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"
+                                                  id="basic-addon2">文件描述</span>
+                                            <input aria-describedby="basic-addon2"
+                                                   class="form-control"
+                                                   name="introduction"
+                                                   placeholder="文件简要描述"
+                                                   type="text">
+                                        </div>
+                                        <hr>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"
+                                                  id="basic-addon3">下载积分</span>
+                                            <input aria-describedby="basic-addon3"
+                                                   class="form-control"
+                                                   max="5"
+                                                   min="0"
+                                                   name="integral"
+                                                   placeholder="下载文件所需积分，不超过5个积分"
+                                                   type="number">
+                                        </div>
+                                        <hr>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"
+                                                  id="basic-addon4">下载积分</span>
+                                            <input aria-describedby="basic-addon4"
+                                                   class="form-control"
+                                                   name="target"
+                                                   type="file">
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-default" data-dismiss="modal"
-                                            type="button">Close
+                                    <button class="btn btn-default" data-dismiss="modal" id="close"
+                                            type="button">关闭
                                     </button>
-                                    <button class="btn btn-primary" type="button">Save changes
+                                    <button class="btn btn-primary" onclick="uploadFiles()"
+                                            type="button">提交
                                     </button>
                                 </div>
                             </div>
@@ -197,27 +239,7 @@
 <div th:replace="footer :: foot"></div>
 
 <a href="#top" id="scroll-top"></a>
-
-<script>
-
-    function deleteArticle(item) {
-        $.ajax({
-            url: "/user/article/delete",
-            type: "post",
-            data: {id: item},
-            success: function (data) {
-                alert(data.msg);
-                window.location.reload();
-            }
-        });
-    }
-
-    function updateArticle(item) {
-        window.location.href = "/user/article/editor/get?id=" + item;
-    }
-
-</script>
-
+<script src="../static/files.js" th:src="@{/files.js}"></script>
 </body>
 
 </html>

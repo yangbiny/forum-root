@@ -20,6 +20,6 @@ public class FileServiceImpl implements FileService {
 
     Integer result = fileDao.addFile(fileInfo);
 
-    return result != null && result > 1;
+    return result != null && result > 0;
   }
 }
