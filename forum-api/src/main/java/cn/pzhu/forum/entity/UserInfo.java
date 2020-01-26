@@ -1,12 +1,11 @@
 package cn.pzhu.forum.entity;
 
+import java.io.Serializable;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 用户信息实体
@@ -26,6 +25,7 @@ public class UserInfo implements Serializable {
     private String avatar;
     private String phone;
     private String description;
+    private Integer integral;
 
     @Override
     public boolean equals(Object o) {

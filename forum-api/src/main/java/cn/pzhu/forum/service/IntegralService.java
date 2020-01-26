@@ -15,4 +15,11 @@ public interface IntegralService {
    */
   boolean incrByUserId(String userId, Integer number, String integralType);
 
+  /**
+   * 查询用户的总积分信息
+   *
+   * @param userId 用户ID
+   * @return 积分信息
+   */
+  Integer findIntegralByUserId(String userId);
 }

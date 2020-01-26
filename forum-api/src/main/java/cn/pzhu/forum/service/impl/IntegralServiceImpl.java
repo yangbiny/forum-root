@@ -58,4 +58,12 @@ public class IntegralServiceImpl implements IntegralService {
 
     return res != null && res > 0;
   }
+
+  @Override
+  public Integer findIntegralByUserId(String userId) {
+
+    IntegralDO integralDO = integralDao.find(userId);
+
+    return integralDO == null ? 0 : integralDO.getNum();
+  }
 }
