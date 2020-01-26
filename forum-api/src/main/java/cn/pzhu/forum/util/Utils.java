@@ -21,23 +21,30 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Slf4j
 public class Utils {
-
-
-    private static QiNiuContent qiNiuContent = new QiNiuContent();
 
     /**
      * Generate a captcha image of the specified width and height
@@ -376,14 +383,15 @@ public class Utils {
         UploadManager uploadManager = new UploadManager(cfg);
         try {
 
-            Auth auth = Auth.create(qiNiuContent.getAccessKey(), qiNiuContent.getSecretKey());
-            String bucket = auth.uploadToken(qiNiuContent.getBucket());
+            Auth auth = Auth.create(QiNiuContent.accessKey, QiNiuContent.secretKey);
+            String bucket = auth.uploadToken(QiNiuContent.bucket);
 
             Response put = uploadManager.put(file, name, bucket, null, null);
 
-            DefaultPutRet defaultPutRet = new Gson().fromJson(put.bodyString(), DefaultPutRet.class);
+            DefaultPutRet defaultPutRet = new Gson()
+                .fromJson(put.bodyString(), DefaultPutRet.class);
 
-            String returnPath = qiNiuContent.getPath() + "/" + defaultPutRet.key;
+            String returnPath = QiNiuContent.path + "/" + defaultPutRet.key;
 
             log.info("上传文件到七牛云最终地址:{}", returnPath);
 

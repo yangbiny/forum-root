@@ -367,11 +367,8 @@ public class UserContentController {
 
             session.setAttribute("sortList", list);
         }
-
         Article article = articleService.get(id);
-
         model.addAttribute("article", article);
-
         return "articleUpdate";
     }
 
