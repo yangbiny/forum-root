@@ -20,9 +20,10 @@ public class Resp<T> {
     status = 200;
   }
 
-  public Resp(T data, Integer status) {
+  public Resp(T data, Integer status, String message) {
     this.data = data;
     this.status = status;
+    this.message = message;
   }
 
 

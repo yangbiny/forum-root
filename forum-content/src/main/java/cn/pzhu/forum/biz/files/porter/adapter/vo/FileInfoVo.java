@@ -1,5 +1,6 @@
 package cn.pzhu.forum.biz.files.porter.adapter.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
@@ -7,7 +8,9 @@ import lombok.Data;
  * @author impassivey
  */
 @Data
-public class FileInfoVo {
+public class FileInfoVo implements Serializable {
+
+  private static final long serialVersionUID = 8270890228495863285L;
 
   private String id;
 

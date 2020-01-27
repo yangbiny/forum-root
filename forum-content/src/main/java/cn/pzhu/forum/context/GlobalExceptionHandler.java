@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
   @ResponseBody
   public Resp<String> httpRequestNotSupport(IntegralException exception) {
     String message1 = exception.getMessage();
-    return new Resp<>(message1);
+    return new Resp<>(message1, 500, message1);
   }
 
 }
