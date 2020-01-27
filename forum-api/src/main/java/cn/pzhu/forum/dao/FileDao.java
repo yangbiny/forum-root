@@ -2,10 +2,12 @@ package cn.pzhu.forum.dao;
 
 import cn.pzhu.forum.entity.FileInfo;
 import java.util.List;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -48,4 +50,23 @@ public interface FileDao {
       @Result(column = "down_num", property = "downNum")
   })
   List<FileInfo> queryFileInfosByUserId(@Param("userId") String userId);
+
+  /**
+   * 查询文件信息
+   *
+   * @param id 文件信息的ID
+   * @return 文件的详细信息
+   */
+  @Select("select id,userId,path,time,size,title,introduction,integral_num,down_num from files where id = #{id}")
+  @ResultMap("fileInfos")
+  FileInfo queryFileInfoById(@Param("id") Integer id);
+
+  /**
+   * 删除ID指定的文件信息
+   *
+   * @param id 文件ID
+   * @return 大于0 代表删除成功
+   */
+  @Delete("delete from files where id = #{id}")
+  Integer deleteFileInfo(@Param("id") Integer id);
 }

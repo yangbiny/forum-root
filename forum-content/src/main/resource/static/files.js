@@ -13,3 +13,32 @@ function uploadFiles() {
 
   });
 }
+
+function deleteArticle(item) {
+  $.ajax({
+    url: "/user/article/delete",
+    type: "post",
+    data: {id: item},
+    success: function (data) {
+      alert(data.msg);
+      window.location.reload();
+    }
+  });
+}
+
+function updateArticle(item) {
+  window.location.href = "/user/article/editor/get?id=" + item;
+}
+
+function deleteFiles(item) {
+
+  $.ajax({
+    url: "/files/user/" + item + "/",
+    type: "delete",
+    success: function (data) {
+      alert(data.message);
+      window.location.reload();
+    }
+  });
+
+}

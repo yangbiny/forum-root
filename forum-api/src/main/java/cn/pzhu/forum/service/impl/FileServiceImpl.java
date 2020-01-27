@@ -35,5 +35,15 @@ public class FileServiceImpl implements FileService {
     return fileInfos;
   }
 
+  @Override
+  public FileInfo queryFileInfoById(Integer id) {
+    return fileDao.queryFileInfoById(id);
+  }
+
+  @Override
+  public boolean deleteFileInfos(Integer id) {
+    return fileDao.deleteFileInfo(id) > 0;
+  }
+
 
 }

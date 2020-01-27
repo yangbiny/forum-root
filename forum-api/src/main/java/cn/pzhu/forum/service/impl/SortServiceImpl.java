@@ -5,14 +5,17 @@ import cn.pzhu.forum.content.RedisKeyConstant;
 import cn.pzhu.forum.dao.SortDao;
 import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.service.SortService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author impassivey
@@ -138,41 +141,30 @@ public class SortServiceImpl implements SortService {
     public List<Sort> list(ArticleType articleType) {
 
         String key = RedisKeyConstant.SORT_ARTICLETYPE_LIST + articleType.getType();
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
+        redisTemplate.expire(key, 1, TimeUnit.SECONDS);
 
         ValueOperations operations = redisTemplate.opsForValue();
         Boolean hasKey = redisTemplate.hasKey(key);
 
         // 先判断是否有该类型的缓存
         if (hasKey != null && hasKey) {
-
             return (List<Sort>) operations.get(key);
-
         }
-
         List<Sort> list;
-
         String sortKey = RedisKeyConstant.SORT_LIST;
-        redisTemplate.expire(sortKey, 1, TimeUnit.HOURS);
+        redisTemplate.expire(sortKey, 1, TimeUnit.SECONDS);
         hasKey = redisTemplate.hasKey(sortKey);
-
         // 判断是否有所有的分类信息的集合
         if (hasKey != null && hasKey) {
-
             list = (List<Sort>) operations.get(sortKey);
-
         } else {
             list = sortDao.list();
-
             if (list != null) {
-                operations.set(sortKey, list, 1, TimeUnit.HOURS);
+                operations.set(sortKey, list, 1, TimeUnit.SECONDS);
             }
-
         }
         if (list != null) {
-
             Map<Integer, Sort> map = new HashMap<>();
-
             // 表示是否找到一级标题
             boolean flag = true;
             // 用于判断循环次数，避免出现分类信息丢失的情况
@@ -187,7 +179,6 @@ public class SortServiceImpl implements SortService {
                         map.put(sort.getId(), sort);
                         i = 0;
                         flag = false;
-
                     }
 
                     if (map.size() > 0 && sort.getRely() != null && map.containsKey(sort.getRely()) &&
@@ -203,13 +194,9 @@ public class SortServiceImpl implements SortService {
             Set<Integer> integers = map.keySet();
 
             for (Integer integer : integers) {
-
                 Sort sort = map.get(integer);
-
                 sorts.add(sort);
-
             }
-
             operations.set(key, sorts, 1, TimeUnit.HOURS);
 
             return sorts;

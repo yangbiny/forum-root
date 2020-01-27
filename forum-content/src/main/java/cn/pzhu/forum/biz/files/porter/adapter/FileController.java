@@ -26,7 +26,9 @@ import javax.annotation.Resource;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,6 +75,15 @@ public class FileController {
     String userId = SecurityUtils.getSubject().getPrincipal().toString();
     List<FileInfo> fileInfos = filesApplicationService.queryFileInfosByUserId(userId);
     return new Resp<>(ForumUtils.toList(fileInfos, this::toFileInfoVo));
+  }
+
+  @DeleteMapping("user/{id}")
+  public Resp<Boolean> deleteFileByUser(@PathVariable Integer id) {
+
+    // 获得登录用户的ID
+    String userId = SecurityUtils.getSubject().getPrincipal().toString();
+    boolean result = filesApplicationService.deleteFiles(userId, id);
+    return new Resp<>(result);
   }
 
   private FileInfoVo toFileInfoVo(FileInfo fileInfo) {

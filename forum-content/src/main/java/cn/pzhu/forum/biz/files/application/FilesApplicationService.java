@@ -5,6 +5,7 @@ import cn.pzhu.forum.entity.FileInfo;
 import cn.pzhu.forum.service.FileService;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,14 @@ public class FilesApplicationService {
     fileInfo.setIntegral(cmd.getIntegral());
     return fileInfo;
 
+  }
+
+  public boolean deleteFiles(String userId, Integer id) {
+    FileInfo fileInfo = fileService.queryFileInfoById(id);
+
+    if (fileInfo == null || !Objects.equals(userId, fileInfo.getUserId())) {
+      return false;
+    }
+    return fileService.deleteFileInfos(id);
   }
 }
