@@ -155,14 +155,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> list(Integer sortId, int number) {
-        log.info("cn.pzhu.forum.service.impl.ArticleServiceImpl.list(java.lang.Integer, int)-根据分类ID查询-" +
+        log.info(
+            "cn.pzhu.forum.service.impl.ArticleServiceImpl.list(java.lang.Integer, int)-根据分类ID查询-" +
                 "入参：分类ID：{},查询数量:{}", sortId, number);
 
         String key = RedisKeyConstant.SORT_ARTICLE_LIST + sortId;
         String articleList = RedisKeyConstant.ARTICLE_LIST;
 
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
-        redisTemplate.expire(articleList, 1, TimeUnit.HOURS);
+        redisTemplate.expire(key, 1, TimeUnit.SECONDS);
+        redisTemplate.expire(articleList, 1, TimeUnit.SECONDS);
 
         SetOperations operations = redisTemplate.opsForSet();
         Boolean hasKey = redisTemplate.hasKey(key);
@@ -196,8 +197,6 @@ public class ArticleServiceImpl implements ArticleService {
         for (Article sort : sorts) {
             operations.add(key, sort);
         }
-
-
         return sorts;
     }
 

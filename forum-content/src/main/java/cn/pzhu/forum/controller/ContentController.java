@@ -92,7 +92,7 @@ public class ContentController {
     public String articleList(@PathVariable String category, Model model) {
 
         if ("basic".equals(category)) {
-            List<Sort> list = sortService.list(ArticleType.FRONT);
+            List<Sort> list = sortService.list(ArticleType.BASIC);
 
             List<Sort> sorts = new ArrayList<>();
 
