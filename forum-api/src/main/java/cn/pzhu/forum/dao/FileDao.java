@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -69,4 +70,25 @@ public interface FileDao {
    */
   @Delete("delete from files where id = #{id}")
   Integer deleteFileInfo(@Param("id") Integer id);
+
+
+  /**
+   * 增加下载次数
+   *
+   * @param id 文件ID
+   * @return 大于0则代表成功
+   */
+  @Update("update files set down_num = down_num + 1 where id = #{id}")
+  Integer incrDownNum(@Param("id") String id);
+
+  /**
+   * 获得文件信息
+   *
+   * @param start 开始查询的位置
+   * @param limit 查询的条数
+   * @return 信息集合
+   */
+  @Select("select id,userId,path,time,size,title,introduction,integral_num,down_num from files limit #{start},#{limit}")
+  @ResultMap("fileInfos")
+  List<FileInfo> getFileInfo(@Param("start") Integer start, @Param("limit") Integer limit);
 }

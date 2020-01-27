@@ -3,6 +3,7 @@ package cn.pzhu.forum.biz.files.application;
 import cn.pzhu.forum.biz.files.application.cmd.FileCmd;
 import cn.pzhu.forum.entity.FileInfo;
 import cn.pzhu.forum.service.FileService;
+import cn.pzhu.forum.service.IntegralService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -14,10 +15,13 @@ import org.springframework.stereotype.Service;
  * @author impassivey
  */
 @Service
-public class FilesApplicationService {
+public class FileApplicationService {
 
   @Resource
   private FileService fileService;
+
+  @Resource
+  private IntegralService integralService;
 
   public boolean addFile(FileCmd cmd) {
 
@@ -53,5 +57,17 @@ public class FilesApplicationService {
       return false;
     }
     return fileService.deleteFileInfos(id);
+  }
+
+  public FileInfo findFileById(Integer fileId) {
+    return fileService.queryFileInfoById(fileId);
+  }
+
+  public String downFile(String userId, FileInfo fileInfo) {
+    return fileService.getDownUrl(userId, fileInfo);
+  }
+
+  public List<FileInfo> getFileInfos(Integer start, Integer limit) {
+    return fileService.getFileInfo(start, limit);
   }
 }

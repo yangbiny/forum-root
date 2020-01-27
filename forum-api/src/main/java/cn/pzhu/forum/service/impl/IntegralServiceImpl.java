@@ -66,4 +66,30 @@ public class IntegralServiceImpl implements IntegralService {
 
     return integralDO == null ? 0 : integralDO.getNum();
   }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public boolean reduceByUserId(String userId, Integer integral, String integralType) {
+
+    if (integral == null || integral < 0) {
+      throw new IntegralException("非法的积分数 ：%s", integral);
+    }
+
+    if (!EnumUtils.isValidEnum(IntegralType.class, integralType)) {
+      throw new IntegralException("非法的积分类型：%s", integralType);
+    }
+
+    // 添加积分的信息
+    IntegralItemDO integralItemDO = new IntegralItemDO();
+    integralItemDO.setIntegralType(integralType);
+    integralItemDO.setNum(integral);
+    integralItemDO.setType(IntegralTypes.CONSUME.name());
+    integralItemDO.setUserId(userId);
+    Integer result = integralDao.addIntegralItem(integralItemDO);
+    if (result <= 0) {
+      throw new IntegralException("添加积分信息失败");
+    }
+    Integer res = integralDao.updateIntegral(userId, -integral);
+    return res != null && res > 0;
+  }
 }

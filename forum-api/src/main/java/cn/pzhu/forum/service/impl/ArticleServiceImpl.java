@@ -197,8 +197,6 @@ public class ArticleServiceImpl implements ArticleService {
         for (Article sort : sorts) {
             operations.add(key, sort);
         }
-
-
         return sorts;
     }
 

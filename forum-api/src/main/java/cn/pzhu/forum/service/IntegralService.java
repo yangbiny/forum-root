@@ -22,4 +22,14 @@ public interface IntegralService {
    * @return 积分信息
    */
   Integer findIntegralByUserId(String userId);
+
+  /**
+   * 减少用户积分
+   *
+   * @param userId 用户ID
+   * @param integral 积分数
+   * @param integralType 积分类型
+   * @return 操作结果
+   */
+  boolean reduceByUserId(String userId, Integer integral, String integralType);
 }

@@ -1,6 +1,6 @@
 package cn.pzhu.forum.controller;
 
-import cn.pzhu.forum.biz.files.application.FilesApplicationService;
+import cn.pzhu.forum.biz.files.application.FileApplicationService;
 import cn.pzhu.forum.biz.files.porter.adapter.vo.FileInfoVo;
 import cn.pzhu.forum.content.QiNiuContent;
 import cn.pzhu.forum.content.URLContent;
@@ -64,7 +64,7 @@ public class UserContentController {
     private ReplyService replyService;
 
     @Resource
-    private FilesApplicationService filesApplicationService;
+    private FileApplicationService fileApplicationService;
 
     @Resource
     private IntegralService integralService;
@@ -171,7 +171,7 @@ public class UserContentController {
         List<Article> articles = articleService.userList(userInfo.getNickName());
         model.addAttribute("articles", articles);
 
-        List<FileInfo> fileInfos = filesApplicationService.queryFileInfosByUserId(principal);
+        List<FileInfo> fileInfos = fileApplicationService.queryFileInfosByUserId(principal);
         model.addAttribute("fileInfos", ForumUtils.toList(fileInfos, this::toFileInfoVo));
 
         return "blog";

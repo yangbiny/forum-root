@@ -3,7 +3,7 @@
 <head>
     <!-- META TAGS -->
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>BrutalHuman</title>
 
 </head>
@@ -14,17 +14,19 @@
             <div class="logo-container">
                 <!-- Website Logo -->
                 <a href="index-2.html" title="Knowledge Base Theme">
-                    <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="Knowledge Base Theme">
+                    <img alt="Knowledge Base Theme" src="../static/images/logo.png"
+                         th:src="@{/images/logo.png}">
                 </a>
             </div>
             <!-- Start of Main Navigation -->
             <nav class="main-nav">
                 <div class="menu-top-menu-container">
-                    <ul id="menu-top-menu" class="clearfix">
+                    <ul class="clearfix" id="menu-top-menu">
                         <li><a href="/index">首页</a></li>
                         <li><a href="/article/list/back">后台</a></li>
                         <li><a href="/article/list/front">前端</a></li>
                         <li><a href="/article/list/basic">基础</a></li>
+                        <li><a href="/files/list/">下载文件列表</a></li>
                         <li><a href="/user/article/editor">发起讨论</a></li>
                         <li th:if="${session.user != null}">
 
@@ -59,10 +61,11 @@
         <p class="search-tag-line">If you have any question you can ask below or enter what you are
             looking for!</p>
 
-        <form class="search-form clearfix" method="get" action="/article/list/key" autocomplete="off">
-            <input class="search-term required" type="text" name="key"
-                   placeholder="请输入你要查找的内容"
-                   title="* Please enter a search term!"/>
+        <form action="/article/list/key" autocomplete="off" class="search-form clearfix"
+              method="get">
+            <input class="search-term required" name="key" placeholder="请输入你要查找的内容"
+                   title="* Please enter a search term!"
+                   type="text"/>
             <input class="search-btn" type="submit" value="Search"/>
         </form>
     </div>
