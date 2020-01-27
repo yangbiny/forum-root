@@ -91,7 +91,6 @@ public class ForumInfoStatisticsController {
         List<String> k2 = new ArrayList<>(keySet2);
 
         map.put("schoolName", k2);
-
         List<Integer> sortVal2 = new ArrayList<>();
 
         for (String string : keySet2) {

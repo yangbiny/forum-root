@@ -11,15 +11,14 @@ import cn.pzhu.forum.service.ArticleService;
 import cn.pzhu.forum.service.ForumInfoStatisticsService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.util.Utils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @program: forum-root
@@ -102,7 +101,7 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
         List<Article> articles = articleDao.recordList();
 
         for (Article article : articles) {
-            Sort sort = sortService.get(article.getSortId());
+            Sort sort = article.getSort();
             map.put(sort.getName(), sort.getId());   // 借助分类ID存储分类出现的次数
         }
 
