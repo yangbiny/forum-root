@@ -1,6 +1,7 @@
 package cn.pzhu.forum.service.impl;
 
 import cn.pzhu.forum.content.ArticleType;
+import cn.pzhu.forum.content.IntegralType;
 import cn.pzhu.forum.content.RedisKeyConstant;
 import cn.pzhu.forum.content.TopFlag;
 import cn.pzhu.forum.dao.ArticleDao;
@@ -10,6 +11,7 @@ import cn.pzhu.forum.entity.Article;
 import cn.pzhu.forum.entity.Record;
 import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.service.ArticleService;
+import cn.pzhu.forum.service.IntegralService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.util.Utils;
 import java.util.ArrayList;
@@ -48,6 +50,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Resource
     private RecordDao recordDao;
+
+    @Resource
+    private IntegralService integralService;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -90,6 +95,8 @@ public class ArticleServiceImpl implements ArticleService {
             String list = RedisKeyConstant.ARTICLE_LIST;
             operations.add(list, article);
             redisTemplate.expire(list, 1, TimeUnit.HOURS);
+
+            integralService.incrByUserId(article.getUserId(), 5, IntegralType.PUB_ARTICLE.name());
 
             return article.getPrincipal();
         }
