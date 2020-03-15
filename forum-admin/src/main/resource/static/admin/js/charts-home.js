@@ -25,22 +25,15 @@ $(document).ready(function () {
             for (var i in arr) {
                 da.push(arr[i]);
             }
-
             var sortName = data.sortName;
             for (var j in sortName) {
                 sortNames.push(sortName[j]);
             }
-
-            console.log(sortNames);
-
             var sortValue = data.sortCount;
             for (var z in sortValue) {
                 sortVal.push(sortValue[z]);
                 color.push('rgb(121, 106, 238)');
             }
-
-            console.log(sortVal)
-
         }
     });
 

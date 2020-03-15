@@ -71,33 +71,27 @@ public class ArticleServiceImpl implements ArticleService {
 
         // 插入成功
         if (num > 0) {
-
             boolean flag = sortDao.addSortNumber(article.getSortId());
-
             // 修改失败
             if (!flag) {
                 return "";
             }
-
             //将文章加入到该用户的文章缓存列表中
             String userKey = RedisKeyConstant.USER_ARTICLE_LIST + article.getUserName();
-
             SetOperations operations = redisTemplate.opsForSet();
-            redisTemplate.expire(userKey, 1, TimeUnit.HOURS);// 设置key过期时间
+            redisTemplate.expire(userKey, 1, TimeUnit.MILLISECONDS);// 设置key过期时间
             operations.add(userKey, article);
 
             // 将文章添加到指定分类下的缓存列表中
             String sort = RedisKeyConstant.SORT_ARTICLE_LIST + article.getSortId();
             operations.add(sort, article);
-            redisTemplate.expire(sort, 1, TimeUnit.HOURS);
+            redisTemplate.expire(sort, 1, TimeUnit.MILLISECONDS);
 
             // 将文章添加到所有文章的缓存列表中
             String list = RedisKeyConstant.ARTICLE_LIST;
             operations.add(list, article);
-            redisTemplate.expire(list, 1, TimeUnit.HOURS);
-
+            redisTemplate.expire(list, 1, TimeUnit.MILLISECONDS);
             integralService.incrByUserId(article.getUserId(), 5, IntegralType.PUB_ARTICLE.name());
-
             return article.getPrincipal();
         }
 
@@ -106,30 +100,22 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article get(Integer id) {
-
         log.info("cn.pzhu.forum.service.impl.ArticleServiceImpl.get-查询博客-入参：id = {}", id);
-
         Article article = null;
-
         String key = RedisKeyConstant.ARTICLE_LIST;
         Boolean hasKey = redisTemplate.hasKey(key);
         SetOperations operations = redisTemplate.opsForSet();
-
         if (hasKey != null && hasKey) {
             Set<Article> members = operations.members(key);
-
             Stream<Article> limit = members.stream().filter((x) -> x.getId().equals(id)).limit(1);
-
             Optional<Article> first = limit.findFirst();
-
             if (first.isPresent()) {
                 article = first.get();
             }
-
         } else {
             article = articleDao.get(id);
+            operations.add(key,article);
         }
-
         log.info("cn.pzhu.forum.service.impl.ArticleServiceImpl.get-查询博客-结果：{}", article);
         return article;
     }

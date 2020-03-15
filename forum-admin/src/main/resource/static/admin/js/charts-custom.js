@@ -55,12 +55,12 @@ $(document).ready(function () {
             for (var x in school) {
                 schoolName.push(school[x]);
             }
-
+            console.log(schoolName);
             var user = data.userCount;
             for (var y in user) {
                 userVal.push(user[y]);
             }
-
+            console.log(userVal);
         }
     });
 
