@@ -84,7 +84,7 @@
         <dependency>
             <artifactId>shiro-core</artifactId>
             <groupId>org.apache.shiro</groupId>
-            <version>1.4.0</version>
+            <version>1.4.2</version>
         </dependency>
         <dependency>
             <artifactId>shiro-spring</artifactId>
