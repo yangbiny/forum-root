@@ -2,28 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <title>BrutalHuman</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="robots" content="all,follow">
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="all,follow" name="robots">
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}"
-          href="../static/admin/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="../static/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" th:href="@{/admin/vendor/font-awesome/css/font-awesome.min.css}"
-          href="../static/admin/vendor/font-awesome/css/font-awesome.min.css">
+    <link href="../static/admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/admin/vendor/font-awesome/css/font-awesome.min.css}">
     <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" th:href="@{/admin/css/fontastic.css}" href="../static/admin/css/fontastic.css">
+    <link href="../static/admin/css/fontastic.css" rel="stylesheet" th:href="@{/admin/css/fontastic.css}">
     <!-- Google fonts - Poppins -->
-    <link rel="stylesheet" th:href="@{/admin/css/font.css}" href="../static/admin/css/font.css">
+    <link href="../static/admin/css/font.css" rel="stylesheet" th:href="@{/admin/css/font.css}">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" th:href="@{/admin/css/style.default.css}" href="../static/admin/css/style.default.css"
-          id="theme-stylesheet">
+    <link href="../static/admin/css/style.default.css" id="theme-stylesheet" rel="stylesheet"
+          th:href="@{/admin/css/style.default.css}">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" th:href="@{/admin/css/custom.css}" href="../static/admin/css/custom.css">
+    <link href="../static/admin/css/custom.css" rel="stylesheet" th:href="@{/admin/css/custom.css}">
     <!-- Favicon-->
-    <link rel="shortcut icon" th:href="@{/admin/img/favicon.ico}" href="../static/admin/img/favicon.ico">
+    <link href="../static/admin/img/favicon.ico" rel="shortcut icon" th:href="@{/admin/img/favicon.ico}">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -38,19 +38,20 @@
         <nav class="side-navbar">
             <!-- Sidebar Header-->
             <div class="sidebar-header d-flex align-items-center">
-                <div class="avatar"><img th:src="${session.userInfo.avatar}" alt="..." class="img-fluid rounded-circle">
+                <div class="avatar"><img alt="..." class="img-fluid rounded-circle" th:src="${session.userInfo.avatar}">
                 </div>
                 <div class="title">
-                    <h1 th:text="${session.userInfo.nickName}" class="h4"></h1>
+                    <h1 class="h4" th:text="${session.userInfo.nickName}"></h1>
                     <p>Web Admin</p>
                 </div>
             </div>
             <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
             <ul class="list-unstyled">
-                <li><a href="/admin/index"> <i class="icon-home"></i>Home </a></li>
-                <li><a href="/admin/tables"> <i class="icon-grid"></i>Tables </a></li>
-                <li class="active"><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>Charts </a></li>
-                <li><a href="/admin/forms"> <i class="icon-padnote"></i>Forms </a></li>
+                <li><a href="/admin/index"> <i class="icon-home"></i>主页</a></li>
+                <li class="active"><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a>
+                </li>
+                <li><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a></li>
+                <li><a href="/admin/forms"> <i class="icon-padnote"></i>系统信息管理与维护</a></li>
             </ul>
 
         </nav>
@@ -107,18 +108,18 @@
     </div>
 </div>
 <!-- JavaScript files-->
-<script th:src="@{/admin/vendor/jquery/jquery.min.js}" src="../static/admin/vendor/jquery/jquery.min.js"></script>
-<script th:src="@{/admin/vendor/popper.js/umd/popper.min.js}"
-        src="../static/admin/vendor/popper.js/umd/popper.min.js"></script>
-<script th:src="@{/admin/vendor/bootstrap/js/bootstrap.min.js}"
-        src="../static/admin/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script th:src="@{/admin/vendor/jquery.cookie/jquery.cookie.js}"
-        src="../static/admin/vendor/jquery.cookie/jquery.cookie.js"></script>
-<script th:src="@{/admin/vendor/chart.js/Chart.min.js}" src="../static/admin/vendor/chart.js/Chart.min.js"></script>
-<script th:src="@{/admin/vendor/jquery-validation/jquery.validate.min.js}"
-        src="../static/admin/vendor/jquery-validation/jquery.validate.min.js"></script>
-<script th:src="@{/admin/js/charts-custom.js}" src="../static/admin/js/charts-custom.js"></script>
+<script src="../static/admin/vendor/jquery/jquery.min.js" th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
+<script src="../static/admin/vendor/popper.js/umd/popper.min.js"
+        th:src="@{/admin/vendor/popper.js/umd/popper.min.js}"></script>
+<script src="../static/admin/vendor/bootstrap/js/bootstrap.min.js"
+        th:src="@{/admin/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/admin/vendor/jquery.cookie/jquery.cookie.js"
+        th:src="@{/admin/vendor/jquery.cookie/jquery.cookie.js}"></script>
+<script src="../static/admin/vendor/chart.js/Chart.min.js" th:src="@{/admin/vendor/chart.js/Chart.min.js}"></script>
+<script src="../static/admin/vendor/jquery-validation/jquery.validate.min.js"
+        th:src="@{/admin/vendor/jquery-validation/jquery.validate.min.js}"></script>
+<script src="../static/admin/js/charts-custom.js" th:src="@{/admin/js/charts-custom.js}"></script>
 <!-- Main File-->
-<script th:src="@{/admin/js/front.js}" src="../static/admin/js/front.js"></script>
+<script src="../static/admin/js/front.js" th:src="@{/admin/js/front.js}"></script>
 </body>
 </html>

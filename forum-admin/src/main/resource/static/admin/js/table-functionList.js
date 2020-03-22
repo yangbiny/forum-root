@@ -1,6 +1,6 @@
-function deleteArticle(item) {
+function rejectArticle(item) {
     $.ajax({
-        url: "/user/article/delete",
+        url: "/user/article/reject",
         type: "post",
         data: {id: item},
         success: function (data) {
@@ -19,8 +19,8 @@ function showArticle(item) {
         type: "post",
         sync: false,
         success: function (data) {
-
             $("#modal-body").append(data);
+            console.log(data)
         }
     });
 
@@ -28,7 +28,6 @@ function showArticle(item) {
 }
 
 function deleteUser(item) {
-
     $.ajax({
         url: "/admin/user/delete",
         data: {id: item},
@@ -88,4 +87,63 @@ function noticeUser() {
         }
 
     }
+}
+
+function selectArticleForAdmin() {
+    var textValue = $("#articleText").val();
+    if(textValue === ""){
+        alert("搜索的信息不能为空");
+    }else {
+        $.ajax({
+            url: "/admin/select/article/by_search/",
+            data: {text: textValue},
+            type: "GET",
+            success: function (response) {
+                if(response.status === 200){
+                    fillArticle(response.data)
+                }
+            },
+            error: function (data) {
+                alert("发生未知错误!")
+            }
+        });
+    }
+}
+
+function fillArticle(data) {
+    console.log(data);
+    $("#articleList").empty();
+    var html = "";
+    var index = 1;
+    for (let dataKey in data) {
+        da = data[dataKey];
+        html += "<tr>'" +
+            "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>"+index+"</th>'" +
+            "<td>" +
+            "<div style='width: 140px;height:20px;overflow: hidden;'>"+da.title+"</div>" +
+            "</td>" +
+            "<td style='width: 140px;height:20px;overflow: hidden;'>"+da.userName+"</td>" +
+            "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
+            "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle("+da.id+")>预览</button>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div class='modal-dialog' role='document' style='width: 1200px'>" +
+            "<div class='modal-content'>" +
+            "<div class='modal-header'>" +
+            "<h2>预览界面</h2>" +
+            "<button aria-label='Close' class='close' data-dismiss='modal'" +
+            "type='button'><span aria-hidden='true'>&times;</span></button>" +
+            "</div>" +
+            "<div class='modal-body' id='modal-body'>" +"</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<button class='btn btn-danger small'" +
+            "onclick=rejectArticle("+da.id+")>屏蔽" +
+            "</button>" +
+            "<button class='btn btn-danger small' onclick=setTop("+da.id+")>置顶</button>" +
+            "</td>" +
+            "</tr>";
+    }
+    $("#articleList").html(html);
+    index = index + 1;
 }

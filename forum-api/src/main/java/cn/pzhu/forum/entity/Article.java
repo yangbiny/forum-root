@@ -1,12 +1,10 @@
 package cn.pzhu.forum.entity;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 文章实体
@@ -30,6 +28,6 @@ public class Article implements Serializable {
     private Integer readNumber;
     private Integer top;
     private String principal;
-
+    private Integer status;
     private Sort sort;
 }
