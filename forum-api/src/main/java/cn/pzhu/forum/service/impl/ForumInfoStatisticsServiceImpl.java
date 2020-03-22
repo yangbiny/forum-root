@@ -61,7 +61,7 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
                     x -> {
                         String mon = x.getTime().substring(5, 6);
                         int mons = Integer.parseInt(mon);
-                        arr[mons]++;
+                        arr[--mons]++;
                     }
             );
 
@@ -80,14 +80,12 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
         List<Article> articles = articleService.list();
 
         for (Sort sort : sorts) {
-
             int count = 0;
             for (Article article : articles) {
-                if (sort.getId().equals(article.getSortId())) {
+                if (sort.getId().equals(article.getSort().getId())) {
                     count++;
                 }
             }
-
             map.put(sort.getName(), count);
         }
 
