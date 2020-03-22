@@ -561,8 +561,14 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> listWithPage(int start, int limit) {
-    return articleDao.listWithPage(start, limit);
+  public List<Article> listWithPageForAdmin(int start, int limit) {
+    return articleDao.listWithPageFroAdmin(start, limit);
+  }
+
+  @Override
+  public int selectPendingArticle() {
+    List<Article> articles = articleDao.selectPendingArticle();
+    return articles == null?0:articles.size();
   }
 
   /**

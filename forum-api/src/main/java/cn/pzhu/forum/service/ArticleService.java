@@ -171,5 +171,7 @@ public interface ArticleService {
      * @param limit 查询数量
      * @return 文章信息
      */
-    List<Article> listWithPage(int start, int limit);
+    List<Article> listWithPageForAdmin(int start, int limit);
+
+    int selectPendingArticle();
 }

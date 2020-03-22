@@ -195,8 +195,14 @@ public interface ArticleDao {
      * @return 文章信息
      */
     @Select(
-        "select article.id,title,userName,time,sort.name sortName,sortId,context,contextMd,readNumber,top,principal,status "
-            + "from article,sort where sort.id = article.sortId limit #{start},#{limit}")
+        "select article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status "
+            + "from article where status = 0 limit #{start},#{limit}")
     @ResultMap("article")
-    List<Article> listWithPage(@Param("start") int start, @Param("limit") int limit);
+    List<Article> listWithPageFroAdmin(@Param("start") int start, @Param("limit") int limit);
+
+    @Select("select article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status "
+                    + "from article where status = 0")
+    @ResultMap("article")
+    List<Article> selectPendingArticle();
+
 }

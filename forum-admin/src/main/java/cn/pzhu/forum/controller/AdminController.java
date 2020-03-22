@@ -156,7 +156,7 @@ public class AdminController {
         session.setAttribute("last", co == 1 ? userInfos : null);
 
         // 查询博客信息
-        List<Article> articleList = articleService.list();
+        List<Article> articleList = articleService.listWithPageForAdmin(0,5);
         if (CollectionUtils.isNotEmpty(articleList)) {
             articleList = Optional.of(articleList)
                 .orElse(Collections.emptyList())
@@ -165,14 +165,12 @@ public class AdminController {
                 .collect(Collectors.toList());
 
         }
-        List<Article> list = new ArrayList<>();
+        co = (int) articleService.list().stream()
+                .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
+                .count();
+        co = co % 5 == 0 ? co / 5 : (co / 5) + 1;
 
-        articleList.stream().limit(5).forEach(list::add);
-
-        co = articleList.size() % 5 == 0 ?
-            articleList.size() / 5 : (articleList.size() / 5) + 1;
-
-        session.setAttribute("articles", list);
+        session.setAttribute("articles", articleList);
         session.setAttribute("articlePage", co);
         session.setAttribute("firstPage", true);
         session.setAttribute("lastPage", co == 1 ? true : null);
@@ -278,14 +276,12 @@ public class AdminController {
         } else {
             int start = (page - 1) * 5;
             int limit = 5;
-            List<Article> articleList = articleService.listWithPage(start, limit);
+            List<Article> articleList = articleService.listWithPageForAdmin(start, limit);
             // 文章审核
             if (category.equals("verify")) {
                 // 查询博客信息
-                int co = (int) articleService.list().stream()
-                    .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
-                    .count();
-                co = co % 5 == 0 ? co / 5 : (co / 5) + 1;
+                int size = articleService.selectPendingArticle();
+                int co = size % 5 == 0 ? size / 5 : (size / 5) + 1;
                 session.setAttribute("articles", articleList);
                 session.setAttribute("articlePage", co);
                 session.setAttribute("firstPage", page == 1 ? true : null);
