@@ -318,7 +318,7 @@ public class AdminController {
     public Resp<List<UserInfo>> selectUserBySearchForAdmin(
             @RequestParam String text,
             @RequestParam(required = false,defaultValue = "0")Integer start,
-            @RequestParam(required = false,defaultValue = "1")Integer limit
+            @RequestParam(required = false,defaultValue = "5")Integer limit
     ){
         // 查询用户信息
         List<UserInfo> userInfos = userInfoService.selectUserBySearch(text,start,limit+1);
