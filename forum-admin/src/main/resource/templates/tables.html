@@ -126,88 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-center">
-                                    <h3 class="h4">文章审核</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>文章标题</th>
-                                                <th>文章作者</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="article:${session.articles}">
-                                                <th scope="row" style="width: 20px;height:20px;overflow: hidden;"
-                                                    th:text="${articleStat.count}">
-                                                </th>
-                                                <td>
-                                                    <div style="width: 140px;height:20px;overflow: hidden;"
-                                                         th:text="${article.title}">
-                                                    </div>
-                                                </td>
-                                                <td style="width: 140px;height:20px;overflow: hidden;"
-                                                    th:text="${article.userName}">
-                                                </td>
-                                                <td style="width: 140px;height:20px;overflow: hidden;">
-                                                    <button class="btn btn-sm" data-toggle="modal"
-                                                            th:onclick="|showArticle(${article.id})|">预览
-                                                    </button>
-
-                                                    <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade"
-                                                         id="myModal" role="dialog"
-                                                         tabindex="-1">
-                                                        <div class="modal-dialog" role="document" style="width: 1200px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h2>预览界面</h2>
-                                                                    <button aria-label="Close" class="close"
-                                                                            data-dismiss="modal"
-                                                                            type="button"><span
-                                                                            aria-hidden="true">&times;</span></button>
-
-                                                                </div>
-                                                                <div class="modal-body" id="modal-body">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <button class="btn btn-danger small"
-                                                            th:onclick="|rejectArticle(${article.id})|">
-                                                        屏蔽
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4">
-                                                    <nav aria-label="Page navigation example">
-                                                        <ul class="pagination justify-content-center">
-                                                            <li class="page-item"
-                                                                th:each="data:${#numbers.sequence(1,session.articlePage)}">
-                                                                <a class="page-link"
-                                                                   th:href="@{'/admin/page/verify?page='+${dataStat.count}}"
-                                                                   th:text="${dataStat.count}"></a>
-                                                            </li>
-
-                                                        </ul>
-                                                    </nav>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
+                        <!--<div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">文章置顶(显示为未置顶的博客)</h3>
@@ -265,7 +184,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
@@ -309,6 +228,90 @@
                                                                    th:href="@{'/admin/page/userInfo?page='+${dateStat.count}}"
                                                                    th:text="${dateStat.count}"></a>
                                                             </li>
+                                                        </ul>
+                                                    </nav>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="max-width: 100%;flex: 0 0 100%;">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">文章管理</h3>
+                                    <input type="text" id="articleText" placeholder="请输入文章作者或者标题名称" class="input-group-text"/>
+                                    <button class="btn btn-default" th:onclick="|selectArticleForAdmin()|">搜索</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>文章标题</th>
+                                                <th>文章作者</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody  id="articleList">
+                                            <tr th:each="article:${session.articles}">
+                                                <th scope="row" style="width: 20px;height:20px;overflow: hidden;"
+                                                    th:text="${articleStat.count}">
+                                                </th>
+                                                <td>
+                                                    <div style="width: 140px;height:20px;overflow: hidden;"
+                                                         th:text="${article.title}">
+                                                    </div>
+                                                </td>
+                                                <td style="width: 140px;height:20px;overflow: hidden;"
+                                                    th:text="${article.userName}">
+                                                </td>
+                                                <td style="width: 40%;height:20px;overflow: hidden;" align="right">
+                                                    <button class="btn btn-sm" data-toggle="modal"
+                                                            th:onclick="|showArticle(${article.id})|">预览
+                                                    </button>
+
+                                                    <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade"
+                                                         id="myModal" role="dialog"
+                                                         tabindex="-1" align="left">
+                                                        <div class="modal-dialog" role="document" style="width: 1200px">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h2>预览界面</h2>
+                                                                    <button aria-label="Close" class="close"
+                                                                            data-dismiss="modal"
+                                                                            type="button"><span
+                                                                            aria-hidden="true">&times;</span></button>
+                                                                </div>
+                                                                <div class="modal-body" id="modal-body">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <button class="btn btn-danger small"
+                                                            th:onclick="|rejectArticle(${article.id})|">
+                                                        屏蔽
+                                                    </button>
+                                                    <button class="btn btn-danger small"
+                                                            th:onclick="|setTop(${article.id})|">置顶
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center">
+                                                            <li class="page-item"
+                                                                th:each="data:${#numbers.sequence(1,session.articlePage)}">
+                                                                <a class="page-link"
+                                                                   th:href="@{'/admin/page/verify?page='+${dataStat.count}}"
+                                                                   th:text="${dataStat.count}"></a>
+                                                            </li>
+
                                                         </ul>
                                                     </nav>
                                                 </td>

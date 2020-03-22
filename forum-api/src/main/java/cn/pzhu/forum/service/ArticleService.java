@@ -174,4 +174,6 @@ public interface ArticleService {
     List<Article> listWithPageForAdmin(int start, int limit);
 
     int selectPendingArticle();
+
+    List<Article> selectArticleByKeyword(String text, Integer start, Integer limit);
 }

@@ -109,6 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
     String key = RedisKeyConstant.ARTICLE_LIST;
     Boolean hasKey = redisTemplate.hasKey(key);
     SetOperations operations = redisTemplate.opsForSet();
+    redisTemplate.expire(key,1,TimeUnit.MILLISECONDS);
     if (hasKey != null && hasKey) {
       Set<Article> members = operations.members(key);
       Stream<Article> limit = members.stream().filter((x) -> x.getId().equals(id)).limit(1);
@@ -116,11 +117,12 @@ public class ArticleServiceImpl implements ArticleService {
       if (first.isPresent()) {
         article = first.get();
       }
-    } else {
+    }
+    if (article == null){
       article = articleDao.get(id);
       operations.add(key, article);
     }
-    log.info("cn.pzhu.forum.service.impl.ArticleServiceImpl.get-查询博客-结果：{}", article);
+    log.info("cn.pzhu.forum.service.impl.ArticleServiceImpl.get-查询博客-结果：是否为空 {}", article == null);
     return article;
   }
 
@@ -571,7 +573,13 @@ public class ArticleServiceImpl implements ArticleService {
     return articles == null?0:articles.size();
   }
 
-  /**
+    @Override
+    public List<Article> selectArticleByKeyword(String text, Integer start, Integer limit) {
+    text = "%"+text+"%";
+    return articleDao.selectArticleByKeyword(text,start,limit);
+    }
+
+    /**
    * 将传入的集合转换为List,并且对list进行排序（根据是否置顶，和阅读量）
    *
    * @param source 传入的数据

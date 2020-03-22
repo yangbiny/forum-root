@@ -4,12 +4,14 @@ import cn.pzhu.forum.content.ArticleStatus;
 import cn.pzhu.forum.entity.Article;
 import cn.pzhu.forum.service.ArticleService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import cn.pzhu.forum.util.Resp;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -60,13 +62,10 @@ public class ArticleController {
     @RequestMapping("/user/article/get")
     public String get(int id) {
         log.info("cn.pzhu.forum.controller.ArticleController.get-查询指定的文章的内容（用于预览）-入参:id = {}", id);
-
         Article article = articleService.get(id);
-
         if (article != null) {
             return article.getContext();
         }
-
         return null;
     }
 
@@ -74,18 +73,25 @@ public class ArticleController {
     @RequestMapping("/admin/article/setTop")
     public Map<String, String> setTop(int id) {
         log.info("cn.pzhu.forum.controller.ArticleController.setTop-置顶指定的文章-入参:id = {}", id);
-
         Map<String, String> map = new HashMap<>();
-
         boolean top = articleService.setTop(id);
-
         if (top) {
             map.put("msg", "成功");
         } else {
             map.put("msg", "失败!");
         }
-
         return map;
+    }
+
+    @GetMapping("/admin/select/article/by_search/")
+    @ResponseBody
+    public Resp<List<Article>> selectArticleBySearch(
+            @RequestParam String text,
+            @RequestParam(required = false,defaultValue = "0") Integer start,
+            @RequestParam(required = false,defaultValue = "5") Integer limit
+    ){
+        List<Article> articles = articleService.selectArticleByKeyword(text,start,limit);
+        return new Resp<>(articles);
     }
 
 }
