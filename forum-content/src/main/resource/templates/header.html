@@ -39,8 +39,10 @@
                             </ul>
                         </li>
                         <li th:if="${session.user == null}"><a
-                                href="http://localhost:8001">登录</a></li>
-                        <li><a href="http://localhost:8001/logout">退出</a></li>
+                            href="http://localhost:8001">登录</a></li>
+                        <li th:if="${session.user != null}">
+                            <a href="http://localhost:8001/logout">退出</a>
+                        </li>
                     </ul>
 
                 </div>

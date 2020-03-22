@@ -2,25 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <title>Bootstrap Material Admin by Bootstrapious.com</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="robots" content="all,follow">
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="all,follow" name="robots">
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="css/fontastic.css">
+    <link href="css/fontastic.css" rel="stylesheet">
     <!-- Google fonts - Poppins -->
-    <link rel="stylesheet" href="css/font.css">
+    <link href="css/font.css" rel="stylesheet">
     <!-- theme stylesheet-->
-    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <link href="css/style.default.css" id="theme-stylesheet" rel="stylesheet">
     <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="css/custom.css">
+    <link href="css/custom.css" rel="stylesheet">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="img/favicon.ico">
+    <link href="img/favicon.ico" rel="shortcut icon">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -37,19 +37,20 @@
         <nav class="side-navbar">
             <!-- Sidebar Header-->
             <div class="sidebar-header d-flex align-items-center">
-                <div class="avatar"><img th:src="${session.userInfo.avatar}" alt="..." class="img-fluid rounded-circle">
+                <div class="avatar"><img alt="..." class="img-fluid rounded-circle" th:src="${session.userInfo.avatar}">
                 </div>
                 <div class="title">
-                    <h1 th:text="${session.userInfo.nickName}" class="h4"></h1>
+                    <h1 class="h4" th:text="${session.userInfo.nickName}"></h1>
                     <p>Web Admin</p>
                 </div>
             </div>
             <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
             <ul class="list-unstyled">
-                <li><a href="/admin/index"> <i class="icon-home"></i>Home </a></li>
-                <li><a href="/admin/tables"> <i class="icon-grid"></i>Tables </a></li>
-                <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>Charts </a></li>
-                <li class="active"><a href="/admin/forms"> <i class="icon-padnote"></i>Forms </a></li>
+                <li><a href="/admin/index"> <i class="icon-home"></i>主页</a></li>
+                <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a></li>
+                <li><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a></li>
+                <li class="active"><a href="/admin/forms"> <i class="icon-padnote"></i>系统信息管理与维护</a>
+                </li>
             </ul>
 
         </nav>
@@ -80,20 +81,20 @@
                                 <div class="card-body">
                                     <div>
                                         <div class="form-group">
-                                            <label for="schoolName" class="form-control-label">学院名称</label>
-                                            <input type="text" placeholder="学院名称" id="schoolName" class="form-control">
+                                            <label class="form-control-label" for="schoolName">学院名称</label>
+                                            <input class="form-control" id="schoolName" placeholder="学院名称" type="text">
                                         </div>
                                         <button class="btn btn-primary" onclick="addSchool()">添加</button>
                                         <hr>
                                         <div class="form-group">
                                             <label class="form-control-label">修改</label>
                                             <select class="form-control" id="schoolIdForUpdateSchoolName">
-                                                <option th:each="list:${schools}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${schools}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
                                             <label class="form-control-label">为</label>
-                                            <input type="text" placeholder="学院名称" id="schoolNameForUpdateSchoolName"
-                                                   class="form-control">
+                                            <input class="form-control" id="schoolNameForUpdateSchoolName" placeholder="学院名称"
+                                                   type="text">
                                         </div>
                                         <div class="form-group">
                                             <button class="btn btn-secondary" onclick="updateSchool()">修改</button>
@@ -102,8 +103,8 @@
                                         <div class="form-group">
                                             <label class="form-control-label">删除</label>
                                             <select class="form-control" id="schoolIdForDeleteSchool">
-                                                <option th:each="list:${schools}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${schools}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -123,45 +124,45 @@
                                     <div>
                                         <div class="form-group">
                                             <select class="form-control" id="schoolId">
-                                                <option th:each="list:${schools}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${schools}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
                                             <label class="form-control-label">专业名称</label>
-                                            <input type="text" placeholder="专业名称" id="majorName" class="form-control">
+                                            <input class="form-control" id="majorName" placeholder="专业名称" type="text">
                                         </div>
                                         <button class="btn btn-primary" onclick="addMajor()">添加</button>
                                         <hr>
                                         <div class="form-group">
-                                            <label for="updateSchoolId" class="form-control-label">修改</label>
+                                            <label class="form-control-label" for="updateSchoolId">修改</label>
                                             <select class="form-control" id="updateSchoolId"
                                                     onchange="changeMajor(this)">
-                                                <option th:each="list:${schools}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${schools}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
-                                            <label for="updateMajorId" class="form-control-label">专业</label>
+                                            <label class="form-control-label" for="updateMajorId">专业</label>
                                             <select class="form-control" id="updateMajorId">
-                                                <option th:each="list:${majors}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${majors}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
-                                            <label for="updateMajorName" class="form-control-label">为</label>
-                                            <input id="updateMajorName" type="text" placeholder="专业名称"
-                                                   class="form-control">
+                                            <label class="form-control-label" for="updateMajorName">为</label>
+                                            <input class="form-control" id="updateMajorName" placeholder="专业名称"
+                                                   type="text">
                                         </div>
                                         <div class="form-group">
                                             <button class="btn btn-secondary" onclick="updateMajor()">修改</button>
                                         </div>
                                         <hr>
                                         <div class="form-group">
-                                            <label for="deleteSchoolId" class="form-control-label">删除</label>
-                                            <select id="deleteSchoolId" class="form-control"
+                                            <label class="form-control-label" for="deleteSchoolId">删除</label>
+                                            <select class="form-control" id="deleteSchoolId"
                                                     onchange="changeMajor(this)">
-                                                <option th:each="list:${schools}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                                <option th:each="list:${schools}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
-                                            <label for="deleteMajorId" class="form-control-label">专业</label>
-                                            <select id="deleteMajorId" class="form-control">
-                                                <option th:each="list:${majors}" th:value="${list.id}"
-                                                        th:text="${list.name}"></option>
+                                            <label class="form-control-label" for="deleteMajorId">专业</label>
+                                            <select class="form-control" id="deleteMajorId">
+                                                <option th:each="list:${majors}" th:text="${list.name}"
+                                                        th:value="${list.id}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -183,13 +184,13 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">添加分类名称</label>
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="请输入分类名称" id="sortName"
-                                                       class="form-control">
+                                                <input class="form-control" id="sortName" placeholder="请输入分类名称"
+                                                       type="text">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4 offset-sm-3">
-                                                <button type="submit" onclick="addSort()" class="btn btn-primary">添加
+                                                <button class="btn btn-primary" onclick="addSort()" type="submit">添加
                                                 </button>
                                             </div>
                                         </div>
@@ -198,25 +199,25 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">初始分类名称</label>
                                             <div class="col-sm-9">
-                                                <select name="account" id="updateSortId" class="form-control mb-3">
+                                                <select class="form-control mb-3" id="updateSortId" name="account">
                                                     <option th:each="sort:${sorts}"
-                                                            th:text="${sort.name}"
                                                             th:id="${sort.id}"
+                                                            th:text="${sort.name}"
                                                             th:value="${sort.id}"></option>
                                                 </select>
                                             </div>
                                             <label class="col-sm-3 form-control-label">最终分类名称</label>
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="请输入分类名称" id="updateSortName"
-                                                       class="form-control">
+                                                <input class="form-control" id="updateSortName" placeholder="请输入分类名称"
+                                                       type="text">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4 offset-sm-3">
-                                                <button type="submit" onclick="updateSort()" class="btn btn-primary">
+                                                <button class="btn btn-primary" onclick="updateSort()" type="submit">
                                                     修改
                                                 </button>
-                                                <button type="submit" onclick="addSortToSort()" class="btn btn-primary">
+                                                <button class="btn btn-primary" onclick="addSortToSort()" type="submit">
                                                     添加到选定的分类下
                                                 </button>
                                             </div>
@@ -227,17 +228,17 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 form-control-label">删除分类名称</label>
                                             <div class="col-sm-9">
-                                                <select name="account" id="deleteSort" class="form-control mb-3">
+                                                <select class="form-control mb-3" id="deleteSort" name="account">
                                                     <option th:each="sort:${sorts}"
-                                                            th:text="${sort.name}"
                                                             th:id="${sort.id}"
+                                                            th:text="${sort.name}"
                                                             th:value="${sort.id}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4 offset-sm-3">
-                                                <button type="submit" onclick="deleteSort()" class="btn btn-danger">删除
+                                                <button class="btn btn-danger" onclick="deleteSort()" type="submit">删除
                                                 </button>
                                             </div>
                                         </div>
