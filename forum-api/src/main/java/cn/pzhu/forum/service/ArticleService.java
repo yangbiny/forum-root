@@ -1,5 +1,6 @@
 package cn.pzhu.forum.service;
 
+import cn.pzhu.forum.content.ArticleStatus;
 import cn.pzhu.forum.content.ArticleType;
 import cn.pzhu.forum.entity.Article;
 import java.util.List;
@@ -155,4 +156,20 @@ public interface ArticleService {
      */
     int recordCount();
 
+    /**
+     * 修改文章得状态
+     *
+     * @param id 文章ID
+     * @param status 文章得状态
+     */
+    boolean updateArticleStatus(int id, ArticleStatus status);
+
+    /**
+     * 查询分页信息
+     *
+     * @param start 开始查询的位置
+     * @param limit 查询数量
+     * @return 文章信息
+     */
+    List<Article> listWithPage(int start, int limit);
 }

@@ -1,6 +1,6 @@
-function deleteArticle(item) {
+function rejectArticle(item) {
     $.ajax({
-        url: "/user/article/delete",
+        url: "/user/article/reject",
         type: "post",
         data: {id: item},
         success: function (data) {

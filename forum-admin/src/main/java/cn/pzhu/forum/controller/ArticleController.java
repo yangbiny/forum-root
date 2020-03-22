@@ -1,15 +1,15 @@
 package cn.pzhu.forum.controller;
 
+import cn.pzhu.forum.content.ArticleStatus;
 import cn.pzhu.forum.entity.Article;
 import cn.pzhu.forum.service.ArticleService;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -28,6 +28,27 @@ public class ArticleController {
         boolean delete = articleService.delete(id);
 
         if (delete) {
+            map.put("msg", "成功");
+        } else {
+            map.put("msg", "失败!");
+        }
+
+        return map;
+    }
+
+    /**
+     * 审核被拒绝
+     */
+    @RequestMapping("/user/article/reject")
+    public Map<String, String> reject(int id) {
+
+        log.info("cn.pzhu.forum.controller.ArticleController.reject-删除指定的文章-入参:id = {}", id);
+
+        Map<String, String> map = new HashMap<>();
+
+        boolean reject = articleService.updateArticleStatus(id, ArticleStatus.REJECT);
+
+        if (reject) {
             map.put("msg", "成功");
         } else {
             map.put("msg", "失败!");

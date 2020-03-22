@@ -1,11 +1,33 @@
 package cn.pzhu.forum.controller;
 
+import cn.pzhu.forum.content.ArticleStatus;
 import cn.pzhu.forum.content.TopFlag;
 import cn.pzhu.forum.content.URLContent;
-import cn.pzhu.forum.entity.*;
-import cn.pzhu.forum.service.*;
+import cn.pzhu.forum.entity.Article;
+import cn.pzhu.forum.entity.Major;
+import cn.pzhu.forum.entity.School;
+import cn.pzhu.forum.entity.Sort;
+import cn.pzhu.forum.entity.UserInfo;
+import cn.pzhu.forum.service.ArticleService;
+import cn.pzhu.forum.service.MajorService;
+import cn.pzhu.forum.service.ReplyService;
+import cn.pzhu.forum.service.SchoolService;
+import cn.pzhu.forum.service.SortService;
+import cn.pzhu.forum.service.UserInfoService;
+import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Utils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -15,14 +37,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 管理员页面主控制器，用于进入不同的信息模块，进入该模块需要admin角色信息，否则会被拦截到登录界面
@@ -134,7 +148,7 @@ public class AdminController {
         List<UserInfo> userInfos = userInfoService.list();
 
         int co = userInfos.size() % 5 == 0 ?
-                userInfos.size() / 5 : (userInfos.size() / 5) + 1;
+            userInfos.size() / 5 : (userInfos.size() / 5) + 1;
 
         session.setAttribute("users", userInfos);
         session.setAttribute("userPages", co);
@@ -143,12 +157,20 @@ public class AdminController {
 
         // 查询博客信息
         List<Article> articleList = articleService.list();
+        if (CollectionUtils.isNotEmpty(articleList)) {
+            articleList = Optional.of(articleList)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
+                .collect(Collectors.toList());
+
+        }
         List<Article> list = new ArrayList<>();
 
         articleList.stream().limit(5).forEach(list::add);
 
         co = articleList.size() % 5 == 0 ?
-                articleList.size() / 5 : (articleList.size() / 5) + 1;
+            articleList.size() / 5 : (articleList.size() / 5) + 1;
 
         session.setAttribute("articles", list);
         session.setAttribute("articlePage", co);
@@ -254,24 +276,21 @@ public class AdminController {
 
 
         } else {
-
-            List<Article> articleList = articleService.list();
+            int start = (page - 1) * 5;
+            int limit = 5;
+            List<Article> articleList = articleService.listWithPage(start, limit);
             // 文章审核
             if (category.equals("verify")) {
                 // 查询博客信息
-                List<Article> list = new ArrayList<>();
-
-                int co = articleList.size() % 5 == 0 ? articleList.size() / 5 : (articleList.size() / 5) + 1;
-                articleList.stream()
-                        .skip((page - 1) * 5)
-                        .limit(5).forEach(list::add);
-
-                session.setAttribute("articles", list);
+                int co = (int) articleService.list().stream()
+                    .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
+                    .count();
+                co = co % 5 == 0 ? co / 5 : (co / 5) + 1;
+                session.setAttribute("articles", articleList);
                 session.setAttribute("articlePage", co);
                 session.setAttribute("firstPage", page == 1 ? true : null);
                 session.setAttribute("lastPage", page == co ? true : null);
             }
-
             // 未置顶博客
             if (category.equals("topArticle")) {
                 // 查询未置顶博客信息
@@ -288,9 +307,6 @@ public class AdminController {
                         .forEach(articles::add);
 
                 int co = lists.size() % 5 == 0 ? lists.size() / 5 : (lists.size() / 5) + 1;
-
-                System.out.println(co);
-
                 session.setAttribute("topArticles", articles);
                 session.setAttribute("topArticlePage", co);
                 session.setAttribute("topFirstPage", page == 1 ? true : null);
