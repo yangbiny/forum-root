@@ -50,8 +50,7 @@ public interface ArticleDao {
      */
     @Select(
         "select article.id,title,userName,time,sort.name sortName,sortId,context,contextMd,readNumber,top,principal,status "
-            +
-            "from article,sort where sort.id = article.sortId")
+            + "from article,sort where sort.id = article.sortId")
     @Results(id = "article", value = {
         @Result(property = "id", column = "id"),
         @Result(property = "title", column = "title"),

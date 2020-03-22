@@ -28,4 +28,5 @@ public interface UserInfoService {
      */
     int userCount();
 
+    List<UserInfo> selectUserBySearch(String text, Integer start, int limit);
 }

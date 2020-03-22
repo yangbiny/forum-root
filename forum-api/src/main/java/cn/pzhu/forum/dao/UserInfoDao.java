@@ -69,4 +69,6 @@ public interface UserInfoDao {
     @Insert("insert into userinfo set id = #{id},nickName = #{username}")
     boolean add(@Param("username") String username, @Param("id") String id);
 
+    @Select("select id,nickName,school,major,avatar,phone,description from userInfo where nickName like #{username} limit #{start},#{limit}")
+    List<UserInfo> selectBySearch(@Param("username") String text, @Param("start") Integer start, @Param("limit") int limit);
 }

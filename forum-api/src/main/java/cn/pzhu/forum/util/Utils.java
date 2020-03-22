@@ -327,11 +327,8 @@ public class Utils {
      * @return 年份
      */
     public static String getYear() {
-
         LocalDateTime dateTime = LocalDateTime.now();
-
         int year = dateTime.getYear();
-
         return year + "";
     }
 

@@ -9,24 +9,25 @@ import java.util.Map;
 
 import cn.pzhu.forum.util.Resp;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @Slf4j
 @RestController
 public class ArticleController {
 
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
     @RequestMapping("/user/article/delete")
     public Map<String, String> delete(int id) {
 
         log.info("cn.pzhu.forum.controller.ArticleController.delete-删除指定的文章-入参:id = {}", id);
-
         Map<String, String> map = new HashMap<>();
-
         boolean delete = articleService.delete(id);
 
         if (delete) {
@@ -90,8 +91,16 @@ public class ArticleController {
             @RequestParam(required = false,defaultValue = "0") Integer start,
             @RequestParam(required = false,defaultValue = "5") Integer limit
     ){
-        List<Article> articles = articleService.selectArticleByKeyword(text,start,limit);
-        return new Resp<>(articles);
+        List<Article> articles = articleService.selectArticleByKeyword(text,start,limit+1);
+       Resp<List<Article>> resp = new Resp<>();
+       if(CollectionUtils.size(articles) > limit){
+           resp.setHasMore(true);
+           articles.remove(articles.size()-1);
+           resp.setNextStart(start + limit);
+           System.out.println("xx");
+       }
+       resp.setData(articles);
+       return resp;
     }
 
 }

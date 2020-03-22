@@ -47,7 +47,7 @@ public class ForumInfoStatisticsController {
             sortVal.add(integer);
         }
         map.put("sortCount", sortVal);
-
+        System.out.println(map);
         return map;
     }
 

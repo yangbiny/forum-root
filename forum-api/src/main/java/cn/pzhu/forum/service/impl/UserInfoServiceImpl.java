@@ -95,7 +95,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public int userCount() {
-
         return userInfoDao.userCount();
+    }
+
+    @Override
+    public List<UserInfo> selectUserBySearch(String text, Integer start, int limit) {
+        text = "%"+text+"%";
+        return userInfoDao.selectBySearch(text,start,limit);
     }
 }

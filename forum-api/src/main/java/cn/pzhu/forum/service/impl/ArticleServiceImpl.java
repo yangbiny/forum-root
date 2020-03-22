@@ -15,31 +15,25 @@ import cn.pzhu.forum.service.ArticleService;
 import cn.pzhu.forum.service.IntegralService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.util.Utils;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 /**
  * 博客信息管理类
  */
-@Service
 @Slf4j
+@Service("articleService")
 @SuppressWarnings("unchecked")
 public class ArticleServiceImpl implements ArticleService {
 
@@ -134,17 +128,20 @@ public class ArticleServiceImpl implements ArticleService {
     Boolean hasKey = redisTemplate.hasKey(key);
     SetOperations operations = redisTemplate.opsForSet();
     redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
+    Set<Article> members = null;
     if (hasKey != null && hasKey) {
-      Set<Article> members = operations.members(key);
-      return new ArrayList<>(members);
+       members= operations.members(key);
     }
-    List<Article> list = articleDao.list();
-    if (list != null) {
-      for (Article article : list) {
-        operations.add(key, article);
+    if(CollectionUtils.isEmpty(members)){
+      List<Article> list = articleDao.list();
+      if (list != null) {
+        members = new HashSet<>(list);
+        for (Article article : list) {
+          operations.add(key, article);
+        }
       }
     }
-    return list;
+    return members == null?Collections.emptyList(): new ArrayList<>(members);
   }
 
   @Override

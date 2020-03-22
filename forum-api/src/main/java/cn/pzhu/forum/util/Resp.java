@@ -15,6 +15,10 @@ public class Resp<T> {
 
   private String message;
 
+  private Boolean hasMore = false;
+
+  private Integer nextStart = 0;
+
   private T data;
 
   public Resp() {

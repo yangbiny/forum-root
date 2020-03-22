@@ -83,6 +83,8 @@
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">用户信息</h3>
+                                    <input type="text" id="userInfoText" placeholder="请输入用户名" style="width: 160Px;" class="input-group-text"/>
+                                    <button class="btn btn-default" th:onclick="|selectUserForAdmin(0,'user')|">搜索</button>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -95,7 +97,7 @@
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="user">
                                             <tr th:each="userInfo:${session.users}">
                                                 <th scope="row" th:text="${userInfoStat.count}"></th>
                                                 <td th:text="${userInfo.id}"></td>
@@ -193,6 +195,8 @@
                                         <button class="btn btn-primary btn-sm" onclick="noticeUser()"
                                                 style="float: right">通知选中成员
                                         </button>
+                                        <input type="text" id="userText" placeholder="请输入用户名" style="width: 160Px;" class="input-group-text"/>
+                                        <button class="btn btn-default" th:onclick="|selectUserForAdmin(0,null)|">搜索</button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -206,7 +210,7 @@
                                                 <th>姓名</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="userList">
 
                                             <tr th:each="userInfo:${session.users}">
                                                 <th scope="row" th:text="${userInfoStat.count}"></th>
@@ -243,7 +247,7 @@
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">文章管理</h3>
                                     <input type="text" id="articleText" placeholder="请输入文章作者或者标题名称" class="input-group-text"/>
-                                    <button class="btn btn-default" th:onclick="|selectArticleForAdmin()|">搜索</button>
+                                    <button class="btn btn-default" th:onclick="|selectArticleForAdmin(0)|">搜索</button>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -304,7 +308,7 @@
                                             <tr>
                                                 <td colspan="4">
                                                     <nav aria-label="Page navigation example">
-                                                        <ul class="pagination justify-content-center">
+                                                        <ul class="pagination justify-content-center" id="numberOfArticle">
                                                             <li class="page-item"
                                                                 th:each="data:${#numbers.sequence(1,session.articlePage)}">
                                                                 <a class="page-link"

@@ -15,6 +15,7 @@ import cn.pzhu.forum.service.SchoolService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.service.UserInfoService;
 import cn.pzhu.forum.service.UserService;
+import cn.pzhu.forum.util.Resp;
 import cn.pzhu.forum.util.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,9 +35,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 管理员页面主控制器，用于进入不同的信息模块，进入该模块需要admin角色信息，否则会被拦截到登录界面
@@ -146,9 +145,7 @@ public class AdminController {
 
         // 查询用户信息
         List<UserInfo> userInfos = userInfoService.list();
-
-        int co = userInfos.size() % 5 == 0 ?
-            userInfos.size() / 5 : (userInfos.size() / 5) + 1;
+        int co = userInfos.size() % 5 == 0 ? userInfos.size() / 5 : (userInfos.size() / 5) + 1;
 
         session.setAttribute("users", userInfos);
         session.setAttribute("userPages", co);
@@ -174,24 +171,6 @@ public class AdminController {
         session.setAttribute("articlePage", co);
         session.setAttribute("firstPage", true);
         session.setAttribute("lastPage", co == 1 ? true : null);
-
-        // 查询未置顶博客信息
-        List<Article> lists = new ArrayList<>();
-        // 选择未置顶的博客信息
-        articleList.stream()
-                .filter((x) -> TopFlag.NORMAL.getFlag().equals(x.getTop()))
-                .forEach(lists::add);
-
-        co = lists.size() % 5 == 0 ?
-                lists.size() / 5 : (lists.size() / 5) + 1;
-        List<Article> articles = new ArrayList<>();
-
-        lists.stream().limit(5).forEach(articles::add);
-
-        session.setAttribute("topArticles", articles);
-        session.setAttribute("topArticlePage", co);
-        session.setAttribute("topFirstPage", true);
-        session.setAttribute("topLastPage", 1 == co ? true : null);
 
         return "tables";
     }
@@ -318,11 +297,8 @@ public class AdminController {
     @ResponseBody
     public Map<String, String> notice(String users, String message) {
         Map<String, String> map = new HashMap<>();
-
         String[] user = users.split(",");
-
         boolean flag = Utils.sendBatchMail(message, user, "通知信息");
-
         if (flag) {
             map.put("msg", "成功!");
         } else {
@@ -334,7 +310,25 @@ public class AdminController {
                 map.put("msg", "错误");
             }
         }
-
         return map;
+    }
+
+    @ResponseBody
+    @GetMapping("/select/user/by_search/")
+    public Resp<List<UserInfo>> selectUserBySearchForAdmin(
+            @RequestParam String text,
+            @RequestParam(required = false,defaultValue = "0")Integer start,
+            @RequestParam(required = false,defaultValue = "1")Integer limit
+    ){
+        // 查询用户信息
+        List<UserInfo> userInfos = userInfoService.selectUserBySearch(text,start,limit+1);
+        Resp<List<UserInfo>> resp = new Resp<>();
+        if(CollectionUtils.size(userInfos) > limit){
+            resp.setHasMore(true);
+            userInfos.remove(userInfos.size()-1);
+            resp.setNextStart(start + limit);
+        }
+        resp.setData(userInfos);
+        return resp;
     }
 }

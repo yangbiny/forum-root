@@ -11,14 +11,14 @@ import cn.pzhu.forum.service.ArticleService;
 import cn.pzhu.forum.service.ForumInfoStatisticsService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.util.Utils;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @program: forum-root
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsService {
 
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
     @Autowired
@@ -49,14 +49,11 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
     public List<Integer> timeCount(boolean flag) {
         // 一年只有12个月
         int[] arr = new int[12];
-
         List<Article> articles = articleService.list();
         if (flag) {
             System.out.println("待完成");
         } else {
-
             String year = Utils.getYear();
-
             articles.stream().filter(x -> !x.getTime().matches(year)).forEach(
                     x -> {
                         String mon = x.getTime().substring(5, 6);
@@ -64,10 +61,12 @@ public class ForumInfoStatisticsServiceImpl implements ForumInfoStatisticsServic
                         arr[--mons]++;
                     }
             );
-
-            return Arrays.stream(arr).boxed().collect(Collectors.toList());
+            List<Integer> result = new ArrayList<>();
+            for (int i : arr) {
+                result.add(i);
+            }
+            return  result;
         }
-
         return null;
     }
 
