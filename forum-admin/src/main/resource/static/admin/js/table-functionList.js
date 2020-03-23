@@ -1,3 +1,15 @@
+function passArticle(item) {
+    $.ajax({
+        url: "/user/article/pass",
+        type: "post",
+        data: {id: item},
+        success: function (data) {
+            alert(data.msg);
+            window.location.reload();
+        }
+    });
+}
+
 function rejectArticle(item) {
     $.ajax({
         url: "/user/article/reject",
@@ -12,7 +24,6 @@ function rejectArticle(item) {
 
 function showArticle(item) {
     $("#modal-body").empty();
-
     $.ajax({
         url: "/user/article/get",
         data: {id: item},
@@ -23,7 +34,6 @@ function showArticle(item) {
             console.log(data)
         }
     });
-
     $("#myModal").modal('show')
 }
 
@@ -217,6 +227,28 @@ function selectArticleForAdmin(start) {
     }
 }
 
+function selectArticleForAdminList(start) {
+    var textValue = $("#articleText").val();
+    if (textValue === "") {
+        alert("搜索的信息不能为空");
+    } else {
+        $.ajax({
+            url: "/admin/select/article/by_search/?start=" + start+"&limit=10",
+            data: {text: textValue},
+            type: "GET",
+            success: function (response) {
+                console.log(response);
+                if (response.status === 200) {
+                    fillArticleAdmin(response)
+                }
+            },
+            error: function (data) {
+                alert("发生未知错误!")
+            }
+        });
+    }
+}
+
 function fillArticle(resp) {
     data = resp.data
     $("#articleList").empty();
@@ -260,6 +292,49 @@ function fillArticle(resp) {
     }
 }
 
+function fillArticleAdmin(resp) {
+    data = resp.data
+    $("#articleList").empty();
+    $("#numberOfArticle").empty();
+    var html = "";
+    var index = 1;
+    for (let dataKey in data) {
+        da = data[dataKey];
+        html += "<tr>'" +
+            "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>" + index + "</th>'" +
+            "<td>" +
+            "<div style='width: 140px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
+            "</td>" +
+            "<td style='width: 140px;height:20px;overflow: hidden;'>" + da.userName + "</td>" +
+            "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
+            "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle(" + da.id + ")>预览</button>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div class='modal-dialog' role='document' style='width: 1200px'>" +
+            "<div class='modal-content'>" +
+            "<div class='modal-header'>" +
+            "<h2>预览界面</h2>" +
+            "<button aria-label='Close' class='close' data-dismiss='modal'" +
+            "type='button'><span aria-hidden='true'>&times;</span></button>" +
+            "</div>" +
+            "<div class='modal-body' id='modal-body'>" + "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>" +
+            "<button class='btn btn-danger small'" +
+            "onclick=rejectArticle(" + da.id + ")>屏蔽" +
+            "</button>" +
+            "<button class='btn btn-danger small' onclick=setTop(" + da.id + ")>置顶</button>" +
+            "</td>" +
+            "</tr>";
+        index = index + 1;
+    }
+    $("#articleList").html(html);
+    console.log(resp.hasMore);
+    if (resp.hasMore) {
+        fillNumberOfArticleAdmin(resp);
+    }
+}
+
 function fillNumberOfArticle(data) {
     var html = "<tr>" +
         "<td colspan='4'>" +
@@ -274,4 +349,113 @@ function fillNumberOfArticle(data) {
         "</tr>";
     console.log(html);
     $("#articleList").append(html);
+}
+
+function fillNumberOfArticleAdmin(data) {
+    var html = "<tr>" +
+        "<td colspan='4'>" +
+        "<nav aria-label='Page navigation example'>" +
+        "<ul class='pagination justify-content-center' id='numberOfArticle'>" +
+        "<li class='page-item'>" +
+        "<a class='page-link' onclick='selectArticleForAdmin(" + data.nextStart + ")'>下一页</a>" +
+        "</li>" +
+        "</ul>" +
+        "</nav>" +
+        "</td>" +
+        "</tr>";
+    console.log(html);
+    $("#articleList").append(html);
+}
+
+
+function showArticleList(start) {
+    $.ajax({
+        url: "/admin/article/list/search/?start=" + start,
+        type: "GET",
+        success: function (response) {
+            console.log(response);
+            if (response.status === 200) {
+                fillArticleList(response)
+            }
+        },
+        error: function (data) {
+            alert("发生未知错误!")
+        }
+    });
+}
+
+function fillArticleList(resp) {
+    data = resp.data
+    $("#articleList").empty();
+    $("#numberOfArticle").empty();
+    var html = "";
+    var index = 1;
+    for (let dataKey in data) {
+        da = data[dataKey];
+        html += "<tr>'" +
+            "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>" + index + "</th>'" +
+            "<td>" +
+            "<div style='width: 140px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
+            "</td>" +
+            "<td style='width: 140px;height:20px;overflow: hidden;'>" + da.userName + "</td>" +
+            "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
+            "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle(" + da.id + ")>预览</button>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div class='modal-dialog' role='document' style='width: 1200px'>" +
+            "<div class='modal-content'>" +
+            "<div class='modal-header'>" +
+            "<h2>预览界面</h2>" +
+            "<button aria-label='Close' class='close' data-dismiss='modal'" +
+            "type='button'><span aria-hidden='true'>&times;</span></button>" +
+            "</div>" +
+            "<div class='modal-body' id='modal-body'>" + "</div>" +
+            "</div>" +
+            "</div>" +
+            "</div>" + getStatus(da.status) + getIsTop(da.top) +
+            "</td>" +
+            "</tr>";
+        index = index + 1;
+    }
+    $("#articleList").html(html);
+    console.log(resp.hasMore);
+    if (resp.hasMore) {
+        fillNumberArticleList(resp);
+    }
+}
+
+function fillNumberArticleList(data) {
+    var html = "<tr>" +
+        "<td colspan='4'>" +
+        "<nav aria-label='Page navigation example'>" +
+        "<ul class='pagination justify-content-center' id='numberOfArticle'>" +
+        "<li class='page-item'>" +
+        "<a class='page-link' onclick='showArticleList(" + data.nextStart + ")'>下一页</a>" +
+        "</li>" +
+        "</ul>" +
+        "</nav>" +
+        "</td>" +
+        "</tr>";
+    console.log(html);
+    $("#articleList").append(html);
+}
+
+function getStatus(status) {
+    if (status === 0) {
+        return "<button class='btn btn-danger small'>待审核</button>";
+    } else if (status === -1) {
+        return "<button class='btn btn-danger small'>审核未通过</button>";
+    } else if (status === 1) {
+        return "<button class='btn btn-danger small'>正常</button>";
+    } else {
+        return "<button class='btn btn-danger small'>已删除</button>";
+    }
+}
+
+function getIsTop(top) {
+    console.log("top : "+top);
+    if (top === 1) {
+        return "<button class='btn btn-danger small'>已置顶</button>";
+    } else {
+        return "<button class='btn btn-danger small'>未置顶</button>";
+    }
 }

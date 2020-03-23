@@ -208,4 +208,10 @@ public interface ArticleDao {
             + "from article where status = 0 and title like #{text} or userName like #{text} limit #{start},#{limit}")
     @ResultMap("article")
     List<Article> selectArticleByKeyword(@Param("text") String text, @Param("start") Integer start, @Param("limit") Integer limit);
+
+    @Select(
+            "select article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status "
+                    + "from article limit #{start},#{limit}")
+    @ResultMap("article")
+    List<Article> listWithPageFroAdminWithAll(@Param("start") int start, @Param("limit") int limit);
 }

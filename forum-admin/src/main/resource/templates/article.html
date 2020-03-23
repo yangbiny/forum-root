@@ -1,0 +1,201 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>BrutalHuman</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="all,follow" name="robots">
+    <!-- Bootstrap CSS-->
+    <link href="../static/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}">
+    <!-- Font Awesome CSS-->
+    <link href="../static/admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          th:href="@{/admin/vendor/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link href="../static/admin/css/fontastic.css" rel="stylesheet" th:href="@{/admin/css/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link href="../static/admin/css/font.css" rel="stylesheet" th:href="@{/admin/css/font.css}">
+    <!-- theme stylesheet-->
+    <link href="../static/admin/css/style.default.css" id="theme-stylesheet" rel="stylesheet"
+          th:href="@{/admin/css/style.default.css}">
+    <!-- Custom stylesheet - for your changes-->
+    <link href="../static/admin/css/custom.css" rel="stylesheet" th:href="@{/admin/css/custom.css}">
+    <!-- Favicon-->
+    <link href="../static/admin/img/favicon.ico" rel="shortcut icon" th:href="@{/admin/img/favicon.ico}">
+
+    <link href="http://lee.dkfirst.cn/lee_loading.css" rel="stylesheet">
+
+    <style>
+        #modal-body img {
+            max-width: 800px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <!-- Main Navbar-->
+    <header th:include="header :: header"></header>
+
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img alt="..." class="img-fluid rounded-circle" th:src="${session.userInfo.avatar}">
+                </div>
+                <div class="title">
+                    <h1 class="h4" th:text="${session.userInfo.nickName}"></h1>
+                    <p>Web Admin</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="/admin/index"> <i class="icon-home"></i>主页</a></li>
+                <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a></li>
+                <li><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a>
+                </li>
+                <li><a href="/admin/school"> <i class="icon-padnote"></i>学院信息管理与维护</a>
+                <li><a href="/admin/major"> <i class="icon-padnote"></i>专业信息管理与维护</a>
+                <li><a href="/admin/sort"> <i class="icon-padnote"></i>分类信息管理与维护</a>
+                <li  class="active"><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
+            </ul>
+
+        </nav>
+        <div class="content-inner">h
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">Tables</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Tables</li>
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6" style="max-width: 100%;flex: 0 0 100%;">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">文章管理</h3>
+                                    <input type="text" id="articleText" placeholder="请输入文章作者或者标题名称" class="input-group-text"/>
+                                    <button class="btn btn-default" th:onclick="|selectArticleForAdminList(0)|">搜索</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>文章标题</th>
+                                                <th>文章作者</th>
+                                                <th align="right">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody  id="articleList">
+                                            <tr th:each="article:${articleList}">
+                                                <th scope="row" style="width: 20px;height:20px;overflow: hidden;"
+                                                    th:text="${articleStat.count}">
+                                                </th>
+                                                <td>
+                                                    <div style="width: 140px;height:20px;overflow: hidden;"
+                                                         th:text="${article.title}">
+                                                    </div>
+                                                </td>
+                                                <td style="width: 140px;height:20px;overflow: hidden;"
+                                                    th:text="${article.userName}">
+                                                </td>
+                                                <td style="width: 40%;height:20px;overflow: hidden;" align="right">
+                                                    <button class="btn btn-sm" data-toggle="modal"
+                                                            th:onclick="|showArticle(${article.id})|">预览
+                                                    </button>
+
+                                                    <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade"
+                                                         id="myModal" role="dialog"
+                                                         tabindex="-1" align="left">
+                                                        <div class="modal-dialog" role="document" style="width: 1200px">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h2>预览界面</h2>
+                                                                    <button aria-label="Close" class="close"
+                                                                            data-dismiss="modal"
+                                                                            type="button"><span
+                                                                            aria-hidden="true">&times;</span></button>
+                                                                </div>
+                                                                <div class="modal-body" id="modal-body">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <button class="btn btn-danger small" th:if="${article.status == 0}">
+                                                        待审核
+                                                    </button>
+                                                    <button class="btn btn-danger small" th:if="${article.status == -1}">
+                                                        审核未通过
+                                                    </button>
+                                                    <button class="btn btn-danger small" th:if="${article.status == 1}">
+                                                        正常
+                                                    </button>
+                                                    <button class="btn btn-danger small" th:if="${article.status == 2}">
+                                                        已删除
+                                                    </button>
+                                                    <button class="btn btn-danger small" th:if="${article.top == 1}">
+                                                        已置顶
+                                                    </button>
+                                                    <button class="btn btn-danger small" th:if="${article.top == 0}">
+                                                        未置顶
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination justify-content-center" id="numberOfArticle">
+                                                            <li class="page-item"
+                                                                th:if="${hasMore == true}">
+                                                                <button class="btn btn-default" th:onclick="|showArticleList(${nextStart})|">下一页</button>
+                                                            </li>
+
+                                                        </ul>
+                                                    </nav>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+            <div th:replace="footer :: footer"></div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="../static/admin/vendor/jquery/jquery.min.js" th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
+<script src="../static/admin/vendor/popper.js/umd/popper.min.js"
+        th:src="@{/admin/vendor/popper.js/umd/popper.min.js}"></script>
+<script src="../static/admin/vendor/bootstrap/js/bootstrap.min.js"
+        th:src="@{/admin/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/admin/vendor/jquery.cookie/jquery.cookie.js"
+        th:src="@{/admin/vendor/jquery.cookie/jquery.cookie.js}"></script>
+<script src="../static/admin/vendor/chart.js/Chart.min.js" th:src="@{/admin/vendor/chart.js/Chart.min.js}"></script>
+<script src="../static/admin/vendor/jquery-validation/jquery.validate.min.js"
+        th:src="@{/admin/vendor/jquery-validation/jquery.validate.min.js}"></script>
+<!-- Main File-->
+<script src="../static/admin/js/front.js" th:src="@{/admin/js/front.js}"></script>
+<script src="../static/admin/js/table-functionList.js" th:src="@{/admin/js/table-functionList.js}"></script>
+</body>
+</html>

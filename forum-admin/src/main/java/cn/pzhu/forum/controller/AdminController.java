@@ -17,6 +17,7 @@ import cn.pzhu.forum.service.UserInfoService;
 import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Resp;
 import cn.pzhu.forum.util.Utils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -76,7 +79,7 @@ public class AdminController {
     /**
      * 提供文章信息相关服务
      */
-    @Autowired
+    @Resource
     private ArticleService articleService;
 
     /**
@@ -153,13 +156,13 @@ public class AdminController {
         session.setAttribute("last", co == 1 ? userInfos : null);
 
         // 查询博客信息
-        List<Article> articleList = articleService.listWithPageForAdmin(0,5);
+        List<Article> articleList = articleService.listWithPageForAdmin(0, 5);
         if (CollectionUtils.isNotEmpty(articleList)) {
             articleList = Optional.of(articleList)
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
-                .collect(Collectors.toList());
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .filter(article -> ArticleStatus.PENDING.getCode().equals(article.getStatus()))
+                    .collect(Collectors.toList());
 
         }
         co = (int) articleService.list().stream()
@@ -191,24 +194,63 @@ public class AdminController {
      * @param model 数据存储模块
      * @return 管理员表单页面
      */
-    @RequestMapping("/forms")
+    @RequestMapping("/school")
     public String forms(Model model) {
-
         List<School> list = schoolService.list();
         model.addAttribute("schools", list);
-
         if (list != null && list.size() > 0) {
             int id = list.get(0).getId();
-
             List<Major> majors = majorService.list(id);
             model.addAttribute("majors", majors);
         }
-
-
         List<Sort> sorts = sortService.list();
         model.addAttribute("sorts", sorts);
+        return "school";
+    }
 
-        return "forms";
+    /**
+     * 进入后台表单管理页面，查询学院，专业、分类信息
+     *
+     * @param model 数据存储模块
+     * @return 管理员表单页面
+     */
+    @RequestMapping("/major")
+    public String formsMajor(Model model) {
+        List<School> list = schoolService.list();
+        model.addAttribute("schools", list);
+        if (list != null && list.size() > 0) {
+            int id = list.get(0).getId();
+            List<Major> majors = majorService.list(id);
+            model.addAttribute("majors", majors);
+        }
+        return "major";
+    }
+
+    /**
+     * 进入后台表单管理页面，查询学院，专业、分类信息
+     *
+     * @param model 数据存储模块
+     * @return 管理员表单页面
+     */
+    @RequestMapping("/sort")
+    public String formsSort(Model model) {
+        List<Sort> sorts = sortService.list();
+        model.addAttribute("sorts", sorts);
+        return "sort";
+    }
+
+    @RequestMapping("/article")
+    public String articleTable(Model model) {
+        List<Article> articles = articleService.listWithPageForAdminWithAll(0, 11);
+        if (CollectionUtils.isNotEmpty(articles)) {
+            if (articles.size() > 10) {
+                model.addAttribute("hasMore", true);
+                articles.remove(articles.size()-1);
+                model.addAttribute("nextStart", 11);
+            }
+            model.addAttribute("articleList", articles);
+        }
+        return "article";
     }
 
     @RequestMapping("/user/delete")
@@ -317,18 +359,40 @@ public class AdminController {
     @GetMapping("/select/user/by_search/")
     public Resp<List<UserInfo>> selectUserBySearchForAdmin(
             @RequestParam String text,
-            @RequestParam(required = false,defaultValue = "0")Integer start,
-            @RequestParam(required = false,defaultValue = "5")Integer limit
-    ){
+            @RequestParam(required = false, defaultValue = "0") Integer start,
+            @RequestParam(required = false, defaultValue = "5") Integer limit
+    ) {
         // 查询用户信息
-        List<UserInfo> userInfos = userInfoService.selectUserBySearch(text,start,limit+1);
+        List<UserInfo> userInfos = userInfoService.selectUserBySearch(text, start, limit + 1);
         Resp<List<UserInfo>> resp = new Resp<>();
-        if(CollectionUtils.size(userInfos) > limit){
+        if (CollectionUtils.size(userInfos) > limit) {
             resp.setHasMore(true);
-            userInfos.remove(userInfos.size()-1);
+            userInfos.remove(userInfos.size() - 1);
             resp.setNextStart(start + limit);
         }
         resp.setData(userInfos);
         return resp;
     }
+
+    @GetMapping("article/list/search/")
+    @ResponseBody
+    public Resp<List<Article>> articleList(
+            @RequestParam(required = false, defaultValue = "0") Integer start,
+            @RequestParam(required = false, defaultValue = "10") Integer limit
+    ) {
+        List<Article> articles = articleService.listWithPageForAdminWithAll(start, limit+1);
+        Resp<List<Article>> resp = new Resp<>();
+        if (CollectionUtils.isNotEmpty(articles)) {
+            if(articles.size() > limit) {
+                resp.setHasMore(true);
+                articles.remove(articles.size() - 1);
+                resp.setNextStart(start + limit);
+            }
+            resp.setData(articles);
+        }else {
+            resp.setData(Collections.emptyList());
+        }
+        return resp;
+    }
 }
+

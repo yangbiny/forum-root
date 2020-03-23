@@ -58,7 +58,10 @@
                 <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a></li>
                 <li class="active"><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a>
                 </li>
-                <li><a href="/admin/forms"> <i class="icon-padnote"></i>系统信息管理与维护</a></li>
+                <li><a href="/admin/school"> <i class="icon-padnote"></i>学院信息管理与维护</a>
+                <li><a href="/admin/major"> <i class="icon-padnote"></i>专业信息管理与维护</a>
+                <li><a href="/admin/sort"> <i class="icon-padnote"></i>分类信息管理与维护</a>
+                <li><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
             </ul>
 
         </nav>
@@ -299,6 +302,10 @@
                                                     <button class="btn btn-danger small"
                                                             th:onclick="|rejectArticle(${article.id})|">
                                                         屏蔽
+                                                    </button>
+                                                    <button class="btn btn-danger small"
+                                                            th:onclick="|passArticle(${article.id})|">
+                                                        通过
                                                     </button>
                                                     <button class="btn btn-danger small"
                                                             th:onclick="|setTop(${article.id})|">置顶

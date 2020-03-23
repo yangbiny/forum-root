@@ -576,7 +576,12 @@ public class ArticleServiceImpl implements ArticleService {
     return articleDao.selectArticleByKeyword(text,start,limit);
     }
 
-    /**
+  @Override
+  public List<Article> listWithPageForAdminWithAll( int start, int limit) {
+    return articleDao.listWithPageFroAdminWithAll(start,limit);
+  }
+
+  /**
    * 将传入的集合转换为List,并且对list进行排序（根据是否置顶，和阅读量）
    *
    * @param source 传入的数据

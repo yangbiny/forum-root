@@ -49,7 +49,10 @@
                 <li><a href="/admin/index"> <i class="icon-home"></i>主页</a></li>
                 <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a></li>
                 <li><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a></li>
-                <li class="active"><a href="/admin/forms"> <i class="icon-padnote"></i>系统信息管理与维护</a>
+                <li><a href="/admin/school"> <i class="icon-padnote"></i>学院信息管理与维护</a>
+                <li class="active"><a href="/admin/major"> <i class="icon-padnote"></i>专业信息管理与维护</a>
+                <li><a href="/admin/sort"> <i class="icon-padnote"></i>分类信息管理与维护</a>
+                <li><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
                 </li>
             </ul>
 
@@ -72,50 +75,8 @@
             <section class="forms">
                 <div class="container-fluid">
                     <div class="row">
-                        <!-- 学院表单 -->
-                        <div class="col-lg-6">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-center">
-                                    <h3 class="h4">学院管理</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div>
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="schoolName">学院名称</label>
-                                            <input class="form-control" id="schoolName" placeholder="学院名称" type="text">
-                                        </div>
-                                        <button class="btn btn-primary" onclick="addSchool()">添加</button>
-                                        <hr>
-                                        <div class="form-group">
-                                            <label class="form-control-label">修改</label>
-                                            <select class="form-control" id="schoolIdForUpdateSchoolName">
-                                                <option th:each="list:${schools}" th:text="${list.name}"
-                                                        th:value="${list.id}"></option>
-                                            </select>
-                                            <label class="form-control-label">为</label>
-                                            <input class="form-control" id="schoolNameForUpdateSchoolName" placeholder="学院名称"
-                                                   type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-secondary" onclick="updateSchool()">修改</button>
-                                        </div>
-                                        <hr>
-                                        <div class="form-group">
-                                            <label class="form-control-label">删除</label>
-                                            <select class="form-control" id="schoolIdForDeleteSchool">
-                                                <option th:each="list:${schools}" th:text="${list.name}"
-                                                        th:value="${list.id}"></option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-danger" onclick="deleteSchool()">删除</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- 专业管理 -->
-                        <div class="col-lg-6">
+                        <div class="col-lg-6" style="max-width: 100%;flex: 0 0 100%;">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">专业管理</h3>
@@ -173,79 +134,6 @@
                             </div>
                         </div>
 
-                        <!-- 分类表单 -->
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-center">
-                                    <h3 class="h4">分类管理</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-horizontal">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 form-control-label">添加分类名称</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" id="sortName" placeholder="请输入分类名称"
-                                                       type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-4 offset-sm-3">
-                                                <button class="btn btn-primary" onclick="addSort()" type="submit">添加
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-horizontal">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 form-control-label">初始分类名称</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control mb-3" id="updateSortId" name="account">
-                                                    <option th:each="sort:${sorts}"
-                                                            th:id="${sort.id}"
-                                                            th:text="${sort.name}"
-                                                            th:value="${sort.id}"></option>
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-3 form-control-label">最终分类名称</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control" id="updateSortName" placeholder="请输入分类名称"
-                                                       type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-4 offset-sm-3">
-                                                <button class="btn btn-primary" onclick="updateSort()" type="submit">
-                                                    修改
-                                                </button>
-                                                <button class="btn btn-primary" onclick="addSortToSort()" type="submit">
-                                                    添加到选定的分类下
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="form-horizontal">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 form-control-label">删除分类名称</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control mb-3" id="deleteSort" name="account">
-                                                    <option th:each="sort:${sorts}"
-                                                            th:id="${sort.id}"
-                                                            th:text="${sort.name}"
-                                                            th:value="${sort.id}"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-4 offset-sm-3">
-                                                <button class="btn btn-danger" onclick="deleteSort()" type="submit">删除
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>

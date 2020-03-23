@@ -165,7 +165,7 @@ public interface ArticleService {
     boolean updateArticleStatus(int id, ArticleStatus status);
 
     /**
-     * 查询分页信息
+     * 查询分页信息，状态为未审核的
      *
      * @param start 开始查询的位置
      * @param limit 查询数量
@@ -176,4 +176,13 @@ public interface ArticleService {
     int selectPendingArticle();
 
     List<Article> selectArticleByKeyword(String text, Integer start, Integer limit);
+
+    /**
+     * 查询分页信息
+     *
+     * @param start 开始查询的位置
+     * @param limit 查询数量
+     * @return 文章信息
+     */
+    List<Article> listWithPageForAdminWithAll( int start, int limit);
 }

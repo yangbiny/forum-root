@@ -1,0 +1,170 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>Bootstrap Material Admin by Bootstrapious.com</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="all,follow" name="robots">
+    <!-- Bootstrap CSS-->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS-->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Fontastic Custom icon font-->
+    <link href="css/fontastic.css" rel="stylesheet">
+    <!-- Google fonts - Poppins -->
+    <link href="css/font.css" rel="stylesheet">
+    <!-- theme stylesheet-->
+    <link href="css/style.default.css" id="theme-stylesheet" rel="stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link href="css/custom.css" rel="stylesheet">
+    <!-- Favicon-->
+    <link href="img/favicon.ico" rel="shortcut icon">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+
+</head>
+<body>
+<div class="page">
+    <!-- Main Navbar-->
+    <header th:include="header :: header"></header>
+
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img alt="..." class="img-fluid rounded-circle" th:src="${session.userInfo.avatar}">
+                </div>
+                <div class="title">
+                    <h1 class="h4" th:text="${session.userInfo.nickName}"></h1>
+                    <p>Web Admin</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="/admin/index"> <i class="icon-home"></i>主页</a></li>
+                <li><a href="/admin/charts"> <i class="fa fa-bar-chart"></i>用户以及热点分布</a></li>
+                <li><a href="/admin/tables"> <i class="icon-grid"></i>文章与用户管理</a></li>
+                <li><a href="/admin/school"> <i class="icon-padnote"></i>学院信息管理与维护</a>
+                <li><a href="/admin/major"> <i class="icon-padnote"></i>专业信息管理与维护</a>
+                <li class="active"><a href="/admin/sort"> <i class="icon-padnote"></i>分类信息管理与维护</a>
+                <li><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
+                </li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">Forms</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Forms</li>
+                </ul>
+            </div>
+            <!-- Forms Section-->
+            <section class="forms">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- 分类表单 -->
+                        <div class="col-lg-12" style="max-width: 100%;flex: 0 0 100%;">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">分类管理</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">添加分类名称</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="sortName" placeholder="请输入分类名称"
+                                                       type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 offset-sm-3">
+                                                <button class="btn btn-primary" onclick="addSort()" type="submit">添加
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">初始分类名称</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control mb-3" id="updateSortId" name="account">
+                                                    <option th:each="sort:${sorts}"
+                                                            th:id="${sort.id}"
+                                                            th:text="${sort.name}"
+                                                            th:value="${sort.id}"></option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-3 form-control-label">最终分类名称</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="updateSortName" placeholder="请输入分类名称"
+                                                       type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 offset-sm-3">
+                                                <button class="btn btn-primary" onclick="updateSort()" type="submit">
+                                                    修改
+                                                </button>
+                                                <button class="btn btn-primary" onclick="addSortToSort()" type="submit">
+                                                    添加到选定的分类下
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 form-control-label">删除分类名称</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control mb-3" id="deleteSort" name="account">
+                                                    <option th:each="sort:${sorts}"
+                                                            th:id="${sort.id}"
+                                                            th:text="${sort.name}"
+                                                            th:value="${sort.id}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 offset-sm-3">
+                                                <button class="btn btn-danger" onclick="deleteSort()" type="submit">删除
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+            <div th:replace="footer :: footer"></div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"></script>
+<script src="vendor/chart.js/Chart.min.js"></script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="js/front.js"></script>
+<script src="js/function-list.js"/>
+</body>
+</html>
