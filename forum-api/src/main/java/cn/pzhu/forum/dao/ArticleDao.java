@@ -205,7 +205,7 @@ public interface ArticleDao {
     List<Article> selectPendingArticle();
 
     @Select("select article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status "
-            + "from article where status = 0 and title like #{text} or userName like #{text} limit #{start},#{limit}")
+            + "from article where title like #{text} or userName like #{text} limit #{start},#{limit}")
     @ResultMap("article")
     List<Article> selectArticleByKeyword(@Param("text") String text, @Param("start") Integer start, @Param("limit") Integer limit);
 
@@ -214,4 +214,9 @@ public interface ArticleDao {
                     + "from article limit #{start},#{limit}")
     @ResultMap("article")
     List<Article> listWithPageFroAdminWithAll(@Param("start") int start, @Param("limit") int limit);
+
+    @Select("select article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status "
+            + "from article where status = 0 and title like #{text} or userName like #{text} limit #{start},#{limit}")
+    @ResultMap("article")
+    List<Article> listWithPageFroAdminPending(@Param("text") String text, @Param("start") Integer start, @Param("limit") int limit);
 }

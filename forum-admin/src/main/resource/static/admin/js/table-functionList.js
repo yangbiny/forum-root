@@ -211,7 +211,7 @@ function selectArticleForAdmin(start) {
         alert("搜索的信息不能为空");
     } else {
         $.ajax({
-            url: "/admin/select/article/by_search/?start=" + start,
+            url: "/admin/select/article/by_search/pending/?start=" + start,
             data: {text: textValue},
             type: "GET",
             success: function (response) {
@@ -260,12 +260,12 @@ function fillArticle(resp) {
         html += "<tr>'" +
             "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>" + index + "</th>'" +
             "<td>" +
-            "<div style='width: 140px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
+            "<div style='width: 200px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
             "</td>" +
             "<td style='width: 140px;height:20px;overflow: hidden;'>" + da.userName + "</td>" +
             "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
             "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle(" + da.id + ")>预览</button>" +
-            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1' align='left'>" +
             "<div class='modal-dialog' role='document' style='width: 1200px'>" +
             "<div class='modal-content'>" +
             "<div class='modal-header'>" +
@@ -280,6 +280,9 @@ function fillArticle(resp) {
             "<button class='btn btn-danger small'" +
             "onclick=rejectArticle(" + da.id + ")>屏蔽" +
             "</button>" +
+            "<button class='btn btn-danger small' onclick=passArticle(" + da.id + ")>" +
+            "通过" +
+            "</button>"+
             "<button class='btn btn-danger small' onclick=setTop(" + da.id + ")>置顶</button>" +
             "</td>" +
             "</tr>";
@@ -303,12 +306,12 @@ function fillArticleAdmin(resp) {
         html += "<tr>'" +
             "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>" + index + "</th>'" +
             "<td>" +
-            "<div style='width: 140px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
+            "<div style='width: 200px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
             "</td>" +
             "<td style='width: 140px;height:20px;overflow: hidden;'>" + da.userName + "</td>" +
             "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
             "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle(" + da.id + ")>预览</button>" +
-            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1' align='left'>" +
             "<div class='modal-dialog' role='document' style='width: 1200px'>" +
             "<div class='modal-content'>" +
             "<div class='modal-header'>" +
@@ -395,12 +398,12 @@ function fillArticleList(resp) {
         html += "<tr>'" +
             "<th scope='row' style='width: 20px;height:20px;overflow: hidden;'>" + index + "</th>'" +
             "<td>" +
-            "<div style='width: 140px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
+            "<div style='width: 200px;height:20px;overflow: hidden;'>" + da.title + "</div>" +
             "</td>" +
             "<td style='width: 140px;height:20px;overflow: hidden;'>" + da.userName + "</td>" +
             "<td style='width: 40%;height:20px;overflow: hidden;' align='right'>" +
             "<button class='btn btn-sm' data-toggle='modal' onclick=showArticle(" + da.id + ")>预览</button>" +
-            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1'>" +
+            "<div aria-hidden='true' aria-labelledby='myModalLabel' class='modal fade' id='myModal' role='dialog' tabindex='-1' align='left'>" +
             "<div class='modal-dialog' role='document' style='width: 1200px'>" +
             "<div class='modal-content'>" +
             "<div class='modal-header'>" +

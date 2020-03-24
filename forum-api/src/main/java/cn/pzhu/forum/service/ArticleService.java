@@ -185,4 +185,6 @@ public interface ArticleService {
      * @return 文章信息
      */
     List<Article> listWithPageForAdminWithAll( int start, int limit);
+
+    List<Article> selectArticleByKeywordOfPending(String text, Integer start, int i);
 }

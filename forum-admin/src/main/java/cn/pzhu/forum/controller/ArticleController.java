@@ -116,4 +116,23 @@ public class ArticleController {
        return resp;
     }
 
+    @GetMapping("/admin/select/article/by_search/pending/")
+    @ResponseBody
+    public Resp<List<Article>> selectArticleBySearchWithPending(
+            @RequestParam String text,
+            @RequestParam(required = false,defaultValue = "0") Integer start,
+            @RequestParam(required = false,defaultValue = "5") Integer limit
+    ){
+        List<Article> articles = articleService.selectArticleByKeywordOfPending(text,start,limit+1);
+        Resp<List<Article>> resp = new Resp<>();
+        if(CollectionUtils.size(articles) > limit){
+            resp.setHasMore(true);
+            articles.remove(articles.size()-1);
+            resp.setNextStart(start + limit);
+            System.out.println("xx");
+        }
+        resp.setData(articles);
+        return resp;
+    }
+
 }

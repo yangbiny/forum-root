@@ -245,7 +245,7 @@ public class AdminController {
         if (CollectionUtils.isNotEmpty(articles)) {
             if (articles.size() > 10) {
                 model.addAttribute("hasMore", true);
-                articles.remove(articles.size()-1);
+                articles.remove(articles.size() - 1);
                 model.addAttribute("nextStart", 11);
             }
             model.addAttribute("articleList", articles);
@@ -380,16 +380,16 @@ public class AdminController {
             @RequestParam(required = false, defaultValue = "0") Integer start,
             @RequestParam(required = false, defaultValue = "10") Integer limit
     ) {
-        List<Article> articles = articleService.listWithPageForAdminWithAll(start, limit+1);
+        List<Article> articles = articleService.listWithPageForAdminWithAll(start, limit + 1);
         Resp<List<Article>> resp = new Resp<>();
         if (CollectionUtils.isNotEmpty(articles)) {
-            if(articles.size() > limit) {
+            if (articles.size() > limit) {
                 resp.setHasMore(true);
                 articles.remove(articles.size() - 1);
                 resp.setNextStart(start + limit);
             }
             resp.setData(articles);
-        }else {
+        } else {
             resp.setData(Collections.emptyList());
         }
         return resp;
