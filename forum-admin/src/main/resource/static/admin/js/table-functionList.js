@@ -164,6 +164,10 @@ function fillUser(resp, isUser) {
                 "</td>" +
                 "<td>" + da.id + "</td>" +
                 "<td>" + da.nickName + "</td>" +
+                "<td>" +
+                "<button class='btn btn-danger small' onclick=deleteUser('"+da.id+"')>冻结" +
+                "</button>" +
+                "</td>"+
                 "</tr>";
         }
         $("#userList").html(html);

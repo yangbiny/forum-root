@@ -82,7 +82,7 @@
             <section class="tables">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <!--<div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">用户信息</h3>
@@ -130,7 +130,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <!--<div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
@@ -190,16 +190,16 @@
                                 </div>
                             </div>
                         </div>-->
-                        <div class="col-lg-6">
+                        <div class="col-lg-6" style="max-width: 100%;flex: 0 0 100%;">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">成员通知</h3>
-                                    <div style="width:80%;float: right">
+                                    <input type="text" id="userText" placeholder="请输入用户名" style="width: 160Px;" class="input-group-text"/>
+                                    <button class="btn btn-default" th:onclick="|selectUserForAdmin(0,null)|">搜索</button>
+                                    <div style="width:70%;float: right">
                                         <button class="btn btn-primary btn-sm" onclick="noticeUser()"
                                                 style="float: right">通知选中成员
                                         </button>
-                                        <input type="text" id="userText" placeholder="请输入用户名" style="width: 160Px;" class="input-group-text"/>
-                                        <button class="btn btn-default" th:onclick="|selectUserForAdmin(0,null)|">搜索</button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -211,6 +211,7 @@
                                                 <th>选择</th>
                                                 <th>邮箱</th>
                                                 <th>姓名</th>
+                                                <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody id="userList">
@@ -223,6 +224,11 @@
                                                 </td>
                                                 <td th:text="${userInfo.id}"></td>
                                                 <td th:text="${userInfo.nickName}"></td>
+                                                <td>
+                                                    <button class="btn btn-danger small"
+                                                            th:onclick="|deleteUser('${userInfo.id}')|">冻结
+                                                    </button>
+                                                </td>
                                             </tr>
 
                                             <tr>
