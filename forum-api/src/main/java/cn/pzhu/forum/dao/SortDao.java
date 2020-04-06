@@ -66,4 +66,10 @@ public interface SortDao {
      */
     @Update("update sort set number = number + 1")
     boolean addSortNumber(int id);
+
+    @Select("select id,name,rely,number from sort where rely is null")
+    List<Sort> queryFirstLevelSort();
+
+    @Select("select id,name,rely,number from sort where rely = #{id}")
+    List<Sort> queryWithId(@Param("id") Integer id);
 }

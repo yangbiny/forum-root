@@ -37,7 +37,7 @@ public class SortServiceImpl implements SortService {
 
         String key = RedisKeyConstant.SORT_LIST;
         ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
+        redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
         Boolean hasKey = redisTemplate.hasKey(key);
 
         if (hasKey != null && hasKey) {
@@ -68,7 +68,7 @@ public class SortServiceImpl implements SortService {
         if (update) {
             String key = RedisKeyConstant.SORT_LIST;
             ValueOperations operations = redisTemplate.opsForValue();
-            redisTemplate.expire(key, 1, TimeUnit.HOURS);
+            redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
             List<Sort> list = sortDao.list();
             operations.set(key, list);
         }
@@ -85,11 +85,11 @@ public class SortServiceImpl implements SortService {
 
         if (add) {
             String key = RedisKeyConstant.SORT_LIST;
-            redisTemplate.expire(key, 1, TimeUnit.HOURS);
+            redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
             ValueOperations operations = redisTemplate.opsForValue();
 
             List<Sort> list = sortDao.list();
-            operations.set(key, list, 1, TimeUnit.HOURS);
+            operations.set(key, list, 1, TimeUnit.MILLISECONDS);
         }
 
         return add;
@@ -102,7 +102,7 @@ public class SortServiceImpl implements SortService {
 
         String key = RedisKeyConstant.SORT_LIST;
         ValueOperations operations = redisTemplate.opsForValue();
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
+        redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
         Boolean hasKey = redisTemplate.hasKey(key);
         List<Sort> list;
 
@@ -131,7 +131,7 @@ public class SortServiceImpl implements SortService {
                     break;
                 }
             }
-            operations.set(key, list, 1, TimeUnit.HOURS);
+            operations.set(key, list, 1, TimeUnit.MILLISECONDS);
         }
 
         return delete;
@@ -197,11 +197,19 @@ public class SortServiceImpl implements SortService {
                 Sort sort = map.get(integer);
                 sorts.add(sort);
             }
-            operations.set(key, sorts, 1, TimeUnit.HOURS);
+            operations.set(key, sorts, 1, TimeUnit.MILLISECONDS);
 
             return sorts;
         }
 
         return null;
+    }
+
+    @Override
+    public List<Sort> listWithId(Integer id) {
+        if(id == null){
+            return sortDao.queryFirstLevelSort();
+        }
+        return sortDao.queryWithId(id);
     }
 }

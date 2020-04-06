@@ -57,4 +57,10 @@ public interface SortService {
      */
     List<Sort> list(ArticleType articleType);
 
+    /**
+     * 根绝分类ID查询分类信息，如果ID为空，则查询一级分类
+     * @return 分类信息
+     * @param id 分类ID
+     */
+    List<Sort> listWithId(Integer id);
 }

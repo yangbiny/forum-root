@@ -20,14 +20,12 @@ import cn.pzhu.forum.utils.ForumUtils;
 import com.google.zxing.WriterException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -77,13 +75,18 @@ public class UserContentController {
      */
     @RequestMapping("/user/article/editor")
     public String editor(HttpSession session) {
-
         log.info("cn.pzhu.forum.controller.ArticleController.editor-编辑博客前的准备");
-
-        List<Sort> list = sortService.list();
-
+        List<Sort> list = sortService.listWithId(null);
+        if(CollectionUtils.isEmpty(list)){
+            list = Collections.emptyList();
+        }else {
+            List<Sort> sorts = sortService.listWithId(list.get(0).getId());
+            if(CollectionUtils.isEmpty(sorts)){
+                sorts = null;
+            }
+            session.setAttribute("levelTwo",sorts);
+        }
         session.setAttribute("sortList", list);
-
         return "articleEditor";
     }
 

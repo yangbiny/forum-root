@@ -34,6 +34,9 @@
                 <select id="sortId" name="sort" style="margin-left:76px;width: 90%;height: 40px;font-size: 20px">
                     <option th:each="sort:${session.sortList}" th:value="${sort.id}" th:text="${sort.name}"></option>
                 </select>
+                <select th:if="${session.levelTwo != null}" id="levelTow" name="sort" style="margin-left:76px;width: 90%;height: 40px;font-size: 20px">
+                    <option th:each="sort:${session.levelTwo}" th:value="${sort.id}" th:text="${sort.name}"></option>
+                </select>
             </h1>
         </header>
         <br>
