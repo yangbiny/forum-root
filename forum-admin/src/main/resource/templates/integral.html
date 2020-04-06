@@ -61,8 +61,8 @@
                 <li><a href="/admin/school"> <i class="icon-padnote"></i>学院信息管理与维护</a>
                 <li><a href="/admin/major"> <i class="icon-padnote"></i>专业信息管理与维护</a>
                 <li><a href="/admin/sort"> <i class="icon-padnote"></i>分类信息管理与维护</a>
-                <li  class="active"><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
-                <li><a href="/admin/integral"> <i class="icon-padnote"></i>用户积分信息</a>
+                <li><a href="/admin/article"> <i class="icon-padnote"></i>所有文章</a>
+                <li  class="active"><a href="/admin/integral"> <i class="icon-padnote"></i>用户积分信息</a>
             </ul>
 
         </nav>
@@ -70,14 +70,14 @@
             <!-- Page Header-->
             <header class="page-header">
                 <div class="container-fluid">
-                    <h2 class="no-margin-bottom">文章列表</h2>
+                    <h2 class="no-margin-bottom">积分管理</h2>
                 </div>
             </header>
             <!-- Breadcrumb-->
             <div class="breadcrumb-holder container-fluid">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Article</li>
+                    <li class="breadcrumb-item active">Integral</li>
                 </ul>
             </div>
             <section class="tables">
@@ -96,27 +96,27 @@
                                             <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>文章标题</th>
-                                                <th>文章作者</th>
+                                                <th>用户ID</th>
+                                                <th>用户总积分</th>
                                                 <th align="right">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody  id="articleList">
-                                            <tr th:each="article:${articleList}">
+                                            <tr th:each="integral:${integralList}">
                                                 <th scope="row" style="width: 20px;height:20px;overflow: hidden;"
-                                                    th:text="${articleStat.count}">
+                                                    th:text="${integralStat.count}">
                                                 </th>
                                                 <td>
                                                     <div style="width: 200px;height:20px;overflow: hidden;"
-                                                         th:text="${article.title}">
+                                                         th:text="${integral.userId}">
                                                     </div>
                                                 </td>
                                                 <td style="width: 140px;height:20px;overflow: hidden;"
-                                                    th:text="${article.userName}">
+                                                    th:text="${integral.number}">
                                                 </td>
                                                 <td style="width: 40%;height:20px;overflow: hidden;" align="right">
                                                     <button class="btn btn-sm" data-toggle="modal"
-                                                            th:onclick="|showArticle(${article.id})|">预览
+                                                            th:onclick="|showArticle(${integral.userId})|">查看积分明细
                                                     </button>
 
                                                     <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade"
@@ -136,25 +136,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <button class="btn btn-danger small" th:if="${article.status == 0}">
-                                                        待审核
-                                                    </button>
-                                                    <button class="btn btn-danger small" th:if="${article.status == -1}">
-                                                        审核未通过
-                                                    </button>
-                                                    <button class="btn btn-danger small" th:if="${article.status == 1}">
-                                                        正常
-                                                    </button>
-                                                    <button class="btn btn-danger small" th:if="${article.status == 2}">
-                                                        已删除
-                                                    </button>
-                                                    <button class="btn btn-danger small" th:if="${article.top == 1}">
-                                                        已置顶
-                                                    </button>
-                                                    <button class="btn btn-danger small" th:if="${article.top == 0}">
-                                                        未置顶
-                                                    </button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -163,7 +144,7 @@
                                                         <ul class="pagination justify-content-center" id="numberOfArticle">
                                                             <li class="page-item"
                                                                 th:if="${hasMore == true}">
-                                                                <button class="btn btn-default" th:onclick="|showArticleList(${nextStart})|">下一页</button>
+                                                                <button class="btn btn-default" th:onclick="|queryUserIntegral(${nextStart})|">下一页</button>
                                                             </li>
 
                                                         </ul>
@@ -197,6 +178,6 @@
         th:src="@{/admin/vendor/jquery-validation/jquery.validate.min.js}"></script>
 <!-- Main File-->
 <script src="../static/admin/js/front.js" th:src="@{/admin/js/front.js}"></script>
-<script src="../static/admin/js/table-functionList.js" th:src="@{/admin/js/table-functionList.js}"></script>
+<script src="../static/admin/js/integralFunctionList.js" th:src="@{/admin/js/integralFunctionList.js}"></script>
 </body>
 </html>

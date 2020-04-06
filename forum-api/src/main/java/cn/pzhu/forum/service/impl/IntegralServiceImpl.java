@@ -12,6 +12,8 @@ import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author impassivey
  */
@@ -78,7 +80,6 @@ public class IntegralServiceImpl implements IntegralService {
     if (!EnumUtils.isValidEnum(IntegralType.class, integralType)) {
       throw new IntegralException("非法的积分类型：%s", integralType);
     }
-
     // 添加积分的信息
     IntegralItemDO integralItemDO = new IntegralItemDO();
     integralItemDO.setIntegralType(integralType);
@@ -92,4 +93,9 @@ public class IntegralServiceImpl implements IntegralService {
     Integer res = integralDao.updateIntegral(userId, -integral);
     return res != null && res > 0;
   }
+
+    @Override
+    public List<IntegralDO> findAllUserIntegralByAdmin(int start, int limit) {
+        return integralDao.queryUserIntegralByAdmin(start,limit);
+    }
 }

@@ -2,14 +2,10 @@ package cn.pzhu.forum.dao;
 
 import cn.pzhu.forum.entity.IntegralDO;
 import cn.pzhu.forum.entity.IntegralItemDO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author impassivey
@@ -64,5 +60,7 @@ public interface IntegralDao {
   })
   IntegralDO find(@Param("userId") String userId);
 
-
+  @Select("select id,userId,num from integral limit #{start},#{limit}")
+  @ResultMap(value = {"integral"})
+  List<IntegralDO> queryUserIntegralByAdmin(@Param("start") int start, @Param("limit") int limit);
 }
