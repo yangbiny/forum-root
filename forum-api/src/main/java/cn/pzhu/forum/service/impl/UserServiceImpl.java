@@ -8,9 +8,11 @@ import cn.pzhu.forum.entity.User;
 import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Utils;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +128,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUserInfo(UserInfo userInfo) {
 
         log.info("cn.pzhu.forum.service.impl.UserServiceImpl.updateUserInfo-更新用户信息-入参-" +
-            "userInfo = {}", userInfo.toString());
+                "userInfo = {}", userInfo.toString());
 
         boolean b = userDao.updateUserInfo(userInfo);
 
@@ -174,5 +176,11 @@ public class UserServiceImpl implements UserService {
         UserInfo byName = userInfoDao.getByName(userName);
 
         return byName == null;
+    }
+
+    @Override
+    public UserInfo queryUserById(String userId) {
+        UserInfo userInfo = userInfoDao.get(userId);
+        return userInfo;
     }
 }

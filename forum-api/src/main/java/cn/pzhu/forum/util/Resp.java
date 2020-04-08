@@ -32,6 +32,12 @@ public class Resp<T> {
     this.data = data;
   }
 
+  public Resp(RespStatus status) {
+    this.status = status.code;
+    this.message = status.message;
+    this.data = null;
+  }
+
   @Getter
   public enum RespStatus {
 
@@ -41,13 +47,18 @@ public class Resp<T> {
     INTERNAL_ERROR(500, "内部错误"),
 
     /**
+     * 内部错误
+     */
+    ILLEGAL_PARAM(400, "内部错误"),
+
+    /**
      * 成功
      */
     SUCCESS(200, "成功");
 
-    private Integer code;
+    private final Integer code;
 
-    private String message;
+    private final String message;
 
     RespStatus(Integer code, String message) {
       this.code = code;

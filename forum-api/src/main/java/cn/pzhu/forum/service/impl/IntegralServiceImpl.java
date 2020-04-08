@@ -98,4 +98,9 @@ public class IntegralServiceImpl implements IntegralService {
     public List<IntegralDO> findAllUserIntegralByAdmin(int start, int limit) {
         return integralDao.queryUserIntegralByAdmin(start,limit);
     }
+
+    @Override
+    public List<IntegralItemDO> queryIntegralItemByUserId(String userId, Integer start, Integer limit) {
+      return integralDao.queryIntegralItemByUserId(userId,start,limit);
+    }
 }
