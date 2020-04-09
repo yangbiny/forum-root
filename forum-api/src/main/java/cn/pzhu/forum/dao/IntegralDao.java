@@ -75,4 +75,12 @@ public interface IntegralDao {
             @Result(column = "time", property = "time")
     })
     List<IntegralItemDO> queryIntegralItemByUserId(@Param("userId") String userId, @Param("start") Integer start, @Param("limit") Integer limit);
+
+    @Select("select id,userId,num from integral where id = #{id}")
+    @ResultMap(value = {"integral"})
+    IntegralDO findById(@Param("id") String integralId);
+
+    @Select("select id,userId,num from integral where userId like #{userId}")
+    @ResultMap(value = {"integral"})
+    List<IntegralDO> queryIntegralByUserId(@Param("userId") String userId);
 }

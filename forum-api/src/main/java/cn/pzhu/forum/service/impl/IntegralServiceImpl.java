@@ -9,9 +9,11 @@ import cn.pzhu.forum.entity.IntegralItemDO;
 import cn.pzhu.forum.service.IntegralService;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,7 +102,20 @@ public class IntegralServiceImpl implements IntegralService {
     }
 
     @Override
-    public List<IntegralItemDO> queryIntegralItemByUserId(String userId, Integer start, Integer limit) {
-      return integralDao.queryIntegralItemByUserId(userId,start,limit);
+    public List<IntegralItemDO> queryIntegralItemByIntegralId(String integralId, Integer start, Integer limit) {
+       IntegralDO integralDO =  integralDao.findById(integralId);
+       if(integralDO == null){
+         return Collections.emptyList();
+       }
+      return integralDao.queryIntegralItemByUserId(integralDO.getUserId(),start,limit);
     }
+
+  @Override
+  public List<IntegralDO> queryIntegralItemByUserId(String userId) {
+    if(StringUtils.isEmpty(userId)){
+      return Collections.emptyList();
+    }
+    userId = "%"+userId+"%";
+    return integralDao.queryIntegralByUserId(userId);
+  }
 }

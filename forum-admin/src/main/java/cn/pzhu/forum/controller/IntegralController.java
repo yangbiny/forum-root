@@ -4,7 +4,6 @@ import cn.pzhu.forum.controller.vo.IntegralItemVo;
 import cn.pzhu.forum.controller.vo.IntegralVo;
 import cn.pzhu.forum.entity.IntegralDO;
 import cn.pzhu.forum.entity.IntegralItemDO;
-import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.IntegralService;
 import cn.pzhu.forum.service.UserService;
 import cn.pzhu.forum.util.Resp;
@@ -40,7 +39,7 @@ public class IntegralController {
     @GetMapping("integral")
     public String integral(Model model) {
         int start = 0;
-        int limit = 1;
+        int limit = 24;
         List<IntegralDO> integralDOS = integralService.findAllUserIntegralByAdmin(start, limit);
         if (CollectionUtils.isEmpty(integralDOS)) {
             integralDOS = Collections.emptyList();
@@ -61,25 +60,43 @@ public class IntegralController {
             @RequestParam(required = false, defaultValue = "24") Integer limit
     ) {
         List<IntegralDO> integral = integralService.findAllUserIntegralByAdmin(start, limit);
-        return new Resp<>(convertToIntegralVoList(integral));
+        List<IntegralVo> integralVos = convertToIntegralVoList(integral);
+        Resp<List<IntegralVo>> listResp = new Resp<>(integralVos);
+        if(integralVos.size() == limit){
+            listResp.setHasMore(true);
+            listResp.setNextStart(start+limit);
+        }
+        return listResp;
     }
 
     @GetMapping("integral/user/list/")
     @ResponseBody
     public Resp<List<IntegralItemVo>> queryUserIntegralItemByUserId(
-            @RequestParam String userId,
+            @RequestParam String integralId,
             @RequestParam(required = false, defaultValue = "0") Integer start,
-            @RequestParam(required = false, defaultValue = "24") Integer limit
+            @RequestParam(required = false, defaultValue = "10") Integer limit
     ){
-        if(StringUtils.isEmpty(userId)){
+        if(StringUtils.isEmpty(integralId)){
             return new Resp<>(Resp.RespStatus.INTERNAL_ERROR);
         }
-        UserInfo userInfo = userService.queryUserById(userId);
-        if(userInfo == null){
-            return new Resp<>(Resp.RespStatus.INTERNAL_ERROR);
+        List<IntegralItemDO> integralItemDOList = integralService.queryIntegralItemByIntegralId(integralId,start,limit);
+        List<IntegralItemVo> integralItemVos = convertToIntegralItemVoList(integralItemDOList);
+        Resp<List<IntegralItemVo>> listResp = new Resp<>(integralItemVos);
+        if(integralItemVos.size() == limit){
+            listResp.setHasMore(true);
+            listResp.setNextStart(start+limit);
         }
-        List<IntegralItemDO> integralItemDOList = integralService.queryIntegralItemByUserId(userId,start,limit);
-        return new Resp<>(convertToIntegralItemVoList(integralItemDOList));
+        return listResp;
+    }
+
+    @ResponseBody
+    @GetMapping("integral/by_search/")
+    public Resp<List<IntegralVo>> queryByUserId(
+            @RequestParam String userId
+    ){
+        List<IntegralDO> integralDOS = integralService.queryIntegralItemByUserId(userId);
+        List<IntegralVo> integralVos = convertToIntegralVoList(integralDOS);
+        return new Resp<>(integralVos);
     }
 
     private List<IntegralItemVo> convertToIntegralItemVoList(List<IntegralItemDO> integralItemDOList) {
@@ -119,6 +136,7 @@ public class IntegralController {
             return null;
         }
         IntegralVo integralVo = new IntegralVo();
+        integralVo.setId(integralDO.getId());
         integralVo.setNumber(integralDO.getNum());
         integralVo.setUserId(integralDO.getUserId());
         return integralVo;

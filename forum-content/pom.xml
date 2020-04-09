@@ -63,17 +63,6 @@
             <groupId>cn.pzhu.forum</groupId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- 修改后立即生效，热部署 -->
-        <dependency>
-            <artifactId>springloaded</artifactId>
-            <groupId>org.springframework</groupId>
-            <version>1.2.8.RELEASE</version>
-        </dependency>
-        <dependency>
-            <artifactId>spring-boot-devtools</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>
         <!-- 数据库连接池 Mybatis等相关支持 -->
         <dependency>
             <artifactId>mysql-connector-java</artifactId>

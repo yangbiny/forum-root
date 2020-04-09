@@ -12,6 +12,8 @@ public class IntegralVo implements Serializable {
 
     private static final long serialVersionUID = -4081905292795912641L;
 
+    private Integer id;
+
     private String userId;
 
     private Integer number;

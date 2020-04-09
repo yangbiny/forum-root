@@ -87,7 +87,7 @@
                             <div class="card">
                                 <div class="card-header d-flex align-items-center">
                                     <h3 class="h4">文章管理</h3>
-                                    <input type="text" id="articleText" placeholder="请输入用户名称或ID查询" class="input-group-text"/>
+                                    <input type="text" id="integralText" placeholder="请输入用户ID" class="input-group-text"/>
                                     <button class="btn btn-default" th:onclick="|selectUserIntegralForAdminList(0)|">搜索</button>
                                 </div>
                                 <div class="card-body">
@@ -116,7 +116,7 @@
                                                 </td>
                                                 <td style="width: 40%;height:20px;overflow: hidden;" align="right">
                                                     <button class="btn btn-sm" data-toggle="modal"
-                                                            th:onclick="|selectIntegralItem(${integral.userId},0)|">查看积分明细
+                                                            th:onclick="|selectIntegralItem(${integral.id},0)|">查看积分明细
                                                     </button>
                                                 </td>
                                             </tr>
@@ -147,6 +147,21 @@
                                                                 aria-hidden="true">&times;</span></button>
                                                     </div>
                                                     <div class="modal-body" id="modal-body">
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr class="col-1">
+                                                                <th>#</th>
+                                                                <th>用户ID</th>
+                                                                <th>积分来源</th>
+                                                                <th>积分类型</th>
+                                                                <th>积分数量</th>
+                                                                <th>获取时间</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody  id="integralItem">
+
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
