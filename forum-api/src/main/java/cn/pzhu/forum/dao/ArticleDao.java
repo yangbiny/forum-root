@@ -109,7 +109,7 @@ public interface ArticleDao {
      * @param id 博客ID
      * @return 删除状态
      */
-    @Update("update article status = 2 where id = #{id}")
+    @Update("update article set status = 2 where id = #{id}")
     boolean delete(@Param("id") Integer id);
 
 

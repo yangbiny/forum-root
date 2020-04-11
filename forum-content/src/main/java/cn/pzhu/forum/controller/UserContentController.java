@@ -14,6 +14,7 @@ import cn.pzhu.forum.service.IntegralService;
 import cn.pzhu.forum.service.ReplyService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.service.UserInfoService;
+import cn.pzhu.forum.util.Resp;
 import cn.pzhu.forum.util.ResultData;
 import cn.pzhu.forum.util.Utils;
 import cn.pzhu.forum.utils.ForumUtils;
@@ -34,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -90,6 +92,14 @@ public class UserContentController {
         return "articleEditor";
     }
 
+    @ResponseBody
+    @GetMapping("/user/sort/level/")
+    public Resp<List<Sort>> querySortBySortId(@RequestParam Integer sortId){
+        List<Sort> sorts = sortService.listWithId(sortId);
+        return new Resp<>(sorts);
+    }
+
+
     /**
      * 添加博客
      *
@@ -101,11 +111,18 @@ public class UserContentController {
      * @return 博客添加成功页面信息
      */
     @RequestMapping("/user/article/editor/add")
-    public String add(String context, String title, String body, int sort, Model model) {
+    public String add(String context,
+                      String title,
+                      String body,
+                      int sort,
+                      @RequestParam(required = false) Integer level,
+                      Model model) {
 
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
             "title = {},sort = {}", title, sort);
-
+        if (level != null){
+            sort = level;
+        }
         // 获得用户信息
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
         if (userId == null) {
