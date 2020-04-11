@@ -39,7 +39,6 @@
 <div class="page-container">
     <div class="container">
         <div class="row">
-
             <!-- start of page content -->
             <div class="span8 page-content">
 
@@ -60,7 +59,6 @@
             </div>
             <!-- end of page content -->
 
-
             <!-- start of sidebar -->
             <aside class="span4 page-sidebar">
                 <section class="widget">
@@ -72,6 +70,28 @@
                                    th:text="${sort.name}"></a></li>
 
                         </ul>
+                    </div>
+                </section>
+                <section class="charts">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Line Charts-->
+                            <div class="col-lg-4">
+                                <div class="line-chart-example card no-margin-bottom">
+                                    <div class="card-header d-flex align-items-center">
+                                        <h3 class="h4">讨论/点赞分类分布图</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="lineChartExample1"></canvas>
+                                    </div>
+                                </div>
+                                <div class="line-chart-example card">
+                                    <div class="card-body">
+                                        <canvas id="lineChartExample2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </aside>
@@ -95,6 +115,10 @@
 <script type='text/javascript' th:src="@{/js/jquery.form.js}" src='../static/js/jquery.form.js'></script>
 <script type='text/javascript' th:src="@{/js/jquery.validate.min.js}"
         src='../static/js/jquery.validate.min.js'></script>
+<script src="../static/vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+<script src="../static/vendor/jquery-validation/jquery.validate.min.js"
+        th:src="@{/vendor/jquery-validation/jquery.validate.min.js}"></script>
+<script src="../static/js/charts-custom.js" th:src="@{/js/charts-custom.js}"></script>
 <script type='text/javascript' th:src="@{/js/custom.js}" src='../static/js/custom.js'></script>
 
 </body>

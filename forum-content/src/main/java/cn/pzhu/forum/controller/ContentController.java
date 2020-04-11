@@ -5,17 +5,21 @@ import cn.pzhu.forum.entity.Article;
 import cn.pzhu.forum.entity.Sort;
 import cn.pzhu.forum.entity.UserInfo;
 import cn.pzhu.forum.service.ArticleService;
+import cn.pzhu.forum.service.ForumInfoStatisticsService;
 import cn.pzhu.forum.service.SortService;
 import cn.pzhu.forum.service.UserInfoService;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 用户帖子管理
@@ -33,6 +37,9 @@ public class ContentController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Resource
+    private ForumInfoStatisticsService forumInfoStatisticsService;
 
     /**
      * 查询所有的文章信息
@@ -144,6 +151,56 @@ public class ContentController {
         return "index";
     }
 
+    @ResponseBody
+    @GetMapping("/charts/count/")
+    public Map<String, List<?>> countSort() {
+        Map<String, List<?>> map = new HashMap<>();
+
+        // 点赞次数
+        Map<String, Integer> maxRecordArticle = forumInfoStatisticsService.maxRecordArticle();
+
+        Set<String> strings = maxRecordArticle.keySet();
+        List<String> keySet = new ArrayList<>(strings);
+        map.put("sortName", keySet);
+
+        List<Integer> sortVal = new ArrayList<>();
+
+        for (String string : strings) {
+            Integer integer = maxRecordArticle.get(string);
+            sortVal.add(integer);
+        }
+        map.put("sortCount", sortVal);
+
+        // 讨论次数
+        Map<String, Integer> maxReplyArticle = forumInfoStatisticsService.maxReplyArticle();
+        Set<String> keySet1 = maxReplyArticle.keySet();
+        List<String> k = new ArrayList<>(keySet1);
+
+        map.put("replySortName", k);
+
+        List<Integer> sortVal1 = new ArrayList<>();
+
+        for (String string : keySet1) {
+            Integer integer = maxReplyArticle.get(string);
+            sortVal1.add(integer);
+        }
+        map.put("replySortCount", sortVal1);
+
+        // 统计注册学员
+        Map<String, Integer> registerUserCount = forumInfoStatisticsService.registerUserCount();
+        Set<String> keySet2 = registerUserCount.keySet();
+        List<String> k2 = new ArrayList<>(keySet2);
+
+        map.put("schoolName", k2);
+        List<Integer> sortVal2 = new ArrayList<>();
+
+        for (String string : keySet2) {
+            Integer integer = registerUserCount.get(string);
+            sortVal2.add(integer);
+        }
+        map.put("userCount", sortVal2);
+        return map;
+    }
 
 }
 
