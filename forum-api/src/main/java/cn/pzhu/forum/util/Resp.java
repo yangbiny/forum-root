@@ -38,6 +38,14 @@ public class Resp<T> {
     this.data = null;
   }
 
+  public Resp(Boolean hasMore,Integer nextStart,T data) {
+    this.status = RespStatus.SUCCESS.code;
+    this.message = RespStatus.SUCCESS.message;
+    this.data = data;
+    this.hasMore = hasMore;
+    this.nextStart = nextStart;
+  }
+
   @Getter
   public enum RespStatus {
 
@@ -49,7 +57,7 @@ public class Resp<T> {
     /**
      * 内部错误
      */
-    ILLEGAL_PARAM(400, "内部错误"),
+    ILLEGAL_PARAM(400, "参数错误"),
 
     /**
      * 成功

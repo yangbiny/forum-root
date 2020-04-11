@@ -59,3 +59,66 @@ function downFiles(item) {
   });
 
 }
+
+var userId = null;
+function selectUserIntegralItem(start) {
+  userId = $("#userId").text();
+  if (start === undefined){
+    start = 0;
+  }
+  $.ajax({
+    url: "/integral/user/list/by_userId/?start=" + start+"&userId="+userId,
+    type: "GET",
+    success: function (response) {
+      if(response.status !== 200){
+        alert(response.message)
+      }
+      fillIntegralItem(userId,response);
+    }
+  });
+}
+
+function fillIntegralItem(userId,response) {
+  $("#myIntegralModel").modal('show')
+  $("#integralItem").empty();
+  var index = 0;
+  var html = "";
+  data = response.data;
+  for (let dataKey in data){
+    index += 1
+    da = data[dataKey]
+    html += "<tr>" +
+        "<th>"+index+"</th>" +
+        "<td>" +da.userId+"</td>" +
+        "<td>" +da.integralType+"</td>" +
+        "<td>"+da.type+"</td>"+
+        "<td>"+da.num+"</td>" +
+        "<td>"+new Date(da.time)+"</td>" +
+        "</tr>";
+  }
+  console.log(response)
+  if(response.hasMore){
+    html += "<tr>" +
+        "<td colspan='6' align='center'>" +
+        "<button class='btn btn-success' onclick='selectUserIntegralItem("+response.nextStart+")'>下一页</button>" +
+        "</td>" +
+        "</tr>";
+  }
+  $("#integralItem").html(html)
+}
+
+
+function selectUserIntegralForAdminList(start) {
+
+  $.ajax({
+    url: "/admin/integral/by_search/?userId=" + $("#integralText").val(),
+    type: "GET",
+    success: function (response) {
+      if(response.status !== 200){
+        alert(response.message)
+      }
+      console.log(response)
+      fillUserIntegral(response)
+    }
+  });
+}

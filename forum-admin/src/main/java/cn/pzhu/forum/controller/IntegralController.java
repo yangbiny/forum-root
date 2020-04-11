@@ -94,7 +94,7 @@ public class IntegralController {
     public Resp<List<IntegralVo>> queryByUserId(
             @RequestParam String userId
     ){
-        List<IntegralDO> integralDOS = integralService.queryIntegralItemByUserId(userId);
+        List<IntegralDO> integralDOS = integralService.queryIntegralByUserId(userId);
         List<IntegralVo> integralVos = convertToIntegralVoList(integralDOS);
         return new Resp<>(integralVos);
     }

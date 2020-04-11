@@ -111,11 +111,16 @@ public class IntegralServiceImpl implements IntegralService {
     }
 
   @Override
-  public List<IntegralDO> queryIntegralItemByUserId(String userId) {
+  public List<IntegralDO> queryIntegralByUserId(String userId) {
     if(StringUtils.isEmpty(userId)){
       return Collections.emptyList();
     }
     userId = "%"+userId+"%";
     return integralDao.queryIntegralByUserId(userId);
+  }
+
+  @Override
+  public List<IntegralItemDO> queryIntegralItemByUserId(String userId, Integer start, Integer limit) {
+    return integralDao.queryIntegralItemByUserId(userId,start,limit);
   }
 }

@@ -57,9 +57,18 @@ public interface IntegralService {
     List<IntegralItemDO> queryIntegralItemByIntegralId(String userId, Integer start, Integer limit);
 
     /**
-     * 根据用户ID查询信息
+     * 模糊查询。根据用户ID查询信息
      * @param userId 用户ID
      * @return 积分信息
      */
-    List<IntegralDO> queryIntegralItemByUserId(String userId);
+    List<IntegralDO> queryIntegralByUserId(String userId);
+
+    /**
+     * 查询用户详细的积分信息
+     * @param userId 用户ID
+     * @param start 开始查询的位置
+     * @param limit 查询的数量
+     * @return 积分信息
+     */
+    List<IntegralItemDO> queryIntegralItemByUserId(String userId, Integer start, Integer limit);
 }
