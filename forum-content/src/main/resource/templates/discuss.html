@@ -44,7 +44,10 @@
                 <article th:each="discuss:${discussList}" class=" type-post format-standard hentry clearfix">
 
                     <input type="hidden" id="discussId" th:value="${discuss.id}">
-                    <h1 class="post-title" th:text="${discuss.title}"></h1>
+                    <a th:href="@{'/discuss/item/?discussId='+${discuss.id}}">
+                        <h1 class="post-title" href="#" th:text="${discuss.title}">
+                        </h1>
+                    </a>
 
                     <div class="post-meta clearfix">创建时间:
                         <span class="date" th:text="${discuss.createTime}"></span>
@@ -92,7 +95,8 @@
                         <th>
                             <label for="discussTitle">求助标题</label>
                         </th>
-                        <th><input id="discussTitle" class="input-common" type="text" placeholder="请输入求助的标题" name="title"></th>
+                        <th><input id="discussTitle" class="input-common" type="text" placeholder="请输入求助的标题"
+                                   name="title"></th>
                     </tr>
                     <tr class="col-1">
                         <th>
@@ -100,16 +104,15 @@
                         </th>
                         <th>
                             <textarea id="discussContent" class="input-common" cols="100" rows="5"
-                                      name="content" placeholder="请输入求助的内容">
-
-                            </textarea>
+                                      name="content" placeholder="请输入求助的内容"></textarea>
                         </th>
                     </tr>
                     <tr class="col-1">
                         <th>
                             <label for="discussIntegral">奖励积分</label>
                         </th>
-                        <th><input id="discussIntegral" type="number" style="width: 100%" class="input-common" max="10" min="1" placeholder="奖励积分最大为10" name="title"></th>
+                        <th><input id="discussIntegral" type="number" style="width: 100%" class="input-common" max="10"
+                                   min="1" placeholder="奖励积分最大为10" name="title"></th>
                     </tr>
                     <tr class="col-1">
                         <th colspan="2" text-align="center">
@@ -132,15 +135,15 @@
         let title = $("#discussTitle").val();
         let content = $("#discussContent").val();
         let integral = $("#discussIntegral").val();
-        let data = {"title":title,"content":content,"integral":integral};
+        let data = {"title": title, "content": content, "integral": integral};
         $.ajax({
             url: "/user/discuss/add/",
             type: "post",
-            dataType : 'json',
-            contentType : 'application/json',
-            data:JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
             success: function (response) {
-                if(response.status !== 200){
+                if (response.status !== 200) {
                     alert(response.message)
                 }
                 alert("成功")

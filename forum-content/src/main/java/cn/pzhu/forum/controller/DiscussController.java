@@ -1,8 +1,10 @@
 package cn.pzhu.forum.controller;
 
 import cn.pzhu.forum.biz.discuss.application.DiscussCmd;
+import cn.pzhu.forum.biz.discuss.application.DiscussReplyCmd;
 import cn.pzhu.forum.biz.discuss.service.DiscussService;
 import cn.pzhu.forum.controller.form.DiscussForm;
+import cn.pzhu.forum.controller.form.DiscussReplyForm;
 import cn.pzhu.forum.util.Resp;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -43,6 +45,33 @@ public class DiscussController {
         }
         Boolean status = discussService.addDiscuss(toDiscussCmd(form),principal.toString());
         return new Resp<>(status);
+    }
+
+    @PostMapping("reply/")
+    public Resp<Boolean> discussReply(
+            @RequestBody @Valid DiscussReplyForm form,
+            Errors errors){
+        if(errors.hasErrors()){
+            return new Resp<>(Resp.RespStatus.ILLEGAL_PARAM,errors.getAllErrors().get(0).getDefaultMessage());
+        }
+        Subject subject = SecurityUtils.getSubject();
+        if(subject == null){
+            return new Resp<>(Resp.RespStatus.ILLEGAL_PARAM,"未登录");
+        }
+        Object principal = subject.getPrincipal();
+        if(principal == null){
+            return new Resp<>(Resp.RespStatus.ILLEGAL_PARAM,"未登录");
+        }
+        Boolean status = discussService.addDiscussReply(toDiscussReplyCmd(form,principal.toString()));
+        return new Resp<>(status);
+    }
+
+    private DiscussReplyCmd toDiscussReplyCmd(DiscussReplyForm form, String userId) {
+        DiscussReplyCmd discussReplyCmd = new DiscussReplyCmd();
+        discussReplyCmd.setDiscussId(form.getDiscussId());
+        discussReplyCmd.setContent(form.getContent());
+        discussReplyCmd.setUserId(userId);
+        return discussReplyCmd;
     }
 
     private DiscussCmd toDiscussCmd(DiscussForm form) {
