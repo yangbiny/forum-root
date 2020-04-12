@@ -46,4 +46,15 @@ public interface DiscussDao {
     @Insert("insert into discuss_info set userId = #{userId},content = #{content}," +
             "create_time = #{createTime},discuss_id = #{discussId},status = #{status}")
     Boolean addDiscussReply(DiscussItemDO toDiscussReply);
+
+    @Select("select id,userId,create_time,content,status,discuss_id from discuss_info " +
+            "where id = #{id}")
+    @ResultMap("discussItem")
+    DiscussItemDO findDiscussItemById(@Param("id") Integer discussItemId);
+
+    @Update("update discuss set status = #{status} where id = #{id}")
+    Boolean updateDiscussStatus(@Param("id") Integer id, @Param("status") Integer status);
+
+    @Update("update discuss_info set status = #{status} where id = #{id}")
+    Boolean updateDiscussItemStatus(@Param("id") Integer id, @Param("status") Integer status);
 }

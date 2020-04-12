@@ -3,10 +3,15 @@ package cn.pzhu.forum.biz.discuss.service;
 import cn.pzhu.forum.biz.discuss.application.DiscussCmd;
 import cn.pzhu.forum.biz.discuss.application.DiscussReplyCmd;
 import cn.pzhu.forum.content.DiscussStatus;
+import cn.pzhu.forum.content.IntegralType;
 import cn.pzhu.forum.dao.DiscussDao;
 import cn.pzhu.forum.entity.DiscussDO;
 import cn.pzhu.forum.entity.DiscussItemDO;
+import cn.pzhu.forum.entity.UserInfo;
+import cn.pzhu.forum.service.IntegralService;
+import cn.pzhu.forum.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -21,12 +26,18 @@ public class DiscussService {
     @Resource
     private DiscussDao discussDao;
 
-    public List<DiscussDO> listDiscuss(Integer start,Integer limit){
-        if(start == null || limit == null){
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private IntegralService integralService;
+
+    public List<DiscussDO> listDiscuss(Integer start, Integer limit) {
+        if (start == null || limit == null) {
             start = 0;
             limit = 10;
         }
-        return discussDao.listDiscuss(start,limit);
+        return discussDao.listDiscuss(start, limit);
     }
 
     public Boolean addDiscuss(DiscussCmd cmd, String principal) {
@@ -46,7 +57,7 @@ public class DiscussService {
     }
 
     public List<DiscussItemDO> queryDiscussItem(Integer discussId, Integer start, Integer limit) {
-        return discussDao.listDiscussItem(discussId,start,limit);
+        return discussDao.listDiscussItem(discussId, start, limit);
     }
 
     public DiscussDO findDiscussById(Integer discussId) {
@@ -65,5 +76,9 @@ public class DiscussService {
         discussItemDO.setStatus(DiscussStatus.INIT.getCode());
         discussItemDO.setCreateTime(new Date());
         return discussItemDO;
+    }
+
+    public DiscussItemDO findDiscussItemById(Integer discussItemId) {
+        return discussDao.findDiscussItemById(discussItemId);
     }
 }

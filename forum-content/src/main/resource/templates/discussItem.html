@@ -84,6 +84,8 @@
                                                   th:text="${discussItem.userInfo.nickName}"></span>
                                         </cite>
                                         :<span th:text="${discussItem.discussItemDO.content}"></span>
+                                        <button th:if="${discuss.status == 0}" th:onclick="|adoption(${discussItem.discussItemDO.id})|">采纳</button>
+                                        <span th:if="${discussItem.discussItemDO.status == 1}">已采纳</span>
                                     </h5>
                                 </div>
                             </article><!-- end of comment -->
