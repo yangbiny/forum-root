@@ -23,15 +23,11 @@
                 <div class="menu-top-menu-container">
                     <ul class="clearfix" id="menu-top-menu">
                         <li><a href="/index">首页</a></li>
-                        <li><a href="/article/list/back">后台</a></li>
-                        <li><a href="/article/list/front">前端</a></li>
-                        <li><a href="/article/list/basic">基础</a></li>
-                        <li><a href="/files/list/">下载文件列表</a></li>
-                        <li><a href="/user/article/editor">发起讨论</a></li>
+                        <li><a href="/article/list/back">文章</a></li>
+                        <li><a href="/files/list/">資源中心</a></li>
+                        <li><a href="/user/article/editor">分享</a></li>
                         <li th:if="${session.user != null}">
-
                             <a th:utext="${session.userInfo.nickName}">
-
                             </a>
                             <ul class="sub-menu">
                                 <li><a href="/user/updateInfo">修改个人信息</a></li>

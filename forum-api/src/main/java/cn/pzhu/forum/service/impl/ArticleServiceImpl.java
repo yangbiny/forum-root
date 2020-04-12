@@ -253,7 +253,7 @@ public class ArticleServiceImpl implements ArticleService {
   @Override
   public List<Article> topList(ArticleType articleType, int number) {
 
-    log.info("根据大的类别查询置顶博客列表");
+   /* log.info("根据大的类别查询置顶博客列表");
 
     List<Article> list = articlesList(articleType, number);
 
@@ -261,8 +261,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     list.stream().filter((x) -> x.getTop().equals(TopFlag.TOP.getFlag())).forEach(articles::add);
 
-    log.info("查询结果：博客数量 = {}", articles.size());
-    return articles;
+    log.info("查询结果：博客数量 = {}", articles.size());*/
+    List<Sort> sortList = sortDao.querySortWithId(articleType.getCode());
+    if(CollectionUtils.isEmpty(sortList)){
+      return Collections.emptyList();
+    }
+    List<Integer> sortIdList = sortList.stream().map(Sort::getId).collect(Collectors.toList());
+    return articleDao.queryTopListOfNumber(sortIdList,number);
   }
 
   @Override

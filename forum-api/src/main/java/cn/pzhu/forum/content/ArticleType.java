@@ -1,39 +1,30 @@
 package cn.pzhu.forum.content;
 
+import lombok.Getter;
+
 /**
  * @program: forum-root
  * @description: 文章的类别(大方向的分类)
  * @author: Impassive
  * @create: 2019-05-27 19:13
  **/
+@Getter
 public enum ArticleType {
 
 
-    BACK(1, "后台"),
-    FRONT(2, "前端"),
-    BASIC(3, "基础");
+    BACK(1, "后台",9),
+    FRONT(2, "前端",10),
+    BASIC(3, "基础",11);
 
-    private Integer type;
-    private String message;
+    private final Integer type;
+    private final String message;
 
-    ArticleType(Integer type, String message) {
+    private final Integer code;
+
+    ArticleType(Integer type, String message,Integer code) {
         this.type = type;
         this.message = message;
+        this.code = code;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

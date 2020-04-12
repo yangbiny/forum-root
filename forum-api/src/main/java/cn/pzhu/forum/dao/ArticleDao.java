@@ -219,4 +219,20 @@ public interface ArticleDao {
             + "from article where status = 0 and title like #{text} or userName like #{text} limit #{start},#{limit}")
     @ResultMap("article")
     List<Article> listWithPageFroAdminPending(@Param("text") String text, @Param("start") Integer start, @Param("limit") int limit);
+
+    @Select({
+            "<script>",
+            "select ",
+            "article.id,title,userName,time,sortId,context,contextMd,readNumber,top,principal,status ",
+            "from ",
+            "article ",
+            "where status = 0 or status = 1 and top = 1 and sortId in " ,
+            "<foreach collection='idList' item = 'id' open= '(' separator=',' close=')'>",
+            "#{id}",
+            "</foreach> " ,
+            "limit #{limit}",
+            "</script>"
+    })
+    @ResultMap("article")
+    List<Article> queryTopListOfNumber(@Param("idList") List<Integer> type, @Param("limit") int number);
 }

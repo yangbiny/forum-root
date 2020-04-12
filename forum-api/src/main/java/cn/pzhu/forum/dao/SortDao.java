@@ -72,4 +72,7 @@ public interface SortDao {
 
     @Select("select id,name,rely,number from sort where rely = #{id}")
     List<Sort> queryWithId(@Param("id") Integer id);
+
+    @Select("select id,name,rely,number from sort where id = #{id} or rely = #{id}")
+    List<Sort> querySortWithId(@Param("id") Integer type);
 }
