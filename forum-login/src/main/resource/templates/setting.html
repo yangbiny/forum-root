@@ -205,16 +205,14 @@
                 <label for="updateSchoolId">学院</label>
                 <select name="school" style="height: 40px;font-size: 16px" title="depart" id="updateSchoolId"
                         class="form-control" onchange="changeMajor(this)">
-                    <option th:each="list:${schools}" th:value="${list.id}"
-                            th:text="${list.name}"></option>
+                    <option th:each="list:${schools}" th:value="${list.id}" th:text="${list.name}"></option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="updateMajorId">专业</label>
                 <select name="major" style="height: 40px;font-size: 16px" class="form-control" title="major"
                         id="updateMajorId">
-                    <option th:each="list:${majors}" th:value="${list.id}"
-                            th:text="${list.name}"></option>
+                    <option th:each="list:${majors}" th:value="${list.id}" th:text="${list.name}"></option>
                 </select>
             </div>
             <div class="form-group">
@@ -223,8 +221,8 @@
             </div>
             <div class="form-group">
                 <label for="description">个人简介</label>
-                <input id="description" name="description" value="" class="form-control"
-                       placeholder="个人简介(可选)">
+                <input id="description" name="description" th:value="${userInfo.description}" class="form-control"
+                       placeholder="个人简介，可选">
             </div>
             <button class="form-control btn btn-success" onclick="submitForm()">提交</button>
         </div>
