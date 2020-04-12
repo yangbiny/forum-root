@@ -40,11 +40,11 @@ public class SortServiceImpl implements SortService {
         redisTemplate.expire(key, 1, TimeUnit.MILLISECONDS);
         Boolean hasKey = redisTemplate.hasKey(key);
 
-        if (hasKey != null && hasKey) {
+        /*if (hasKey != null && hasKey) {
             List<Sort> list = (List<Sort>) operations.get(key);
             log.info("从缓存查询所有的分类信息长度-list size = {}", list.size());
             return list;
-        }
+        }*/
 
         List<Sort> list = sortDao.list();
 

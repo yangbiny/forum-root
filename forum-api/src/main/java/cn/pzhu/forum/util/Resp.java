@@ -32,6 +32,11 @@ public class Resp<T> {
     this.data = data;
   }
 
+  public Resp(RespStatus status,String message) {
+    this.status = status.code;
+    this.message = message;
+  }
+
   public Resp(RespStatus status) {
     this.status = status.code;
     this.message = status.message;

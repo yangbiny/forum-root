@@ -1,0 +1,153 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- META TAGS -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELP</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" href="../static/images/favicon.png"/>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          rel="stylesheet">
+    <!-- Style Sheet-->
+    <link href="../static/style.css" rel="stylesheet" th:href="@{/style.css}"/>
+    <link href='../static/css/main5152.css?ver=1.0' id='main-css-css' media='all' rel='stylesheet'
+          th:href="@{/css/main5152.css}" type='text/css'/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        #articleBody {
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Start of Header -->
+<div th:replace="header :: header"></div>
+<!-- End of Header -->
+
+<div th:replace="header::inputFrame"></div>
+
+<!-- Start of Page Container -->
+<div class="page-container">
+    <div class="container">
+        <div class="row">
+
+            <!-- start of page content -->
+            <div class="span8 page-content">
+
+                <article th:each="discuss:${discussList}" class=" type-post format-standard hentry clearfix">
+
+                    <input type="hidden" id="discussId" th:value="${discuss.id}">
+                    <h1 class="post-title" th:text="${discuss.title}"></h1>
+
+                    <div class="post-meta clearfix">创建时间:
+                        <span class="date" th:text="${discuss.createTime}"></span>
+                        <span class="category">创建用户:
+                            <a href="#" th:text="${discuss.userId}"></a>
+                        </span>
+                        <span class="comments">奖励积分:
+                            <a href="#" th:text="${discuss.integral}"></a>
+                        </span>
+                    </div><!-- end of post meta -->
+                </article>
+            </div>
+            <!-- end of page content -->
+
+            <aside th:if="${session.user != null}" class="span4 page-sidebar">
+                <section class="widget">
+                    <button onclick="showDiscussForm()" class="btn btn-success">我也要求助</button>
+                </section>
+            </aside>
+            <!-- end of sidebar -->
+        </div>
+    </div>
+</div>
+<!-- End of Page Container -->
+
+<div th:replace="footer :: foot"></div>
+
+<a href="#top" id="scroll-top"></a>
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade"
+     id="discussFormModel" role="dialog"
+     tabindex="-1" align="left">
+    <div class="modal-dialog" role="document" style="width: 1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>创建求助信息</h2>
+                <button aria-label="Close" class="close"
+                        data-dismiss="modal"
+                        type="button"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <table class="table">
+                    <tr class="col-1">
+                        <th>
+                            <label for="discussTitle">求助标题</label>
+                        </th>
+                        <th><input id="discussTitle" class="input-common" type="text" placeholder="请输入求助的标题" name="title"></th>
+                    </tr>
+                    <tr class="col-1">
+                        <th>
+                            <label for="discussContent">求助内容</label>
+                        </th>
+                        <th>
+                            <textarea id="discussContent" class="input-common" cols="100" rows="5"
+                                      name="content" placeholder="请输入求助的内容">
+
+                            </textarea>
+                        </th>
+                    </tr>
+                    <tr class="col-1">
+                        <th>
+                            <label for="discussIntegral">奖励积分</label>
+                        </th>
+                        <th><input id="discussIntegral" type="number" style="width: 100%" class="input-common" max="10" min="1" placeholder="奖励积分最大为10" name="title"></th>
+                    </tr>
+                    <tr class="col-1">
+                        <th colspan="2" text-align="center">
+                            <button class="btn btn-success" onclick="submitHelp()">提交记录</button>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- script -->
+<script>
+    function showDiscussForm() {
+        $("#discussFormModel").modal('show')
+    }
+
+    function submitHelp() {
+        let title = $("#discussTitle").val();
+        let content = $("#discussContent").val();
+        let integral = $("#discussIntegral").val();
+        let data = {"title":title,"content":content,"integral":integral};
+        $.ajax({
+            url: "/user/discuss/add/",
+            type: "post",
+            dataType : 'json',
+            contentType : 'application/json',
+            data:JSON.stringify(data),
+            success: function (response) {
+                if(response.status !== 200){
+                    alert(response.message)
+                }
+                alert("成功")
+                window.location.reload();
+            }
+        });
+    }
+</script>
+</body>
+</html>
