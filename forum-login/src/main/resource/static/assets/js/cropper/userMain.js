@@ -160,7 +160,6 @@
                 case 'getCroppedCanvas':
                     if (result) {
                         var base = result.toDataURL(uploadedImageType);
-
                         var imgFile = dataURLtoFile(base, "-Avatar.png");
                         var xhr = new XMLHttpRequest();
                         var fd = new FormData();

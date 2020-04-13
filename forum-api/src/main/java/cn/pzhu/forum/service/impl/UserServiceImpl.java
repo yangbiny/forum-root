@@ -11,6 +11,7 @@ import cn.pzhu.forum.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
@@ -95,16 +96,15 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        path = UUID.randomUUID().toString().substring(0,5)+path;
         String paths = Utils.uploadImg(inputStream, path);
         boolean b1;
-
         if (!"".equals(paths)) {
 
             b1 = userDao.updateUserAvatar(id, paths);
             if (b1) {
                 String key = RedisKeyConstant.USER_USERINFO + id;
-                redisTemplate.expire(key, 1, TimeUnit.HOURS);
+                redisTemplate.expire(key, 1, TimeUnit.SECONDS);
                 ValueOperations operations = redisTemplate.opsForValue();
                 // 判断缓存中是否已经有了该用户的信息
                 Boolean hasKey = redisTemplate.hasKey(key);
@@ -112,15 +112,11 @@ public class UserServiceImpl implements UserService {
                 // 如果有该用户的信息，就取出来并更新，没有则放弃
                 if (hasKey != null && hasKey) {
                     UserInfo userInfo = (UserInfo) operations.get(key);
-
                     userInfo.setAvatar(paths);
-
                     operations.set(key, userInfo);
                 }
             }
-
         }
-
         return paths;
     }
 
