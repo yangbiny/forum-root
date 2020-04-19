@@ -64,9 +64,7 @@ public class ArticleServiceImpl implements ArticleService {
     article.setTime(Utils.getDate(true));
     String substring = UUID.randomUUID().toString().substring(0, 8);
     article.setPrincipal(substring); // 设置唯一的编号
-
     Integer num = articleDao.add(article);
-
     // 插入成功
     if (num > 0) {
       boolean flag = sortDao.addSortNumber(article.getSortId());

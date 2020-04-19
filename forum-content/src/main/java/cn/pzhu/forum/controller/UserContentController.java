@@ -117,7 +117,6 @@ public class UserContentController {
                       int sort,
                       @RequestParam(required = false) Integer level,
                       Model model) {
-
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
             "title = {},sort = {}", title, sort);
         if (level != null){
@@ -129,7 +128,6 @@ public class UserContentController {
             throw new RuntimeException("未登录");
         }
         UserInfo userInfo = userInfoService.get(userId);
-
         // 封装博客信息
         Article article = new Article();
         article.setContext(context); // HTML格式
@@ -140,16 +138,13 @@ public class UserContentController {
         article.setUserId(userId);
         article.setReadNumber(0);
         article.setTop(0);
-
         // 添加博客
         String principal = articleService.add(article);
-
         model.addAttribute("user", userInfoService.get(userId).getNickName());
         model.addAttribute("articlePrincipal", principal);
         model.addAttribute("title", title);
         model.addAttribute("userName", userInfo.getNickName());
         model.addAttribute("avatar", userInfo.getAvatar());
-
         return "success";
     }
 
@@ -373,15 +368,22 @@ public class UserContentController {
      * @return 博客添加成功页面信息
      */
     @RequestMapping("/user/article/editor/update")
-    public String update(Integer id, String context, String title, String body, int sort, String principal,
+    public String update(Integer id,
+                         String context,
+                         String title,
+                         String body,
+                         int sort,
+                         @RequestParam(required = false) Integer level,
+                         String principal,
                          Model model) {
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
                 "title = {},sort = {}", title, sort);
-
+        if (level != null){
+            sort = level;
+        }
         // 获得用户信息
         String userId = (String) SecurityUtils.getSubject().getPrincipal();
         UserInfo userInfo = userInfoService.get(userId);
-
         // 封装博客信息
         Article article = new Article();
         article.setId(id);
@@ -389,10 +391,8 @@ public class UserContentController {
         article.setContextMd(body);  // MarkDown格式
         article.setTitle(title);
         article.setSortId(sort);
-
         // 修改
         boolean update = articleService.update(article);
-
         model.addAttribute("user", userInfoService.get(userId).getNickName());
         model.addAttribute("articlePrincipal", principal);
         model.addAttribute("title", title);
@@ -412,14 +412,15 @@ public class UserContentController {
      */
     @RequestMapping("/user/article/editor/get")
     public String updateGet(int id, Model model, HttpSession session) {
-
         @SuppressWarnings("unchecked")
         List<Sort> sortList = (List<Sort>) session.getAttribute("sortList");
-
         if (sortList == null || sortList.size() == 0) {
-            List<Sort> list = sortService.list();
-
+            List<Sort> list = sortService.listWithId(null);
             session.setAttribute("sortList", list);
+            if(CollectionUtils.isEmpty(list)){
+                list = null;
+            }
+            session.setAttribute("levelTwo",list);
         }
         Article article = articleService.get(id);
         model.addAttribute("article", article);
