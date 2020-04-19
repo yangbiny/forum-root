@@ -490,16 +490,13 @@ public class ArticleServiceImpl implements ArticleService {
   public List<Article> similar(String title, int number) {
 
     log.info("查询相似的文章");
-
     String articleKey = RedisKeyConstant.SIMILAR_ARTICLE_LIST + title;
-
     Boolean hasKey1 = redisTemplate.hasKey(articleKey);
     ValueOperations operations1 = redisTemplate.opsForValue();
     if (hasKey1) {
       log.info("从缓存中查询相似的文章");
       return (List<Article>) operations1.get(articleKey);
     }
-
     String key = RedisKeyConstant.ARTICLE_LIST;
 
     Boolean hasKey = redisTemplate.hasKey(key);
@@ -507,39 +504,27 @@ public class ArticleServiceImpl implements ArticleService {
     List<Article> list = new ArrayList<>();
 
     if (hasKey != null && hasKey) {
-
       Set<Article> members = operations.members(key);
-
       members.stream().filter((x) -> {
-
         float similarityRatio = getSimilarityRatio(title, x.getTitle());
-
         return similarityRatio > 0.1;
       }).limit(number).forEach(list::add);
-
       if (list.size() == 0) {
         members.stream().limit(number).forEach(list::add);
       } else {
-        operations1.set(articleKey, list, 1, TimeUnit.DAYS);
+        operations1.set(articleKey, list, 1, TimeUnit.SECONDS);
       }
-
       return list;
-
     }
-
     List<Article> articles = articleDao.list();
-
     articles.stream().filter((x) -> {
-
       float similarityRatio = getSimilarityRatio(title, x.getTitle());
-
       return similarityRatio > 0.1;
     }).limit(number).forEach(list::add);
-
     if (list.size() == 0) {
       articles.stream().limit(number).forEach(list::add);
     } else {
-      operations1.set(articleKey, list, 1, TimeUnit.DAYS);
+      operations1.set(articleKey, list, 1, TimeUnit.SECONDS);
     }
     return list;
   }

@@ -80,7 +80,6 @@ public class ArticleController {
             session.setAttribute("recordFlag", null);
         }
 
-
         return "single";
     }
 

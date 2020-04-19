@@ -89,7 +89,7 @@ public interface ArticleDao {
     @Select(
         "select article.id,title,userName,time,sort.name sortName,sortId,context,contextMd,readNumber,top,principal,status "
             +
-            "from article,sort where sort.id = article.sortId and sortId = #{id} and status = 0")
+            "from article,sort where sort.id = article.sortId and sortId = #{id} and status in (0,1)")
     @ResultMap("article")
     List<Article> sortArticleList(@Param("id") int id);
 
