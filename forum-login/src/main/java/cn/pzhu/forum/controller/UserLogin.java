@@ -81,13 +81,9 @@ public class UserLogin {
     @ResponseBody
     @RequestMapping("/user/uploadAvatar")
     public String uploadAvatar(MultipartFile multipartFile) {
-
         String id = SecurityUtils.getSubject().getPrincipal().toString();
-
         String path = id + multipartFile.getOriginalFilename();
-
         String s = userService.updateUserAvatar(id, multipartFile, path);
-
         if (!"".equals(s)) {
             return s;
         }
@@ -122,28 +118,20 @@ public class UserLogin {
      */
     @RequestMapping("/user/updateInfo")
     public String updateInfo(Model model) {
-
         log.info("cn.pzhu.forum.controller.UserLogin.updateInfo-更新用户信息前查询用户现有信息");
-
         Subject subject = SecurityUtils.getSubject();
         Object principal = subject.getPrincipal();
-
         if (principal == null) {
             logout();
         }
-
         assert principal != null;
         UserInfo userInfo = userInfoService.get(principal.toString());
-
         model.addAttribute("userInfo", userInfo);
         log.info("待更新用户的信息-useInfo = {}", userInfo.toString());
-
         List<School> schools = schoolService.list();
         model.addAttribute("schools", schools);
-
         List<Major> majors = majorService.list(schools.get(0).getId());
         model.addAttribute("majors", majors);
-
         return "setting";
     }
 
@@ -174,23 +162,16 @@ public class UserLogin {
     @RequestMapping(value = "/user/updateInfos")
     @ResponseBody
     public Map<String, String> updateInfo(UserInfo userInfo) {
-
         log.info("cn.pzhu.forum.controller.UserLogin.updateInfo(cn.pzhu.forum.entity.UserInfo-更新用户信息-入参：" +
                 "userInfo = {}", userInfo.toString());
-
         Map<String, String> map = new HashMap<>();
-
         Subject subject = SecurityUtils.getSubject();
         Object principal = subject.getPrincipal();
         assert principal != null;
         userInfo.setId(principal.toString());
-
         boolean b = userService.updateUserInfo(userInfo);
-
         log.info("controller控制层接收到的返回值: flag = {}", b);
-
         map.put("msg", "成功");
-
         return map;
     }
 

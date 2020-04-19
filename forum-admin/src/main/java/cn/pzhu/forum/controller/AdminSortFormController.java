@@ -34,20 +34,15 @@ public class AdminSortFormController {
      */
     @RequestMapping("add")
     public Map<String, String> add(Sort sort) {
-
         log.info("cn.pzhu.forum.controller.AdminSortFormController.add-添加分类信息-入参：" +
                 "sort = {}", sort);
-
         Map<String, String> map = new HashMap<>();
-
         boolean add = sortService.add(sort);
-
         if (add) {
             map.put("msg", "成功!");
         } else {
             map.put("msg", "失败!");
         }
-
         return map;
     }
 

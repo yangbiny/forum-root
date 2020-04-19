@@ -100,7 +100,7 @@ public interface ArticleDao {
      * @return 更新结果
      */
     @Update("update article set title = #{title},context = #{context},contextMd = #{contextMd}" +
-        ",sortId = #{sortId},status = 1 where id = #{id}")
+        ",sortId = #{sortId},status = 0 where id = #{id}")
     boolean update(Article article);
 
     /**

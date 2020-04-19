@@ -30,18 +30,14 @@ public class ForumInfoStatisticsController {
     @RequestMapping("/home")
     public Map<String, List<?>> article() {
         Map<String, List<?>> map = new HashMap<>();
-
         // 根据时间统计
         List<Integer> list = forumInfoStatisticsService.timeCount(false);
         map.put("time", list);
-
         Map<String, Integer> sortCount = forumInfoStatisticsService.sortCount();
         Set<String> strings = sortCount.keySet();
-
         List<String> key = new ArrayList<>(strings);
         map.put("sortName", key);
         List<Integer> sortVal = new ArrayList<>();
-
         for (String string : strings) {
             Integer integer = sortCount.get(string);
             sortVal.add(integer);

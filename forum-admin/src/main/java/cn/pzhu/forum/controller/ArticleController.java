@@ -58,7 +58,7 @@ public class ArticleController {
     }
 
     /**
-     * 审核被拒绝
+     * 审核通过
      */
     @RequestMapping("/user/article/pass")
     public Map<String, String> pass(int id) {

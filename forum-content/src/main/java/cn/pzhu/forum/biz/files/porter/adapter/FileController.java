@@ -90,22 +90,16 @@ public class FileController {
   @ResponseBody
   @GetMapping("user/down/{fileId}/")
   public Resp<String> downLoadFile(@PathVariable Integer fileId) {
-
     String userId = SecurityUtils.getSubject().getPrincipal().toString();
-
     Integer userIntegral = integralService.findIntegralByUserId(userId);
-
     FileInfo fileInfo = fileApplicationService.findFileById(fileId);
     if (fileInfo == null) {
       throw new IntegralException("文件信息不存在");
     }
-
     if (!Objects.equals(fileInfo.getUserId(), userId) && fileInfo.getIntegral() > userIntegral) {
-      throw new IntegralException("用户积分不足");
+      throw new IntegralException("当前积分不足");
     }
-
     String downUrl = fileApplicationService.downFile(userId, fileInfo);
-
     return new Resp<>(downUrl);
   }
 

@@ -261,22 +261,16 @@ public class UserContentController {
 
         log.info("cn.pzhu.forum.controller.ArticleController.image-生成博客分享二维码-入参：" +
                 "博客链接 URL = {}", url);
-
         try {
             byte[] qrCode = Utils.getQRCode(url, 300, 300);
-
             HttpHeaders httpHeaders = new HttpHeaders();
-
             httpHeaders.setContentType(MediaType.IMAGE_PNG);
-
             return new ResponseEntity<>(qrCode, httpHeaders, HttpStatus.CREATED);
-
         } catch (WriterException | IOException e) {
             log.error("cn.pzhu.forum.controller.ArticleController.image-生成博客分享二维码-发生异常- " +
                     "{} ", Arrays.toString(e.getStackTrace()));
             e.printStackTrace();
         }
-
         return null;
     }
 
