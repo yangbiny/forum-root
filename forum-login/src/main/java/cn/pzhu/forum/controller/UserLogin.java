@@ -253,15 +253,16 @@ public class UserLogin {
                            @RequestParam("userCode") String userCode, HttpSession session) {
         // 获得生成的邮件验证码
         Object code = session.getAttribute("code");
-
         // 检查用户名是否被使用
         Map<String, Boolean> map = checkUserName(username);
-
         // flag 为检查信息的标志
         if (map.get("flag")) {
             return "error";
         }
-
+        UserInfo userInfo = userService.queryUserById(user.getId());
+        if(userInfo != null){
+            return "error";
+        }
         if (code.equals(userCode)) {
             session.setAttribute("code", null);
             boolean b = userService.addUser(user, username);
@@ -285,9 +286,9 @@ public class UserLogin {
     public Map<String, Boolean> checkUserName(String username) {
         Map<String, Boolean> map = new HashMap<>();
 
-        boolean flag = userService.checkUserName(username);
+        boolean flag = userService.hasUserName(username);
 
-        if (!flag) {
+        if (flag) {
             map.put("flag", true);
         } else {
             map.put("flag", false);

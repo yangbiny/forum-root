@@ -54,8 +54,7 @@ public class UserServiceImpl implements UserService {
 
         boolean flag;
 
-        User oldUser = userDao.get(user.getUserId());
-
+        User oldUser = userDao.get(user.getId());
         // 该邮箱没有注册，就可以直接使用注册
         if (oldUser == null) {
             String string = new Md5Hash(user.getPassword(), user.getUserId(), 1024).toString();
@@ -167,11 +166,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUserName(String userName) {
+    public boolean hasUserName(String userName) {
 
         UserInfo byName = userInfoDao.getByName(userName);
 
-        return byName == null;
+        return byName != null;
     }
 
     @Override

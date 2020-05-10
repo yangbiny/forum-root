@@ -62,7 +62,7 @@ public interface UserService {
      * @param userName 用户名
      * @return false:没有被使用，true:已经被使用
      */
-    boolean checkUserName(String userName);
+    boolean hasUserName(String userName);
 
     /**
      * 查询用户信息

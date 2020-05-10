@@ -148,7 +148,7 @@ function registerUser() {
                 alert("注册成功!");
                 window.location.href = loginURL;
             } else {
-                codeError.text("信息填写错误!");
+                codeError.text("帐号已存在!");
                 codeError.attr("style", "color:red;display: inline-bolock");
             }
 
@@ -208,7 +208,7 @@ function setTime(obj) { //发送验证码倒计时
 }
 
 function checkUserName() {
-    let username = $("#nickName").val();
+    let username = $("#username").val();
 
     $.ajax({
         type: "post",
