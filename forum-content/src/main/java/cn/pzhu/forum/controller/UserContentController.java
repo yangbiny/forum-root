@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -119,6 +120,10 @@ public class UserContentController {
                       Model model) {
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
             "title = {},sort = {}", title, sort);
+
+        if (StringUtils.isAnyEmpty(context,title,body)) {
+            throw new RuntimeException("包含空信息");
+        }
         if (level != null){
             sort = level;
         }
@@ -372,6 +377,9 @@ public class UserContentController {
                          Model model) {
         log.info("cn.pzhu.forum.controller.ArticleController.add-添加博客-入参：" +
                 "title = {},sort = {}", title, sort);
+        if(StringUtils.isAnyEmpty(context,title,body)){
+            throw new RuntimeException("包含空信息");
+        }
         if (level != null){
             sort = level;
         }

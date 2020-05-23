@@ -19,4 +19,11 @@ public class GlobalExceptionHandler {
     return new Resp<>(message1, 500, message1);
   }
 
+  @ExceptionHandler(value = RuntimeException.class)
+  @ResponseBody
+  public Resp<String> runtimeException(RuntimeException exception) {
+    String message1 = exception.getMessage();
+    return new Resp<>(message1, 500, message1);
+  }
+
 }

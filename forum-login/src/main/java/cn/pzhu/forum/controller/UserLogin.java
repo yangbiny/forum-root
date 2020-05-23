@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
+import org.assertj.core.internal.cglib.asm.$Opcodes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,20 +185,18 @@ public class UserLogin {
      */
     @RequestMapping("login")
     @ResponseBody
-    public Map<String, String> userLogin(User user, String code) {
+    public Map<String, String> userLogin(User user, String code,HttpSession session) {
 
         log.info("cn.pzhu.forum.controller.UserLogin.userLogin-用户登录-入参：" +
             "user = {},code = {}", user.toString(), code);
 
         Map<String, String> map = new HashMap<>();
-        /*Object rCode = session.getAttribute("RCode");*/
+        Object rCode = session.getAttribute("RCode");
 
-        /*
-        if (code.toLowerCase().equals(rCode.toString().toLowerCase())) {
+        if (!code.toLowerCase().equals(rCode.toString().toLowerCase())) {
             map.put("msg", "验证码错误!");
             return map;
         }
-        */
 
         Subject subject = SecurityUtils.getSubject();
         EasyTypeToken token = new EasyTypeToken(user.getId(), user.getPassword());
@@ -320,8 +319,8 @@ public class UserLogin {
         Object rCode = session.getAttribute("RCode");              // 验证图片验证码
 
         try {
-            if (!(userCode.toLowerCase().equals(rUserCode.toLowerCase()) /*&&
-                    rCode.toString().toLowerCase().equals(code.toLowerCase())*/)) {
+            if (!(userCode.toLowerCase().equals(rUserCode.toLowerCase()) &&
+                    rCode.toString().toLowerCase().equals(code.toLowerCase()))) {
                 map.put("msg", "验证码错误");
                 return map;
             }
