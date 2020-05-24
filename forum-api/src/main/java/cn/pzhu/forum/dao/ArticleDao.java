@@ -156,7 +156,7 @@ public interface ArticleDao {
     @Select(
         "select article.id,title,userName,time,sort.name sortName,sortId,context,contextMd,readNumber,top,principal "
             +
-            "from article,sort where sort.id = article.sortId and title like #{key} and status = 0")
+            "from article,sort where sort.id = article.sortId and title like #{key} and status in (0,1)")
     @ResultMap("article")
     List<Article> keyList(@Param("key") String key);
 

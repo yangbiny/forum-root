@@ -274,9 +274,8 @@ public class ArticleServiceImpl implements ArticleService {
     String keys = RedisKeyConstant.ARTICLE_LIST_KEY + key;
     Boolean hasKey = redisTemplate.hasKey(keys);
     ValueOperations operations = redisTemplate.opsForValue();
-
+    redisTemplate.expire(keys, 1, TimeUnit.SECONDS);
     if (hasKey != null && hasKey) {
-
       return (List<Article>) operations.get(keys);
     }
 
@@ -285,11 +284,8 @@ public class ArticleServiceImpl implements ArticleService {
     List<Article> list = articleDao.keyList(key);
 
     if (list != null) {
-      operations.set(keys, list, 1, TimeUnit.HOURS);
+      operations.set(keys, list, 1, TimeUnit.SECONDS);
     }
-
-    redisTemplate.expire(keys, 1, TimeUnit.HOURS);
-
     return list;
   }
 
