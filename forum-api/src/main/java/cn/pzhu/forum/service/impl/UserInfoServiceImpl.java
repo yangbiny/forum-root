@@ -40,7 +40,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         String key = RedisKeyConstant.USER_USERINFO + id;
 
         ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
-        redisTemplate.expire(key, 1, TimeUnit.MINUTES);
+        redisTemplate.expire(key, 1, TimeUnit.SECONDS);
 
         Boolean hasKey = redisTemplate.hasKey(key);
 
@@ -52,7 +52,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = userInfoDao.get(id);
 
         if (userInfo != null) {
-            operations.set(key, userInfo, 1, TimeUnit.HOURS);
+            operations.set(key, userInfo, 1, TimeUnit.SECONDS);
         }
 
         return userInfo;
@@ -67,7 +67,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         Boolean hasKey = redisTemplate.hasKey(key);
         SetOperations operations = redisTemplate.opsForSet();
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
+        redisTemplate.expire(key, 1, TimeUnit.SECONDS);
 
         if (hasKey != null && hasKey) {
 
