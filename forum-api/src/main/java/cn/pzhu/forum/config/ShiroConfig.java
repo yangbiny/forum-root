@@ -66,15 +66,15 @@ public class ShiroConfig {
      *
      * @param shiroRealm     用户自定义Realm
      * @param sessionManager Session管理器
-     * @param cacheManager   缓存管理器
+     *
      * @return 安全管理器实体
      */
     @Bean
     public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm,
-                                                     DefaultWebSessionManager sessionManager,
-                                                     RedisCacheManager cacheManager) {
+                                                     DefaultWebSessionManager sessionManager/*,
+                                                     RedisCacheManager cacheManager*/) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setCacheManager(cacheManager);
+        //securityManager.setCacheManager(cacheManager);
         securityManager.setSessionManager(sessionManager);
         securityManager.setRealm(shiroRealm);
         return securityManager;
@@ -112,13 +112,13 @@ public class ShiroConfig {
      * @param redisManager Redis管理器
      * @return Redis缓存管理器
      */
-    @Bean
+    /*@Bean
     public RedisCacheManager cacheManager(RedisManager redisManager) {
         RedisCacheManager cacheManager = new RedisCacheManager();
         cacheManager.setRedisManager(redisManager);
         cacheManager.setKeyPrefix(CACHE_KEY);
         return cacheManager;
-    }
+    }*/
 
     /**
      * Redis 访问Session的DAO层
@@ -153,9 +153,9 @@ public class ShiroConfig {
     }
 
     @Bean
-    public ShiroRealm shiroRealm(RedisCacheManager redisCacheManager, RetryLimitHashedCredentialsMatcher credentialsMatcher) {
+    public ShiroRealm shiroRealm(/*RedisCacheManager redisCacheManager,*/ RetryLimitHashedCredentialsMatcher credentialsMatcher) {
         ShiroRealm shiroRealm = new ShiroRealm();
-        shiroRealm.setCacheManager(redisCacheManager);
+       // shiroRealm.setCacheManager(redisCacheManager);
         shiroRealm.setAuthenticationCachingEnabled(true);
         shiroRealm.setAuthorizationCachingEnabled(true);
         shiroRealm.setCredentialsMatcher(credentialsMatcher);

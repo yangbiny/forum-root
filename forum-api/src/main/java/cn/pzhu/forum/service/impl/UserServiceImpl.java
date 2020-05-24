@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User oldUser = userDao.get(user.getId());
         // 该邮箱没有注册，就可以直接使用注册
         if (oldUser == null) {
-            String string = new Md5Hash(user.getPassword(), user.getUserId(), 1024).toString();
+            String string = new Md5Hash(user.getPassword(), user.getId(), 1024).toString();
             user.setPassword(string);
             flag = userDao.add(user);
         } else {  // 通过QQ登录后注册或者绑定
