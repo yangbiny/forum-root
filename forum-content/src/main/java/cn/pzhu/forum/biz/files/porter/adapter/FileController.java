@@ -90,7 +90,11 @@ public class FileController {
   @ResponseBody
   @GetMapping("user/down/{fileId}/")
   public Resp<String> downLoadFile(@PathVariable Integer fileId) {
-    String userId = SecurityUtils.getSubject().getPrincipal().toString();
+    Object principal = SecurityUtils.getSubject().getPrincipal();
+    if(principal == null){
+      throw new IntegralException("请登录");
+    }
+    String userId = principal.toString();
     Integer userIntegral = integralService.findIntegralByUserId(userId);
     FileInfo fileInfo = fileApplicationService.findFileById(fileId);
     if (fileInfo == null) {
