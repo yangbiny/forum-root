@@ -159,7 +159,8 @@ public class Utils {
      */
     public static boolean sendBatchMail(String message, String[] emails, String emailType) {
 
-        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIDxjkfOVMr9lH", "kTZoAuDBADEbejDTdTQ5funhD1bni4");
+        // 配置服务器的key
+        IClientProfile profile = DefaultProfile.getProfile();
 
         IAcsClient client = new DefaultAcsClient(profile);
         SingleSendMailRequest request = new SingleSendMailRequest();
