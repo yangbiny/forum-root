@@ -121,14 +121,16 @@ public class Utils {
      */
     public static boolean sendMail(String code, String email, String emailType) {
 
-        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIDxjkfOVMr9lH", "kTZoAuDBADEbejDTdTQ5funhD1bni4");
+        // 配置服务器的key
+        IClientProfile profile = DefaultProfile.getProfile();
 
         IAcsClient client = new DefaultAcsClient(profile);
         SingleSendMailRequest request = new SingleSendMailRequest();
 
         try {
             //request.setVersion("2017-06-22");// 如果是除杭州region外的其它region（如新加坡region）,必须指定为2017-06-22
-            request.setAccountName("Impassive@cone4.top");
+            // 配置域名
+            request.setAccountName();
             request.setFromAlias("Impassive");
             request.setAddressType(1);
             request.setTagName("Impassive");
@@ -159,7 +161,8 @@ public class Utils {
      */
     public static boolean sendBatchMail(String message, String[] emails, String emailType) {
 
-        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIDxjkfOVMr9lH", "kTZoAuDBADEbejDTdTQ5funhD1bni4");
+        // 配置服务器的key
+        IClientProfile profile = DefaultProfile.getProfile();
 
         IAcsClient client = new DefaultAcsClient(profile);
         SingleSendMailRequest request = new SingleSendMailRequest();
@@ -167,7 +170,7 @@ public class Utils {
         for (String email : emails) {
             try {
                 //request.setVersion("2017-06-22");// 如果是除杭州region外的其它region（如新加坡region）,必须指定为2017-06-22
-                request.setAccountName("Impassive@cone4.top");
+                request.setAccountName();
                 request.setFromAlias("Impassive");
                 request.setAddressType(1);
                 request.setTagName("Impassive");
